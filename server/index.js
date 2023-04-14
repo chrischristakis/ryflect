@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const express = require('express');
 const app = express();
+const cors = require('cors');
 const path = require('path');
 const dotenv = require('dotenv').config({path: path.resolve(__dirname, '../.env')});
 const router = require('./routes/router.js');
@@ -8,8 +9,12 @@ const PORT = process.env.PORT;
 const MONGO_URL = process.env.MONGO_URL;
 
 // Route all requests to /api/...
+app.use(cors());
 app.use(express.json());
 app.use('/api', router);
+
+// Have Node serve the files for our built React app
+app.use(express.static(path.resolve(__dirname, '../client/build')));
 
 // Establish mongo connection
 mongoose.connect(MONGO_URL, {
@@ -20,6 +25,11 @@ mongoose.connect(MONGO_URL, {
 }).catch((err) => {
     console.log("Cannot connect to MongoDB: ", err);
 });
+
+// All get requests not handled by our other routes serve the front end
+app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
+  });
 
 // Setup express server to listen on port
 app.listen(PORT, async () => {
