@@ -1,14 +1,17 @@
 import './App.css';
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
 import axios from 'axios';
+import {API_URL} from './config.js';
 
 function App() {
   const [examples, setExamples] = useState(null);
 
   useEffect(() => {
-    axios.get('/api/example').then((res) => {
-      setExamples(res.data);
-    }).catch((err) => console.log(err));
+    axios.get(`${API_URL}/api/example`).then((res) => {
+      return res.data;
+    }).then((data) => {
+      setExamples(data);
+    }).catch((err) => console.error(err.response.data.error));
   }, []);
 
   return (
@@ -20,7 +23,7 @@ function App() {
           {
             (!examples)? "null" : 
             examples.map((example) => {
-              return <p key = {example}>{example.name}, {example.age}</p>;
+              return <p key = {example._id}>{example.name}, {example.age}</p>;
             })
           }
         </div>
