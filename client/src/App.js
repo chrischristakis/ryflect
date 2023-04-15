@@ -8,7 +8,7 @@ function App() {
   useEffect(() => {
     axios.get('/api/example').then((res) => {
       setExamples(res.data);
-    });
+    }).catch((err) => console.log(err));
   }, []);
 
   return (
