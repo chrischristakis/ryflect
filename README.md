@@ -26,9 +26,9 @@
 - [x] Mongo refresh
 - [x] Local Mongo (Atlas should be easy to switch to)
 - [x] Make dummy app which has basic mongo operations to test DO deploy
-- [ ] Publish app on digital ocean as a test
-- [ ] Look into how to get number of days in current year
-- [ ] Look into rerfreshing timeline at 12am on a new year
+- [x] Publish app on digital ocean as a test
+
+- [ ] Sanitize inputs
 
 # Front end
 - [x] Figma layout
