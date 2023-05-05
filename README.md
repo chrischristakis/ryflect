@@ -8,9 +8,6 @@
     - return jwt
     POST(auth/register)
     - POST(auth/register/:verificationID)
-    POST(auth/reset)
-    - POST(auth/reset/:verificationID)
-        - store id in database as valid for 15 minutes, maybe cron job to poll, idk
 
     journals (all headers contain jwt)
     GET(/journals/year/:year)
@@ -27,7 +24,14 @@
 - [x] Local Mongo (Atlas should be easy to switch to)
 - [x] Make dummy app which has basic mongo operations to test DO deploy
 - [x] Publish app on digital ocean as a test
-
+- [x] Make dummy user data (Non hashed passwords, etc)
+- [ ] Make utils for current day index as well as getting days in a year
+- [ ] Implement all routes other than auth
+- [ ] Start implementing encryption strategy for data
+- [ ] Auth
+- [ ] Auth middleware
+- [ ] Redo routes for auth
+- [ ] On login, should fill in days in year if doesnt exist for current year. 
 - [ ] Sanitize inputs
 
 # Front end
@@ -51,8 +55,8 @@ users:
         {
             2022: 
                 id_map: {
-                    123: {date, id}  <----- 123 is the overall day in the year, calculated on the server
-                    98: {date, id}
+                    123: id  <----- 123 is the overall day in the year, calculated on the server
+                    98: id
                 }
                 days_in_year: 365 <----- filled in once.
             2023: 
