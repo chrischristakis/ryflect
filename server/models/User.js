@@ -10,36 +10,26 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    recentJournals: [{
-        type: String,
-        default: []
-    }],
     email: {
         type: String,
         unique: true,
         required: true
     },
+    recentJournals: {
+        type: [String],
+        default: []
+    },
     journalIDs: {
         type: Map,
-        required: true,
         of: {
-            _id: false,  // Removes _id field for schemas (This is implicitly a sub-schema)
-            ids: [{
+            _id: false,
+            ids: {
                 _id: false,
-                dayIndex: {
-                    type: Number,
-                    required: true
-                },
-                id: {
-                    type: String,
-                    required: true
-                }
-            }],
-            totalDaysInYear: {
-                type: Number,
-                required: true
+                type: Map,
+                of: String
             }
-        }
+        },
+        default: {}
     }
 });
 

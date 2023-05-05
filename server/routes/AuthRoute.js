@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User.js');
 const Journals = require('../models/Journals.js');
+const { getDaysInYear } = require('../utils/utils.js')
 
 // Register a new user
 router.post('/register', async (req, res) => {
@@ -20,13 +21,7 @@ router.post('/register', async (req, res) => {
     const user = new User({
         username: req.body.username,
         password: req.body.password,
-        email: req.body.email,
-        journalIDs: {
-            [date.getUTCFullYear()]: {
-                ids: [],
-                totalDaysInYear: 365
-            } 
-        } 
+        email: req.body.email
     });
  
     try {

@@ -25,13 +25,12 @@
 - [x] Make dummy app which has basic mongo operations to test DO deploy
 - [x] Publish app on digital ocean as a test
 - [x] Make dummy user data (Non hashed passwords, etc)
-- [ ] Make utils for current day index as well as getting days in a year
-- [ ] Implement all routes other than auth
-- [ ] Start implementing encryption strategy for data
+- [x] Make utils for current day index
+- [x] Implement all routes other than auth
 - [ ] Auth
 - [ ] Auth middleware
-- [ ] Redo routes for auth
-- [ ] On login, should fill in days in year if doesnt exist for current year. 
+- [ ] Redo routes to fit auth
+- [ ] Start encrypting data
 - [ ] Sanitize inputs
 
 # Front end
@@ -41,8 +40,6 @@
 # Other
 - [ ] Buy domain
 - [x] Look into host (Heroku, digital ocean)
-- [ ] Figure out how to display and detect a new year (Maybe hard code a daysInYear function to find out how many days are in a year)
-    - Maybe if year doesnt exist in journal IDs, add it then on first journal creation of that year
 
 
 # Table design
@@ -50,22 +47,23 @@
 users:
     - username
     - hashed password
-    - recentJournals [holds 5 ids at most, FILO]
     - journalIDs
-        {
-            2022: 
-                id_map: {
-                    123: id  <----- 123 is the overall day in the year, calculated on the server
+        [
+            {
+                year: 2023
+                ids: { key: index of day in overall year, value is journal ID
+                    123: id
                     98: id
                 }
-                days_in_year: 365 <----- filled in once.
-            2023: 
-                id_map: {
-                    3: id
-                    21: id 
-                }
-                days_in_year: 366
-        }
+            },
+            {
+                year: 2024
+                ids: { key: index of day in overall year, value is journal ID
+                    123: id
+                    98: id
+                } 
+            }
+        ]
     - email
 
 journals:

@@ -3,7 +3,7 @@ const router = express.Router();
 const Journals = require('../models/Journals.js');
 const User = require('../models/User.js');
 const { randomUUID, pbkdf2 } = require('crypto'); // for random uuid
-const { getDate, getDateID } = require('../utils/utils.js');
+const { getDate, getDateID, getCurrentDayInYear } = require('../utils/utils.js');
 
 // const key = "this is my key!";
 // const salt = '23904890';
@@ -14,13 +14,36 @@ const { getDate, getDateID } = require('../utils/utils.js');
 // });
 
 // Get a journal entry with a specified journal ID
-router.get('/:id', async (req, res) => {
+router.get('/id/:id', async (req, res) => {
     const id = req.params.id;
 
     const found = await Journals.findOne({id: id});
     if(!found)
         return res.status(400).send({error: `No journals with ID: '${id}' found`});
     return res.send(found);
+});
+
+// Get all journal entries in a year
+router.get('/year/:year', async (req, res) => {
+    // Let us first get the journal IDs in a given year
+    const user = await User.findOne({username: req.body.username});
+    if(!user)
+        return res.status(400).send("Username does not exist");
+
+    // Check if the map actually contains and ids for a given year
+    if(!user.journalIDs.has(req.params.year))
+        return res.status(400).send(`No journal entries made in ${req.params.year}`);
+
+    return res.send(user.journalIDs.get(req.params.year));
+});
+
+// Compile a list of our most recent journal entries
+router.get('/recents', async (req, res) => {
+    const user = await User.findOne({username: req.body.username});
+    if(!user)
+        return res.status(400).send("Username does not exist");
+
+    return res.send(user.recentJournals);
 });
 
 // Save a new journal entry
@@ -52,22 +75,39 @@ router.post('/', async (req, res) => {
 
     try {
         await journal.save();
+
+        // Now that we've saved a journal entry to the DB, lets add it to our list of journal entries in the user document.
+        // We can safely assume no journal entry exists for the day as we checked this on our ID earlier
+        await User.updateOne(
+            {username: req.body.username}, 
+            {
+                $set: {
+                    [`journalIDs.${date.getUTCFullYear()}.ids.${getCurrentDayInYear(date)}`]: journalID
+                }
+            }
+        );
+
+        // Now, just save it into our recent journals list
+        // Append beginning of list, then slice out excess.
+        const MAX_RECENTS = 2;
+        let recents = user.recentJournals;
+        recents.unshift(journalID);
+        recents = recents.slice(0, MAX_RECENTS);
+
+        await User.updateOne(
+            {username: req.body.username},
+            {
+                $set: {
+                    recentJournals: recents
+                }
+            }
+        );
+    
+        return res.send({message: "Journal was successfully saved!"});
     } 
     catch(err) {
         return res.status(500).send({error: err});
-    } 
-
-    // Now that we've saved a journal entry to the DB, lets add it to our list of journal entries for the user.
-    // We can safely assume no journal entry exists for the day as we checked it earlier.
-    await User.updateOne(
-        {username: req.body.username}, 
-        {
-            $push: {
-                [`journalIDs.${date.getUTCFullYear()}.ids`]: {dayIndex: 60, id:journalID}
-            }
-        }
-    );
-    return res.send({message: "Journal was successfully saved!"});
+    }
 });
 
 module.exports = router;
