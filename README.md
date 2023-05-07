@@ -27,19 +27,25 @@
 - [x] Make dummy user data (Non hashed passwords, etc)
 - [x] Make utils for current day index
 - [x] Implement all routes other than auth
-- [ ] Auth
-- [ ] Auth middleware
-- [ ] Redo routes to fit auth
-- [ ] Start encrypting data
+- [x] Auth
+- [x] Auth middleware
+- [x] Redo routes to fit auth
+- [x] Set up config env file
 - [ ] Sanitize inputs
+- [ ] Start looking into https
 
 # Front end
 - [x] Figma layout
+- [ ] Basic layout pages (No styling)
+- [ ] Start encrypting data
+- [ ] Look into cookies
 - [ ] Random message in writing box as a prompt
+    - Maybe put tips here
 
 # Other
 - [ ] Buy domain
 - [x] Look into host (Heroku, digital ocean)
+- [ ] Highlight one quote in your entry that pops up when you hover it in the timeline
 
 
 # Table design

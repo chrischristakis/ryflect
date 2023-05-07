@@ -5,8 +5,7 @@ const cors = require('cors');
 const path = require('path');
 const dotenv = require('dotenv').config();
 const router = require('./routes/router.js');
-const PORT = process.env.PORT;
-const MONGO_URL = process.env.MONGO_URL;
+const { PORT, MONGO_URL } = require('./utils/config.js');
 
 // Route all requests to /api/...
 app.use(cors());
