@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const { check } = require('express-validator');
+const validate = require('../middleware/validate.js');
 const User = require('../models/User.js');
 const { JWT_SECRET } = require('../utils/config.js');
 
@@ -14,9 +16,25 @@ const { JWT_SECRET } = require('../utils/config.js');
 //     console.log(derived.toString('hex'))
 // });
 
+const loginRules = [
+    check('username')
+        .isString().withMessage("Username must be a string")
+        .matches('^[A-Za-z0-9]+$').withMessage("Username must be within A-Z, a-z, 0-9")
+        .trim().escape(),
+    check('password')
+        .isString().withMessage("Password must be a string")
+        .trim().escape()
+];
+
+const registerRules = [
+    check('email', 'Email must be valid').isEmail().trim().escape().normalizeEmail()
+].concat(loginRules);
+
 // Login with credentials and then return a JWT
-router.post('/login', async (req, res) => {
+router.post('/login', loginRules, validate, async (req, res) => {
     const { username, password } = req.body;
+
+    console.log(username)
 
     if(!username || !password)
         return res.status(400).send({error: "Missing body fields"});
@@ -45,13 +63,14 @@ router.post('/login', async (req, res) => {
 });
 
 // Register a new user
-router.post('/register', async (req, res) => {
+router.post('/register', registerRules, validate, async (req, res) => {
+    const {username, email, password} = req.body;
 
     // Check if username OR email already exists, if so, do not proceed.
     const found = await User.findOne({
         $or: [
-            {username: req.body.username}, 
-            {email: req.body.email}
+            {username: username}, 
+            {email: email}
         ]
     });
     if(found)
@@ -61,7 +80,7 @@ router.post('/register', async (req, res) => {
     let hash;
     try {
         const salt = await bcrypt.genSalt();
-        hash = await bcrypt.hash(req.body.password, salt);
+        hash = await bcrypt.hash(password, salt);
     }
     catch(err) {
         return res.status(500).send({error: err});
@@ -69,12 +88,12 @@ router.post('/register', async (req, res) => {
 
     const date = new Date();
     const user = new User({
-        username: req.body.username,
+        username: username,
         password: hash,
-        email: req.body.email
+        email: email
     });
  
-    const token = jwt.sign({username: req.body.username}, JWT_SECRET, { expiresIn: '1800s' });
+    const token = jwt.sign({username: username}, JWT_SECRET, { expiresIn: '1800s' });
     
     // Commit new user to db
     try {
