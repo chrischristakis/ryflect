@@ -4,3 +4,20 @@ export const getDaysInYear = (year) => {
     const leapYear = (year % 400 === 0) || ((year % 100 !== 0) && (year % 4 === 0));
     return leapYear? 366 : 365;
 };
+
+// Get our current day in our year out of 365/366, index starting at 0, so [0, 364/365]
+export const getCurrentDayInYear = (date) => {
+
+    // Get the time in milliseconds between today's date, and the first day of the year, January 1st
+    const msElapsed = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()) - 
+                      Date.UTC(date.getUTCFullYear(), 0, 1);
+
+    // Use that elapsed time in ms to find how many days have elapsed
+    const msInADay = 1000 * 60 * 60 * 24;
+    return Math.floor(msElapsed / msInADay); 
+};
+
+// Check if an object is empty
+export const isEmpty = (obj) => {
+    return Object.keys(obj).length === 0;
+};

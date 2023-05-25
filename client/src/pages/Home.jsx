@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import axios from 'axios';
-import { getDaysInYear } from "../utils/utils";
+import Timeline from "../components/Timeline";
 
 function Home() {
 
     const [jwt, setJwt] = useState(null);
     const [journalIDs, setJournalIDs] = useState({});
-    const [daysInYear, setDaysInYear] = useState(0);
 
     useEffect(() => {
         (async function() {
@@ -24,10 +23,6 @@ function Home() {
             catch(err) {
                 console.log(err);
             }
-
-            // Set current days in this year
-            const date = new Date();
-            setDaysInYear(getDaysInYear(date.getUTCFullYear()))
         })();
     }, []);
 
@@ -49,9 +44,7 @@ function Home() {
     }, [jwt]);
 
     return (
-        <div>
-            {daysInYear}
-        </div>
+        <Timeline ids={journalIDs}/>
     );
 }
 
