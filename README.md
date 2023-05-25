@@ -31,8 +31,7 @@
 - [x] Auth middleware
 - [x] Redo routes to fit auth
 - [x] Set up config env file
-- [ ] Sanitize inputs
-- [ ] Start looking into https
+- [x] Sanitize inputs
 
 # Front end
 - [x] Figma layout
@@ -46,6 +45,7 @@
 - [ ] Buy domain
 - [x] Look into host (Heroku, digital ocean)
 - [ ] Highlight one quote in your entry that pops up when you hover it in the timeline
+- [ ] Start looking into https
 
 
 # Table design

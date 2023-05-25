@@ -7,15 +7,6 @@ const validate = require('../middleware/validate.js');
 const User = require('../models/User.js');
 const { JWT_SECRET } = require('../utils/config.js');
 
-// WILL NEED THIS WHEN REGISTERING LATER FOR ENCRYPTION
-// const key = "this is my key!";
-// const salt = '23904890';
-// // 64 is keylen since sha 512 produces 512 bit keys, so 64*8 bits == 512 bits
-// pbkdf2(key, salt, 1000000, 64, 'sha512', (err, derived) => {
-//     if(err) throw err;
-//     console.log(derived.toString('hex'))
-// });
-
 const loginRules = [
     check('username')
         .isString().withMessage("Username must be a string")
@@ -31,10 +22,8 @@ const registerRules = [
 ].concat(loginRules);
 
 // Login with credentials and then return a JWT
-router.post('/login', loginRules, validate, async (req, res) => {
+router.post('/login', validate(loginRules), async (req, res) => {
     const { username, password } = req.body;
-
-    console.log(username)
 
     if(!username || !password)
         return res.status(400).send({error: "Missing body fields"});
@@ -63,7 +52,7 @@ router.post('/login', loginRules, validate, async (req, res) => {
 });
 
 // Register a new user
-router.post('/register', registerRules, validate, async (req, res) => {
+router.post('/register', validate(registerRules), async (req, res) => {
     const {username, email, password} = req.body;
 
     // Check if username OR email already exists, if so, do not proceed.
