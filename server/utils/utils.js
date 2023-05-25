@@ -12,13 +12,6 @@ module.exports = {
         return `${username}-${month}${date.getUTCDate()}${date.getUTCFullYear()}`
     },
 
-    // Leap years are so weird man. So many rules but basically, if the year is divisble by 400, its a leap year.
-    // If not, then if its divisivble by 4 but not by 100, then its also a leap year.
-    getDaysInYear: (year) => {
-        const leapYear = (year % 400 === 0) || ((year % 100 !== 0) && (year % 4 === 0));
-        return leapYear? 366 : 365;
-    },
-
     // Get our current day in our year out of 365/366, index starting at 0, so [0, 364/365]
     getCurrentDayInYear: (date) => {
 

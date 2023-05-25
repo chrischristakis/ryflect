@@ -5,6 +5,21 @@ const User = require('../models/User.js');
 const { getDate, getDateID, getCurrentDayInYear } = require('../utils/utils.js');
 const verify = require('../middleware/verify.js');
 
+// Get all user's journal IDS through all years
+router.get('/', verify.user, async (req, res) => {
+    const user = await User.findOne({username: req.userinfo.username});
+    if(!user)
+        return res.status(400).send({error: `User '${req.userinfo.username}' does not exist`});
+
+    // Transform from a map object to a object
+    let idMap = {};
+    for(const [key, value] of user.journalIDs) {
+        idMap[key] = value;
+    }
+
+    return res.status(200).send(idMap);
+});
+
 // Get a journal entry with a specified journal ID
 router.get('/id/:id', verify.user, async (req, res) => {
     const id = req.params.id;
@@ -20,7 +35,7 @@ router.get('/year/:year', verify.user, async (req, res) => {
     
     const user = await User.findOne({username: req.userinfo.username});
     if(!user)
-        return res.status(400).send("Username does not exist");
+        return res.status(400).send({error: `User '${req.userinfo.username}' does not exist`});
 
     // Check if the map actually contains and ids for a given year
     if(!user.journalIDs.has(req.params.year))
