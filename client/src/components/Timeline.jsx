@@ -18,7 +18,7 @@ function Timeline(props) {
             for(let i = 0; i < daysInYear; i++) {
                 // Active tells us if there was activity on a certain day by checking the journalIDs map
                 let active = (year in props.ids && props.ids[year].ids[i]);
-                let isCurrentDay = (i == currentDay);
+                let isCurrentDay = (i === currentDay);
                 temp_timeline.push(<div key={`timeline-${i}`} 
                                         className={`${style.cell} ${active && style['active-cell']} ${isCurrentDay && style['current-cell']}`}>
                                     </div>);

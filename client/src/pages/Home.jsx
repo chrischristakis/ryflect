@@ -1,10 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 import axios from 'axios';
-import Timeline from "../components/Timeline";
+import Timeline from '../components/Timeline';
+import Button from '../components/Button';
+import Recents from '../components/Recents';
+import { API_URL } from '../utils/config.js';
 
 function Home() {
 
-    const [jwt, setJwt] = useState(null);
     const [journalIDs, setJournalIDs] = useState({});
 
     useEffect(() => {
@@ -17,21 +19,12 @@ function Home() {
             };
 
             try {
-                const response = await axios.post("http://localhost:5000/api/auth/login", body);
-                setJwt(response.data);
-            }
-            catch(err) {
-                console.log(err);
-            }
-        })();
-    }, []);
+                let response = await axios.post(API_URL+"/api/auth/login", body);
+                localStorage.setItem('jwt', response.data);
 
-    useEffect(() => {
-        jwt && (async function() {
-            try{
-                const response = await axios.get("http://localhost:5000/api/journals", {
+                response = await axios.get(API_URL+"/api/journals", {
                     headers: {
-                        auth: jwt
+                        auth: localStorage.getItem('jwt')
                     }
                 });
     
@@ -41,10 +34,14 @@ function Home() {
                 console.log(err);
             }
         })();
-    }, [jwt]);
+    }, []);
 
     return (
-        <Timeline ids={journalIDs}/>
+        <div>
+            <Timeline ids={journalIDs}/>
+            <Button text='new entry' clickEvent={() => alert('Clicked!')}/>
+            <Recents/>
+        </div>
     );
 }
 
