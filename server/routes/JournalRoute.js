@@ -4,6 +4,17 @@ const Journals = require('../models/Journals.js');
 const User = require('../models/User.js');
 const { getDate, getDateID, getCurrentDayInYear } = require('../utils/utils.js');
 const verify = require('../middleware/verify.js');
+const validate = require('../middleware/validate.js');
+const { check } = require('express-validator');
+
+const MAX_BYTES = 5000; // Max bytes for one journal entry
+
+const journalRules = [
+    check('text')
+        .isString().withMessage("Text must be a string")
+        .isLength({max: MAX_BYTES}).withMessage(`Journal entry cannot exceed ${MAX_BYTES} characters`)
+        .trim().escape(),
+];
 
 // Get all user's journal IDS through all years
 router.get('/', verify.user, async (req, res) => {
@@ -54,16 +65,10 @@ router.get('/recents', verify.user, async (req, res) => {
 });
 
 // Save a new journal entry
-router.post('/', verify.user, async (req, res) => {
-
-    const MAX_TEXT_BYTES = 4;
+router.post('/', verify.user, validate(journalRules), async (req, res) => {
     const MAX_RECENTS = 5;
 
     const text = req.body.text;
-    const byteSize = new Blob([text]).size; // Allows us to query how many bytes are in a given string
-
-    if(byteSize > MAX_TEXT_BYTES)
-        return res.status(400).send({error: `Text should be less than ${MAX_TEXT_BYTES} characters`});
 
     // Make sure username exists, we'll use this user later
     const user = await User.findOne({username: req.userinfo.username});

@@ -1,13 +1,18 @@
-import Home from './pages/Home.jsx';
+import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar.jsx';
+import Home from './pages/Home.jsx';
+import CreateJournal from './pages/CreateJournal.jsx';
 
 function App() {
 
   return (
-    <div>
+    <>
       <Navbar/>
-      <Home/>
-    </div>
+      <Routes>
+        <Route path='/' element={<Home/>}/>
+        <Route path='/create' element={<CreateJournal/>}/>
+      </Routes>
+    </>
   );
 }
 

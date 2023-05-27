@@ -4,10 +4,12 @@ import Timeline from '../components/Timeline';
 import Button from '../components/Button';
 import Recents from '../components/Recents';
 import { API_URL } from '../utils/config.js';
+import { useNavigate } from 'react-router-dom';
 
 function Home() {
 
     const [journalIDs, setJournalIDs] = useState({});
+    const navigate = useNavigate();
 
     useEffect(() => {
         (async function() {
@@ -39,7 +41,7 @@ function Home() {
     return (
         <div>
             <Timeline ids={journalIDs}/>
-            <Button text='new entry' clickEvent={() => alert('Clicked!')}/>
+            <Button text='new entry' clickEvent={() => navigate('/create')}/>
             <Recents/>
         </div>
     );

@@ -2,7 +2,16 @@
     background-color: black;
 }
 
+.back-link {
+    color: white;
+    text-decoration: none;
+}
+
 .title {
     margin: 0;
+}
+
+.title-link {
     color: white;
+    text-decoration: none;
 }

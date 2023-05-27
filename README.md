@@ -35,7 +35,13 @@
 
 # Front end
 - [x] Figma layout
+- [ ] Add a 'loaded' property for journalIDs, since checking if empty isn't reliable
+        - New users have empty journalIDs, so website woudln't work for them if we check using isEmpty
 - [ ] Basic layout pages (No styling)
+- [ ] Get notifications working for errors
+- [ ] Show bad input front-end (Before submitting)
+    - Specific errors for specific routes isnt a bad idea for this
+- [ ] Proper loading
 - [ ] Start encrypting data
 - [ ] Look into cookies
 - [ ] Random message in writing box as a prompt

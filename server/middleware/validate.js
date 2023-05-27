@@ -6,8 +6,15 @@ const { validationResult } = require('express-validator');
 function validate(rules) {
     return [rules, function(req, res, next) {
         const validationErrors = validationResult(req);
-        if(!validationErrors.isEmpty())
-            return res.status(400).send({error: validationErrors.array()});
+        if(!validationErrors.isEmpty()) {
+            let errs = [];
+            for(validationError of validationErrors.array())
+                errs.push(validationError.msg);
+            
+            const err = errs.join(', ');
+
+            return res.status(400).send({error: err});
+        }
     
         next();
     }];
