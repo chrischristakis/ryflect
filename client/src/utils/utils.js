@@ -1,3 +1,7 @@
+export const isLeapYear = (year) => {
+    return (year % 400 === 0) || ((year % 100 !== 0) && (year % 4 === 0));
+};
+
 export const getDaysInYear = (year) => {
     // Leap years are so weird man. So many rules but basically, if the year is divisble by 400, its a leap year.
     // If not, then if its divisivble by 4 but not by 100, then its also a leap year.
@@ -32,6 +36,20 @@ export const getCurrentDayInYear = (date) => {
     const msInADay = 1000 * 60 * 60 * 24;
     return Math.floor(msElapsed / msInADay); 
 };
+
+// inverse of the above function, given a day index and year, give us the date object
+export const getDateFromIndex = (index, year) => {
+    // Return if our index is invalid
+    if (index < 0 || (index > 364 && !(index == 365 && isLeapYear(year))))
+        return null;
+
+    const msInADay = 1000 * 60 * 60 * 24;
+    const startTime = new Date(year, 0, 1).getTime(); // Time on Jan 1st of the given year
+    const targetTime = startTime + (index * msInADay);
+
+    return new Date(targetTime)
+};
+
 
 // Check if an object is empty
 export const isEmpty = (obj) => {

@@ -3,7 +3,7 @@ import Button from '../components/Button';
 import { getDate } from '../utils/utils';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { API_URL } from '../utils/config';
+import { API_URL } from '../config';
 
 function CreateJournal() {
 

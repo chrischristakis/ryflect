@@ -3,7 +3,7 @@ import axios from 'axios';
 import Timeline from '../components/Timeline';
 import Button from '../components/Button';
 import Recents from '../components/Recents';
-import { API_URL } from '../utils/config.js';
+import { API_URL } from '../config.js';
 import { useNavigate } from 'react-router-dom';
 
 function Home() {
