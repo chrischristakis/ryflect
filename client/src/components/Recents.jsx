@@ -9,6 +9,7 @@ function Recents() {
     useEffect(() => {
         (async function() {
 
+            let responseIds = [];
             try {
                 // Get our recent journal's IDs
                 let response = await axios.get(API_URL+"/api/journals/recents", {
@@ -16,26 +17,30 @@ function Recents() {
                         auth: localStorage.getItem('jwt')
                     }
                 });
-
-                const ids = response.data;
-                let temp_recents = [];
-                // Use the IDs to get the actual journals
-                ids.forEach(async (id) => {
-                    response = await axios.get(API_URL+"/api/journals/id/"+id, {
+                responseIds = response.data;
+            }
+            catch(err) {
+                console.log(err);
+            }
+            
+            // Use the IDs to get the actual journals
+            responseIds = await Promise.all(responseIds.map(async (id) => {
+                try {
+                    let response = await axios.get(API_URL+"/api/journals/id/"+id, {
                         headers: {
                             auth: localStorage.getItem('jwt')
                         }
                     });
 
-                    temp_recents.push(response.data);
-                });
+                    return response.data; // Contains actual journal entries
+                }
+                catch(err) {
+                    console.log(err);
+                    return null;
+                }
+            }));
 
-                setRecents(temp_recents);
-            }
-            catch(err) {
-                console.log(err);
-            }
-
+            setRecents(responseIds);
         })();
     }, []);
 
