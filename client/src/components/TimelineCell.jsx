@@ -47,7 +47,7 @@ function TimelineCell({active, isCurrentDay, date}) {
              onMouseLeave={tooltipMouseLeave}
         >
             <span ref={tooltip} className={style['tooltip']}>
-                {date}
+                <p>{date}</p>
                 <span ref={arrow} className={style['tooltip-arrow']}></span>
             </span>
         </div>

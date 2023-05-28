@@ -16,16 +16,22 @@
 .tooltip {
     pointer-events: none;
     visibility: hidden;
-    color: white;
     display: inline-block;
     width: 190px;
     background-color: black;
     position: absolute;
     bottom: 150%;
     left: 50%;
-    margin-left: -95px;
+    margin-left: -95px; /*-95px (half width) + -5px (acocunt for padding)*/
+
+    border-radius: 10px;
+}
+
+.tooltip p {
+    color: white;
     text-align: center;
-    font-size: 1.3em;
+    font-size: 1.05em;
+    margin: 5px 0;
 }
 
 .tooltip-arrow {
