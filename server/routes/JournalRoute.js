@@ -37,7 +37,13 @@ router.get('/id/:id', verify.user, async (req, res) => {
 
     const found = await Journals.findOne({id: id});
     if(!found)
-        return res.status(400).send({error: `No journals with ID: '${id}' found`});
+        return res.status(404).send({error: `No journals with ID: '${id}' found`});
+
+    // You're not allowed to view other people's journals
+    const usernameInId = found.id.split('-')[0];
+    if(usernameInId !== req.userinfo.username)
+        return res.status(401).send({error: `You are not authorized to view this content.`});
+
     return res.send(found);
 });
 
