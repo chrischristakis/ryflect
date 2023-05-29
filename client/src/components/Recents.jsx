@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { API_URL } from '../config';
+import { useNavigate } from 'react-router-dom';
 
 function Recents() {
 
     const [recents, setRecents] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         (async function() {
@@ -49,7 +51,10 @@ function Recents() {
             {
                 recents.map((e) => {
                     return (
-                        <div key={e.id}>
+                        <div key={e.id}
+                             onClick={_ => navigate('/view/' + e.id)}
+                             style={{cursor: 'pointer'}}
+                        >
                             <h3>{e.date}</h3>
                             <p>{e.text}</p>
                         </div>

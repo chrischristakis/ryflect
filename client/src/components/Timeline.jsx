@@ -25,14 +25,14 @@ function Timeline(props) {
 
         let temp_timeline = [];
         for(let i = 0; i < daysInYear; i++) {
-            // Active tells us if there was activity on a certain day by checking the journalIDs map
-            const active = (year in props.ids && props.ids[year].ids[i]);
+
+            const journalId = (year in props.ids && props.ids[year].ids[i])? props.ids[year].ids[i] : null;
 
             // So that we dont see the current day selector on other years as we scroll through them
             const isCurrentDay = (i === currDay.day && year === currDay.year); 
             const dateInYear = getDate(getDateFromIndex(i, year));
 
-            temp_timeline.push(<TimelineCell key={i} active={active} isCurrentDay={isCurrentDay} date={dateInYear}/>);
+            temp_timeline.push(<TimelineCell key={i} journalId={journalId} isCurrentDay={isCurrentDay} date={dateInYear}/>);
         }
         setTimeline(temp_timeline);
     }, [year, props.ids, date]); // We reload timeline either when our ids are loaded, or year is changed.

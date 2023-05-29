@@ -40,7 +40,7 @@ export const getCurrentDayInYear = (date) => {
 // inverse of the above function, given a day index and year, give us the date object
 export const getDateFromIndex = (index, year) => {
     // Return if our index is invalid
-    if (index < 0 || (index > 364 && !(index == 365 && isLeapYear(year))))
+    if (index < 0 || (index > 364 && !(index === 365 && isLeapYear(year))))
         return null;
 
     const msInADay = 1000 * 60 * 60 * 24;

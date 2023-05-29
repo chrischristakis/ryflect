@@ -1,12 +1,14 @@
 import { useRef } from 'react';
 import style from './TimelineCell.module.css';
+import { useNavigate } from 'react-router-dom';
 
-function TimelineCell({active, isCurrentDay, date}) {
+function TimelineCell({journalId, isCurrentDay, date}) {
 
     // We're gonna need to access all of these DOM elements, store them in refs
     const tooltip = useRef(null)
     const cell = useRef(null);
     const arrow = useRef(null);
+    const navigate = useNavigate();
 
     const tooltipMouseEnter = (e) => {
     
@@ -38,13 +40,21 @@ function TimelineCell({active, isCurrentDay, date}) {
         tooltip.current.style.visibility = 'hidden';
     }
 
+    const clickCell = (e) => {
+        if(!journalId)
+            return;
+        
+        navigate('/view/'  + journalId);
+    }
+
     return (
         <div ref = {cell}
              className={`${style.cell} 
-                         ${active && style['active-cell']} 
+                         ${journalId && style['active-cell']} 
                          ${isCurrentDay && style['current-cell']}`}
              onMouseEnter={tooltipMouseEnter}
              onMouseLeave={tooltipMouseLeave}
+             onClick={clickCell}
         >
             <span ref={tooltip} className={style['tooltip']}>
                 <p>{date}</p>
