@@ -2,21 +2,22 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { API_URL } from '../config';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthProvider';
 
 function Recents() {
 
     const [recents, setRecents] = useState([]);
     const navigate = useNavigate();
+    const { jwt } = useAuth();
 
     useEffect(() => {
         (async function() {
-
             let responseIds = [];
             try {
                 // Get our recent journal's IDs
                 let response = await axios.get(API_URL+"/api/journals/recents", {
                     headers: {
-                        auth: localStorage.getItem('jwt')
+                        auth: jwt
                     }
                 });
                 responseIds = response.data;
@@ -30,7 +31,7 @@ function Recents() {
                 try {
                     let response = await axios.get(API_URL+"/api/journals/id/"+id, {
                         headers: {
-                            auth: localStorage.getItem('jwt')
+                            auth: jwt
                         }
                     });
 
@@ -44,7 +45,7 @@ function Recents() {
 
             setRecents(responseIds);
         })();
-    }, []);
+    }, [jwt]);
 
     return (
         <div>

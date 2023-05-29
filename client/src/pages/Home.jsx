@@ -5,28 +5,20 @@ import Button from '../components/Button';
 import Recents from '../components/Recents';
 import { API_URL } from '../config.js';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthProvider';
 
 function Home() {
 
     const [journalIDs, setJournalIDs] = useState({});
     const navigate = useNavigate();
+    const { jwt } = useAuth();
 
     useEffect(() => {
-        (async function() {
-            
-            // Temporary login for testing
-            const body = {
-                username: "chris8787",
-                password: "password"
-            };
-
+        (async function() {        
             try {
-                let response = await axios.post(API_URL+"/api/auth/login", body);
-                localStorage.setItem('jwt', response.data);
-
-                response = await axios.get(API_URL+"/api/journals", {
+                const response = await axios.get(API_URL+"/api/journals", {
                     headers: {
-                        auth: localStorage.getItem('jwt')
+                        auth: jwt
                     }
                 });
     

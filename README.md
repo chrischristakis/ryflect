@@ -38,6 +38,7 @@
 - [ ] Basic layout pages (No styling)
 - [ ] Add a 'loaded' property for journalIDs, since checking if empty isn't reliable
         - New users have empty journalIDs, so website woudln't work for them if we check using isEmpty
+        - Maybe move it to a context instead...
 - [ ] Handle errors on each page
 - [ ] Get notifications working for errors
 - [ ] Show bad input front-end (Before submitting)

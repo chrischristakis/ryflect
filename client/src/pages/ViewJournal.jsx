@@ -2,10 +2,12 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { API_URL } from '../config';
+import { useAuth } from '../contexts/AuthProvider';
 
 function ViewJournal() {
 
     const { id } = useParams();
+    const { jwt } = useAuth();
     const [entry, setEntry] = useState(null);
 
     useEffect(() => {
@@ -13,7 +15,7 @@ function ViewJournal() {
             try {
                 const res = await axios.get(API_URL + '/api/journals/id/'+id, {
                     headers: {
-                        auth: localStorage.getItem('jwt')
+                        auth: jwt
                     }
                 });
 

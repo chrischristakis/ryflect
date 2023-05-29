@@ -1,6 +1,9 @@
 function NotFound() {
     return (
-        <h1>this page does not exist.</h1>
+        <div>
+            <h1>404</h1>
+            <h2>this page does not exist.</h2>
+        </div>
     );
 }
 
