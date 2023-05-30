@@ -11,7 +11,7 @@ function Navbar() {
         <div className={style.navbar}>
 
             { // Back button renders on any page except home
-                location.pathname !== '/' &&
+                location.pathname !== '/' && location.pathname !== '/home' &&
                 <Link to='/' className={style['back-link']}>
                     <FaArrowLeft style={{color: 'white', fontSize: '30px'}}/>
                 </Link>

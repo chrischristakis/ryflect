@@ -49,6 +49,7 @@
 - [ ] Look into cookies
 - [ ] Random message in writing box as a prompt
     - Maybe put tips here
+- [ ] Make sure user knows they cannot recover password upon registration
 
 # Other
 - [ ] Buy domain

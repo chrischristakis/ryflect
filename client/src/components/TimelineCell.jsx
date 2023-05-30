@@ -26,11 +26,11 @@ function TimelineCell({journalId, isCurrentDay, date}) {
             tooltip.current.style.marginLeft = `${-tooltipBounds.width/2 - tooltipBounds.left}px`;
 
             // Since tooltip is locked in place, arrow must attach to the cell the cursor is actually on
-            arrow.current.style.marginLeft = `${getDistanceFromArrowToCell(arrow.current, cell.current) - 10}px`;
+            arrow.current.style.marginLeft = `${getDistanceFromArrowToCell(arrow.current, cell.current) - 15}px`;
         }
         if(tooltipBounds.right > window.innerWidth) {
             tooltip.current.style.marginLeft = `${-tooltipBounds.width/2 - (tooltipBounds.right - window.innerWidth)}px`;
-            arrow.current.style.marginLeft = `${getDistanceFromArrowToCell(arrow.current, cell.current) - 10}px`;
+            arrow.current.style.marginLeft = `${getDistanceFromArrowToCell(arrow.current, cell.current) - 15}px`;
         }
 
         tooltip.current.style.visibility = 'visible';

@@ -28,7 +28,7 @@ function Home() {
                 console.log(err);
             }
         })();
-    }, []);
+    }, [jwt]);
 
     return (
         <div>

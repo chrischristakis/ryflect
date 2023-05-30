@@ -9,11 +9,11 @@ const { JWT_SECRET } = require('../utils/config.js');
 
 const loginRules = [
     check('username')
-        .isString().withMessage("Username must be a string")
+        .isLength({min: 1}).withMessage("Username must be at least 1 charater long")
         .matches('^[A-Za-z0-9]+$').withMessage("Username must be within A-Z, a-z, 0-9")
         .trim().escape(),
     check('password')
-        .isString().withMessage("Password must be a string")
+        .isLength({min: 6}).withMessage("Password must be at least 6 charaters long")
         .trim().escape()
 ];
 
@@ -36,7 +36,7 @@ router.post('/login', validate(loginRules), async (req, res) => {
         ]
     });
     if(!user)
-        return res.status(400).send({error: "User cannot be found"});
+        return res.status(404).send({error: "User cannot be found"});
 
     // Compare password to stored hashed/salted password
     try {
@@ -56,14 +56,16 @@ router.post('/register', validate(registerRules), async (req, res) => {
     const {username, email, password} = req.body;
 
     // Check if username OR email already exists, if so, do not proceed.
-    const found = await User.findOne({
-        $or: [
-            {username: username}, 
-            {email: email}
-        ]
-    });
-    if(found)
-        return res.status(400).send({error: "User already exists"});
+    const foundUsername = await User.findOne({ username: username });
+    const foundEmail = await User.findOne({ email: email });
+    let errorBody = {};
+    if(foundUsername)
+        errorBody['username'] = ["Username already taken"];
+    if(foundEmail)
+        errorBody['email'] = ["Email already registered"];
+    
+    if(Object.keys(errorBody).length !== 0)
+        return res.status(409).send({error: errorBody});
 
     // Hash password before storing in db.
     let hash;

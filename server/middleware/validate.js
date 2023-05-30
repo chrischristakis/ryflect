@@ -7,13 +7,15 @@ function validate(rules) {
     return [rules, function(req, res, next) {
         const validationErrors = validationResult(req);
         if(!validationErrors.isEmpty()) {
-            let errs = [];
-            for(validationError of validationErrors.array())
-                errs.push(validationError.msg);
-            
-            const err = errs.join(', ');
+            let errs = {};
+            for(validationError of validationErrors.array()) {
+                if(validationError.path in errs)
+                    errs[validationError.path].push(validationError.msg);
+                else
+                    errs[validationError.path] = [validationError.msg];
+            }
 
-            return res.status(400).send({error: err});
+            return res.status(400).send({error: errs});
         }
     
         next();

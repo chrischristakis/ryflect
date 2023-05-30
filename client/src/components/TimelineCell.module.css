@@ -25,13 +25,13 @@
     left: 50%;
     margin-left: -95px; /*-95px (half width) + -5px (acocunt for padding)*/
 
-    border-radius: 10px;
+    border-radius: 5px;
 }
 
 .tooltip p {
     color: white;
     text-align: center;
-    font-size: 1.05em;
+    font-size: 0.95em;
     margin: 5px 0;
 }
 
@@ -41,9 +41,10 @@
     height:0;
     position:absolute;
 
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
-    border-top: 10px solid black;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-top: 15px solid black;
     left: 50%;
-    margin-left: -10px;
+    margin-top: -5px;
+    margin-left: -15px;
 }
