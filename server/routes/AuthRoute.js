@@ -2,10 +2,12 @@ const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const { check } = require('express-validator');
+const { check, param } = require('express-validator');
 const validate = require('../middleware/validate.js');
 const User = require('../models/User.js');
+const Verification = require('../models/Verification.js');
 const { JWT_SECRET } = require('../utils/config.js');
+const crypto = require('crypto');
 
 const loginRules = [
     check('username')
@@ -20,6 +22,11 @@ const loginRules = [
 const registerRules = [
     check('email', 'Email must be valid').isEmail().trim().escape().normalizeEmail()
 ].concat(loginRules);
+
+const verificationRules = [
+    param('id').isString()
+        .trim().escape()
+];
 
 // Login with credentials and then return a JWT
 router.post('/login', validate(loginRules), async (req, res) => {
@@ -37,6 +44,10 @@ router.post('/login', validate(loginRules), async (req, res) => {
     });
     if(!user)
         return res.status(404).send({error: "User cannot be found"});
+
+    if(!user.active) {
+        return res.status(401).send({error: "User has not been activated yet. Check your email"});
+    }
 
     // Compare password to stored hashed/salted password
     try {
@@ -81,19 +92,60 @@ router.post('/register', validate(registerRules), async (req, res) => {
     const user = new User({
         username: username,
         password: hash,
+        active: false,
         email: email
     });
  
     const token = jwt.sign({username: username}, JWT_SECRET, { expiresIn: '1800s' });
+
+    // Generate random ID for email verirification, make sure its not taken (unikely)
+    let verificationID = crypto.randomBytes(16).toString('hex');
+    verificationID = 'hello!'
+    while(await Verification.findOne({urlID: verificationID}))
+        verificationID = crypto.randomBytes(16).toString('hex');
+
+    const verification = new Verification({
+        urlID: verificationID,
+        token: token
+    });
     
-    // Commit new user to db
+    // Commit new user to db and verification
     try {
+        await verification.save();
         await user.save();
-        return res.send(token);
+        return res.send("Registration successful");
     } 
     catch(err) {
         return res.status(500).send({error: err});
     } 
+});
+
+// This verifies a link sent in an email for a user's new account to be registered
+// Once someone visits the link, the account is activated and it returns the token to log them in.
+router.get('/verify/:id', validate(verificationRules), async (req, res) => {
+    const id = req.params.id;
+
+    const entry = await Verification.findOne({ urlID: id });
+    if(!entry)
+        return res.status(404).send({error: 'Could not find this pending ID for verification, try registering again.'});
+
+    let decoded;
+    try {
+        decoded = jwt.verify(entry.token, JWT_SECRET);
+    }
+    catch(err) {
+        return res.status(401).send('JWT expired, try registering again');
+    }
+
+    try {
+        await User.updateOne({username: decoded.username}, {active: true});
+        await Verification.deleteOne({urlID: id});
+    }
+    catch(err) {
+        return res.status(500).send({error: err.message});
+    }
+
+    res.send(entry.token);
 });
 
 module.exports = router;

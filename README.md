@@ -32,6 +32,8 @@
 - [x] Redo routes to fit auth
 - [x] Set up config env file
 - [x] Sanitize inputs
+- [ ] Email registration code
+- [ ] Set up CRON jobs for deleting old unactivated users and old verification entries (Can do both in one job)
 
 # Front end
 - [x] Figma layout

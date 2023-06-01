@@ -25,16 +25,22 @@ export function AuthProvider({ children }) {
         }
     }
 
-    async function logout() {
+    function logout() {
         setJwt(null);
         setLoggedIn(false);
+    }
+
+    function loginJwt(_jwt) {
+        setJwt(_jwt)
+        setLoggedIn(true)
     }
 
     return (
         <AuthContext.Provider value={{
                 jwt, 
                 loggedIn, 
-                login, 
+                login,
+                loginJwt, 
                 logout
             }}
         >

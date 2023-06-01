@@ -7,6 +7,7 @@ import Login from './pages/Login.jsx';
 import {AuthRoute, HomeLandingSelector} from './components/Routes.jsx';
 import { AuthProvider } from './contexts/AuthProvider.jsx';
 import Register from './pages/Register.jsx';
+import VerifyEmail from './pages/VerifyEmail.jsx';
 
 function App() {
 
@@ -22,6 +23,9 @@ function App() {
         }/>
         <Route path='/register' element={
           <Register/>
+        }/>
+        <Route path='/verify/:id' element={
+          <VerifyEmail/>
         }/>
         <Route path='/create' element={
           <AuthRoute>

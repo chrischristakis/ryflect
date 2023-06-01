@@ -11,6 +11,8 @@ function Register() {
     const [repassword, setRepassword] = useState();
     const [passwordsMatch, setPasswordsMatch] = useState(false);
 
+    const [awaitVerify, setAwaitVerify] = useState();
+
     const repasswordInput = useRef();
     const passwordInput = useRef();
     const emailInput = useRef();
@@ -46,7 +48,7 @@ function Register() {
 
         try {
             await axios.post(API_URL + '/api/auth/register', body);
-            console.log("Success!");
+            setAwaitVerify(true);
         }
         catch(err) {
             switch(err.response.status) {
@@ -78,6 +80,14 @@ function Register() {
             callback(e.target.value);
         };
     }
+
+    // If user registered and is waiting verification, show them this instead
+    if(awaitVerify)
+        return (
+            <p>
+                please check your inbox for a verification email from us, and you’ll be on your way!
+            </p>
+        );
 
     return (
         <form>

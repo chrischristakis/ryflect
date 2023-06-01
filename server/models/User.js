@@ -19,6 +19,10 @@ const userSchema = new mongoose.Schema({
         type: [String],
         default: []
     },
+    active: {
+        type: Boolean,
+        default: false
+    },
     journalIDs: {
         type: Map,
         of: {
