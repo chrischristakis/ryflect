@@ -21,7 +21,7 @@ export function AuthProvider({ children }) {
             setLoggedIn(true);
         }
         catch(err) {
-            console.log(err);
+            throw err;
         }
     }
 

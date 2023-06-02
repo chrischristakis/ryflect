@@ -30,6 +30,8 @@ function Home() {
         })();
     }, [jwt]);
 
+    console.log('home'); // Printed since being rerendered when journals is updated, ADD LOADING!
+
     return (
         <div>
             <Timeline ids={journalIDs}/>

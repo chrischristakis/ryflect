@@ -6,8 +6,9 @@ const { check, param } = require('express-validator');
 const validate = require('../middleware/validate.js');
 const User = require('../models/User.js');
 const Verification = require('../models/Verification.js');
-const { JWT_SECRET } = require('../utils/config.js');
+const { JWT_SECRET, TEST_EMAIL } = require('../utils/config.js');
 const crypto = require('crypto');
+const mailHelper = require('../utils/Mailhelper.js');
 
 const loginRules = [
     check('username')
@@ -45,10 +46,6 @@ router.post('/login', validate(loginRules), async (req, res) => {
     if(!user)
         return res.status(404).send({error: "User cannot be found"});
 
-    if(!user.active) {
-        return res.status(401).send({error: "User has not been activated yet. Check your email"});
-    }
-
     // Compare password to stored hashed/salted password
     try {
         if(!await bcrypt.compare(password, user.password))
@@ -56,6 +53,11 @@ router.post('/login', validate(loginRules), async (req, res) => {
     }
     catch(err) {
         return res.status(500).send({error: err});
+    }
+
+    // Check if user has verified their email yet
+    if(!user.active) {
+        return res.status(401).send({error: "User has not been activated yet. Check your email"});
     }
 
     const token = jwt.sign({username: user.username}, JWT_SECRET, { expiresIn: '1800s' });
@@ -100,7 +102,6 @@ router.post('/register', validate(registerRules), async (req, res) => {
 
     // Generate random ID for email verirification, make sure its not taken (unikely)
     let verificationID = crypto.randomBytes(16).toString('hex');
-    verificationID = 'hello!'
     while(await Verification.findOne({urlID: verificationID}))
         verificationID = crypto.randomBytes(16).toString('hex');
 
@@ -113,11 +114,36 @@ router.post('/register', validate(registerRules), async (req, res) => {
     try {
         await verification.save();
         await user.save();
-        return res.send("Registration successful");
     } 
     catch(err) {
         return res.status(500).send({error: err});
     } 
+
+    // Finally, send an email to the user to verify.
+    try {
+        await mailHelper.sendVerification(TEST_EMAIL, verificationID);
+        return res.send(verificationID);
+    }
+    catch(err) {
+        return res.status(500).send({error: err});
+    }
+});
+
+// Resend the email.
+router.get('/resend/:id', validate(verificationRules), async (req, res) => {
+    const id = req.params.id;
+
+    const entry = await Verification.findOne({ urlID: id });
+    if(!entry)
+        return res.status(404).send({error: 'Could not find this pending ID for verification, try registering again.'});
+
+    try {
+        const response = await mailHelper.sendVerification(TEST_EMAIL, entry.id);
+        return res.send(response);
+    }
+    catch(err) {
+        return res.status(500).send({error: err});
+    }
 });
 
 // This verifies a link sent in an email for a user's new account to be registered

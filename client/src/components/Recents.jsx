@@ -47,6 +47,11 @@ function Recents() {
         })();
     }, [jwt]);
 
+    if(recents.length === 0)
+        return (
+            <p>you have no recent journals... create an entry and change that :)</p>
+        );
+
     return (
         <div>
             {

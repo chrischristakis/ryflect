@@ -8,6 +8,7 @@
     "express-validator": "^7.0.1",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^7.0.3",
+    "nodemailer": "^6.9.3",
     "nodemon": "^2.0.22",
     "path": "^0.12.7"
   }

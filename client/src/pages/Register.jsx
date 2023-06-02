@@ -12,6 +12,7 @@ function Register() {
     const [passwordsMatch, setPasswordsMatch] = useState(false);
 
     const [awaitVerify, setAwaitVerify] = useState();
+    const [verificationId, setVerificationId] = useState();
 
     const repasswordInput = useRef();
     const passwordInput = useRef();
@@ -47,7 +48,8 @@ function Register() {
         }
 
         try {
-            await axios.post(API_URL + '/api/auth/register', body);
+            const response = await axios.post(API_URL + '/api/auth/register', body);
+            setVerificationId(response.data);
             setAwaitVerify(true);
         }
         catch(err) {
@@ -81,12 +83,22 @@ function Register() {
         };
     }
 
+    const resendEmail = async () => {
+        try {
+            await axios.get(API_URL+'/api/auth/resend/'+verificationId);
+        }
+        catch(err) {
+            console.log(err);
+        }
+    }
+
     // If user registered and is waiting verification, show them this instead
     if(awaitVerify)
         return (
-            <p>
-                please check your inbox for a verification email from us, and you’ll be on your way!
-            </p>
+            <div>
+                <p>please check your inbox for a verification email from us, and you’ll be on your way!</p>
+                <Button text='Resend email' clickEvent={resendEmail} cooldown={60000}></Button>
+            </div>
         );
 
     return (

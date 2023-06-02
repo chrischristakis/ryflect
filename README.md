@@ -32,7 +32,7 @@
 - [x] Redo routes to fit auth
 - [x] Set up config env file
 - [x] Sanitize inputs
-- [ ] Email registration code
+- [x] Email registration code
 - [ ] Set up CRON jobs for deleting old unactivated users and old verification entries (Can do both in one job)
 
 # Front end
@@ -40,7 +40,12 @@
 - [ ] Basic layout pages (No styling)
 - [ ] Add a 'loaded' property for journalIDs, since checking if empty isn't reliable
         - New users have empty journalIDs, so website woudln't work for them if we check using isEmpty
-        - Maybe move it to a context instead...
+        - THIS IS CAUSING RERENDERS OF THE ENTIRE PAGE! WE NEED TO CHECK IF SOMETHING IS LOADED FIRST
+            - No need for context, just a loaded property that waits for all api calls on a page to complete before rendering content.
+- [ ] Snoop around for rerenders to fix
+- [ ] Cookies
+    - Test what happens when user goes to other user's journal after being logged in
+- [ ] Add user bar in navbar, support logout, change password, FAQ
 - [ ] Handle errors on each page
 - [ ] Get notifications working for errors
 - [ ] Show bad input front-end (Before submitting)
