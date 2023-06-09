@@ -45,7 +45,6 @@
 - [x] Snoop around for rerenders to fix
 - [x] Cookies
     - Test what happens when user goes to other user's journal after being logged in, should bring them to unauthorized page
-- [ ] Look into any better altneratives to pinging user to check if logged in, since error in console.
 - [ ] Add user bar in navbar, support logout, change password, FAQ
 - [ ] Handle errors on each page
 - [ ] Get notifications working for errors
@@ -54,7 +53,6 @@
 - [ ] Proper loading
 - [ ] Start encrypting data
 - [ ] QOL for typing (Make enter not submit the entire form when making a new entry)
-- [ ] Look into cookies
 - [ ] Random message in writing box as a prompt
     - Maybe put tips here
 - [ ] Make sure user knows they cannot recover password upon registration
@@ -62,8 +60,8 @@
 # Other
 - [ ] Buy domain
 - [x] Look into host (Heroku, digital ocean)
-- [ ] Highlight one quote in your entry that pops up when you hover it in the timeline
 - [ ] Start looking into https
+- [ ] Add time capsule feature
 
 
 # Table design

@@ -2,10 +2,21 @@ import style from './Navbar.module.css'
 import { Link } from 'react-router-dom';
 import { useLocation } from "react-router-dom";
 import { FaArrowLeft } from 'react-icons/fa'
+import { useAuth } from '../contexts/AuthProvider';
 
 function Navbar() {
 
     const location = useLocation();
+    const { checkLoginCookie, logout } = useAuth();
+
+    const handleLogout = async (e) => {
+        try {
+            logout();
+        }
+        catch(err) {
+            console.log(err);
+        }
+    };
 
     return (
         <div className={style.navbar}>
@@ -20,6 +31,9 @@ function Navbar() {
             <h1 className={style.title}>
                 <Link to='/' className={style['title-link']}>ryflect</Link>
             </h1>
+            {
+                checkLoginCookie() ? <button onClick={handleLogout}>logout</button> : null 
+            }
         </div>
     );
 }

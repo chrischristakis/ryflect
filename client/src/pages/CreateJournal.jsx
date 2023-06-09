@@ -23,14 +23,20 @@ function CreateJournal() {
             text: entryText
         }; 
 
-        await axios.post(API_URL + '/api/journals', data,
-            {
-                headers: {
-                    'Content-Type': 'application/json' 
+        try {
+            await axios.post(API_URL + '/api/journals', data,
+                {
+                    headers: {
+                        'Content-Type': 'application/json' 
+                    }
                 }
-            }
-        );
-        navigate('/');
+            );
+            navigate('/');
+        }
+        catch(err) {
+            console.log(err);
+        }
+        
     };
 
     return (

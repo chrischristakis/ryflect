@@ -7,7 +7,7 @@ import { useAuth } from '../contexts/AuthProvider';
 function VerifyEmail() {
 
     const { id } = useParams();
-    const { loggedIn } = useAuth();
+    const { checkLoginCookie } = useAuth();
     const navigate = useNavigate();
 
     // So we don't try to verify multiple times
@@ -19,17 +19,14 @@ function VerifyEmail() {
             (async function() {
                 try {
                     await axios.get(API_URL + '/api/auth/verify/'+id);
+                    checkLoginCookie() && navigate('/'); // Bring them to the home page now that they're authenticated
                 }
                 catch(err) {
                     console.log(err);
                 }
             })();
         }
-    }, [id, navigate, callMade]);
-
-    useEffect(() => {
-        loggedIn && navigate('/') // Bring them to the home page now that they're authenticated
-    }, [loggedIn, navigate])
+    }, [id, navigate, callMade, checkLoginCookie]);
 
     return (
         <div>

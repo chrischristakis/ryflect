@@ -42,7 +42,7 @@ router.get('/id/:id', verify.user, async (req, res) => {
     // You're not allowed to view other people's journals
     const usernameInId = found.id.split('-')[0];
     if(usernameInId !== req.userinfo.username)
-        return res.status(401).send({error: `You are not authorized to view this content.`});
+        return res.status(403).send({error: `You are not authorized to view this content.`});
 
     return res.send(found);
 });
@@ -86,7 +86,7 @@ router.post('/', verify.user, validate(journalRules), async (req, res) => {
 
     // We gotta check if the user already made a journal entry today, if so, do not proceed.
     if(await Journals.findOne({id: journalID}))
-        return res.status(400).send({error: `Journal with ID '${journalID} already exists'`});
+        return res.status(409).send({error: `Journal with ID '${journalID} already exists'`});
 
     const journal = new Journals({
         id: journalID,

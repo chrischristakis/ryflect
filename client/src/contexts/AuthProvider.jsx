@@ -1,22 +1,18 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext } from 'react';
 import axios from 'axios';
 import { API_URL } from '../config';
+import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom';
 
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
 
-    const [loggedIn, setLoggedIn] = useState(false);
-
-    // ping the server with our cookie to see if we can log in.
-    async function refreshLogin() {        
-        try {
-            await axios.get(API_URL+"/api/auth/ping");
-            setLoggedIn(true);
-        }
-        catch(err) {
-            setLoggedIn(false);
-        }
+    const navigate = useNavigate();
+    
+    // Check if we have a jwt cookie present, if so assume we're logged in already
+    function checkLoginCookie() {        
+        return Cookies.get('jwt') !== undefined;
     }
 
     async function login(username, password) {
@@ -27,22 +23,26 @@ export function AuthProvider({ children }) {
 
         try {
             await axios.post(API_URL+"/api/auth/login", body);
-            setLoggedIn(true);
         }
         catch(err) {
             throw err;
         }
     }
 
-    function logout() {
-        // TODO: clear cookie
-        setLoggedIn(false);
+    async function logout() {
+        // TODO: clear cookie with express call
+        try {
+            await axios.post(API_URL+"/api/auth/logout");
+            navigate('/login'); // Redirect back to login page
+        }
+        catch(err) {
+            throw err;
+        }
     }
 
     return (
         <AuthContext.Provider value={{
-                refreshLogin,
-                loggedIn,
+                checkLoginCookie,
                 login,
                 logout
             }}
