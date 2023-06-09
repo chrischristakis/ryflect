@@ -6,7 +6,7 @@ import { useAuth } from '../contexts/AuthProvider';
 
 function Recents() {
 
-    const [recents, setRecents] = useState([]);
+    const [recents, setRecents] = useState({data:[], loaded: false});
     const navigate = useNavigate();
     const { jwt } = useAuth();
 
@@ -43,9 +43,12 @@ function Recents() {
                 }
             }));
 
-            setRecents(responseIds);
+            setRecents({data:responseIds, loaded: true});
         })();
     }, [jwt]);
+
+    if(!recents.loaded)
+        return <div>Loading...</div>
 
     if(recents.length === 0)
         return (
@@ -55,7 +58,7 @@ function Recents() {
     return (
         <div>
             {
-                recents.map((e) => {
+                recents.data.map((e) => {
                     return (
                         <div key={e.id}
                              onClick={_ => navigate('/view/' + e.id)}

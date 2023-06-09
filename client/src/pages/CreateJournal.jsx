@@ -4,11 +4,9 @@ import { getDate } from '../utils/utils';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { API_URL } from '../config';
-import { useAuth } from '../contexts/AuthProvider';
 
 function CreateJournal() {
 
-    const { jwt } = useAuth();
     const [entryText, setEntryText] = useState('');
     const navigate = useNavigate();
     const date = new Date();
@@ -28,7 +26,6 @@ function CreateJournal() {
         await axios.post(API_URL + '/api/journals', data,
             {
                 headers: {
-                    'auth': jwt,
                     'Content-Type': 'application/json' 
                 }
             }

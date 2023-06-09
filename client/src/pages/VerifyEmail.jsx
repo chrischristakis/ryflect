@@ -7,9 +7,10 @@ import { useAuth } from '../contexts/AuthProvider';
 function VerifyEmail() {
 
     const { id } = useParams();
-    const { loginJwt, loggedIn } = useAuth();
+    const { loggedIn } = useAuth();
     const navigate = useNavigate();
 
+    // So we don't try to verify multiple times
     const [callMade, setCallMade] = useState(false);
 
     useEffect(() => {
@@ -17,15 +18,14 @@ function VerifyEmail() {
             setCallMade(true);
             (async function() {
                 try {
-                    const res = await axios.get(API_URL + '/api/auth/verify/'+id);
-                    loginJwt(res.data);
+                    await axios.get(API_URL + '/api/auth/verify/'+id);
                 }
                 catch(err) {
                     console.log(err);
                 }
             })();
         }
-    }, [id, navigate, loginJwt, callMade]);
+    }, [id, navigate, callMade]);
 
     useEffect(() => {
         loggedIn && navigate('/') // Bring them to the home page now that they're authenticated

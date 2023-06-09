@@ -4,11 +4,13 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const { check, param } = require('express-validator');
 const validate = require('../middleware/validate.js');
+const verify = require('../middleware/verify.js');
 const User = require('../models/User.js');
 const Verification = require('../models/Verification.js');
 const { JWT_SECRET, TEST_EMAIL } = require('../utils/config.js');
 const crypto = require('crypto');
 const mailHelper = require('../utils/Mailhelper.js');
+const cookieRules = require('../utils/CookieRules.js');
 
 const loginRules = [
     check('username')
@@ -61,6 +63,9 @@ router.post('/login', validate(loginRules), async (req, res) => {
     }
 
     const token = jwt.sign({username: user.username}, JWT_SECRET, { expiresIn: '1800s' });
+
+    res.cookie("jwt", token, cookieRules);
+
     return res.send(token);
 });
 
@@ -171,7 +176,14 @@ router.get('/verify/:id', validate(verificationRules), async (req, res) => {
         return res.status(500).send({error: err.message});
     }
 
+    res.cookie("jwt", token, cookieRules);
+
     res.send(entry.token);
 });
+
+// Check if the user is authenticated
+router.get('/ping', verify.user, (req, res) => {
+    return res.send('pong!');
+})
 
 module.exports = router;

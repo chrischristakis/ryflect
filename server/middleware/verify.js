@@ -5,9 +5,9 @@ module.exports = {
 
     user: (req, res, next) => {
         
-        const token = req.headers['auth'];
+        const token = req.cookies['jwt'];
         if(!token)
-            return res.status(401).send({error: "Missing auth header"});
+            return res.status(401).send({error: "Missing auth cookie"});
 
         try {
             // Verify jwt and store the payload of our token in the request

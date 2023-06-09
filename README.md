@@ -37,14 +37,15 @@
 
 # Front end
 - [x] Figma layout
-- [ ] Basic layout pages (No styling)
-- [ ] Add a 'loaded' property for journalIDs, since checking if empty isn't reliable
+- [x] Basic layout pages (No styling)
+- [x] Add a 'loaded' property for journalIDs, since checking if empty isn't reliable
         - New users have empty journalIDs, so website woudln't work for them if we check using isEmpty
         - THIS IS CAUSING RERENDERS OF THE ENTIRE PAGE! WE NEED TO CHECK IF SOMETHING IS LOADED FIRST
             - No need for context, just a loaded property that waits for all api calls on a page to complete before rendering content.
-- [ ] Snoop around for rerenders to fix
-- [ ] Cookies
-    - Test what happens when user goes to other user's journal after being logged in
+- [x] Snoop around for rerenders to fix
+- [x] Cookies
+    - Test what happens when user goes to other user's journal after being logged in, should bring them to unauthorized page
+- [ ] Look into any better altneratives to pinging user to check if logged in, since error in console.
 - [ ] Add user bar in navbar, support logout, change password, FAQ
 - [ ] Handle errors on each page
 - [ ] Get notifications working for errors

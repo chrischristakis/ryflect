@@ -4,12 +4,17 @@ const app = express();
 const cors = require('cors');
 const path = require('path');
 const router = require('./routes/router.js');
-const { PORT, MONGO_URL } = require('./utils/config.js');
+const { PORT, MONGO_URL, ENV } = require('./utils/config.js');
 const mongoSanitize = require('express-mongo-sanitize');
+const cookieParser = require('cookie-parser');
 
-app.use(cors());
+app.use(cors({
+    credentials: true,
+    origin: 'http://localhost:3000' // Only needed in dev since in prod, will be served statically.
+}));
 app.use(mongoSanitize());
 app.use(express.json());
+app.use(cookieParser());
 app.use('/api', router);
 
 // Have Node serve the files for our built React app
@@ -31,5 +36,5 @@ app.get('*', (req, res) => {
 
 // Setup express server to listen on port
 app.listen(PORT, async () => {
-    console.log("Running on port =", PORT);
+    console.log(`Running Ryflect as a ${ENV} app on port = ${PORT}`);
 });

@@ -6,8 +6,18 @@ const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
 
-    const [jwt, setJwt] = useState(null);
-    const [loggedIn, setLoggedIn] = useState(null);
+    const [loggedIn, setLoggedIn] = useState(false);
+
+    // ping the server with our cookie to see if we can log in.
+    async function refreshLogin() {        
+        try {
+            await axios.get(API_URL+"/api/auth/ping");
+            setLoggedIn(true);
+        }
+        catch(err) {
+            setLoggedIn(false);
+        }
+    }
 
     async function login(username, password) {
         const body = {
@@ -16,8 +26,7 @@ export function AuthProvider({ children }) {
         };
 
         try {
-            let response = await axios.post(API_URL+"/api/auth/login", body);
-            setJwt(response.data);
+            await axios.post(API_URL+"/api/auth/login", body);
             setLoggedIn(true);
         }
         catch(err) {
@@ -26,21 +35,15 @@ export function AuthProvider({ children }) {
     }
 
     function logout() {
-        setJwt(null);
+        // TODO: clear cookie
         setLoggedIn(false);
-    }
-
-    function loginJwt(_jwt) {
-        setJwt(_jwt)
-        setLoggedIn(true)
     }
 
     return (
         <AuthContext.Provider value={{
-                jwt, 
-                loggedIn, 
+                refreshLogin,
+                loggedIn,
                 login,
-                loginJwt, 
                 logout
             }}
         >

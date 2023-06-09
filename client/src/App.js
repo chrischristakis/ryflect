@@ -1,13 +1,15 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar.jsx';
 import CreateJournal from './pages/CreateJournal.jsx';
 import ViewJournal from './pages/ViewJournal.jsx';
 import NotFound from './pages/NotFound.jsx';
 import Login from './pages/Login.jsx';
-import {AuthRoute, HomeLandingSelector} from './components/Routes.jsx';
+import { AuthRoute } from './components/Routes.jsx';
 import { AuthProvider } from './contexts/AuthProvider.jsx';
 import Register from './pages/Register.jsx';
 import VerifyEmail from './pages/VerifyEmail.jsx';
+import Home from './pages/Home.jsx';
+import Landing from './pages/Landing.jsx';
 
 function App() {
 
@@ -16,7 +18,9 @@ function App() {
       <Navbar/>
       <Routes>
         <Route path='/' element={
-          <HomeLandingSelector/>
+          <AuthRoute redirect={<Landing/>}>
+            <Home/>
+          </AuthRoute>
         }/>
         <Route path='/login' element={
           <Login/>
@@ -28,12 +32,12 @@ function App() {
           <VerifyEmail/>
         }/>
         <Route path='/create' element={
-          <AuthRoute>
+          <AuthRoute redirect={<Navigate to='/login'/>}>
             <CreateJournal/>
           </AuthRoute>
         }/>
         <Route path='/view/:id' element={
-          <AuthRoute>
+          <AuthRoute redirect={<Navigate to='/login'/>}>
             <ViewJournal/>
           </AuthRoute>
         }/>
