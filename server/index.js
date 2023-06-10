@@ -7,6 +7,7 @@ const router = require('./routes/router.js');
 const { PORT, MONGO_URL, ENV } = require('./utils/config.js');
 const mongoSanitize = require('express-mongo-sanitize');
 const cookieParser = require('cookie-parser');
+const cron = require('./cron');
 
 app.use(cors({
     credentials: true,
@@ -19,6 +20,8 @@ app.use('/api', router);
 
 // Have Node serve the files for our built React app
 app.use(express.static(path.resolve(__dirname, '../client/build')));
+
+cron.beginCrons();
 
 mongoose.connect(MONGO_URL, {
     useNewUrlParser: true,

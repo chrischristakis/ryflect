@@ -23,6 +23,10 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    created: {
+        type: Date,
+        default: Date.now
+    },
     journalIDs: {
         type: Map,
         of: {

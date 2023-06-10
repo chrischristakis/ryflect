@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { API_URL } from '../config';
 import { useAuth } from '../contexts/AuthProvider';
 
@@ -30,7 +30,7 @@ function VerifyEmail() {
 
     return (
         <div>
-            <p>thanks :) you'll be redirected shortly. If not, please click <Link to='/'>here</Link></p>
+            <p>please wait a moment as you account becomes activated...</p>
         </div>
     );
 }

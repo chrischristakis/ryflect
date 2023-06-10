@@ -168,6 +168,9 @@ router.get('/verify/:id', validate(verificationRules), async (req, res) => {
         return res.status(401).send('JWT expired, try registering again');
     }
 
+    if(!(await User.findOne({username: decoded.username})))
+        return res.status(404).send('User not found, please try registering again.')
+
     try {
         await User.updateOne({username: decoded.username}, {active: true});
         await Verification.deleteOne({urlID: id});
@@ -176,7 +179,7 @@ router.get('/verify/:id', validate(verificationRules), async (req, res) => {
         return res.status(500).send({error: err.message});
     }
 
-    res.cookie("jwt", token, token_cookie);
+    res.cookie("jwt", entry.token, token_cookie);
 
     res.send(entry.token);
 });

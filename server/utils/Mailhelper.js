@@ -42,6 +42,7 @@ module.exports.sendVerification = async function(recipient, verificationID) {
                 >
                         Click here
                 </a>    
+                <p><em style='color: #6a6a6a;'>If you did not register, please ignore this email.</em></p>
                 <p><em style='color: #6a6a6a;'>This link will expire in 15 minutes.</em></p>
             </td>
         </tr>

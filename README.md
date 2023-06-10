@@ -33,7 +33,7 @@
 - [x] Set up config env file
 - [x] Sanitize inputs
 - [x] Email registration code
-- [ ] Set up CRON jobs for deleting old unactivated users and old verification entries (Can do both in one job)
+- [x] Set up CRON jobs for deleting old unactivated users and old verification entries (Can do both in one job)
 
 # Front end
 - [x] Figma layout
@@ -47,15 +47,17 @@
     - Test what happens when user goes to other user's journal after being logged in, should bring them to unauthorized page
 - [ ] Add user bar in navbar, support logout, change password, FAQ
 - [ ] Handle errors on each page
+    - For example, on verify email, decide what to do if verfication has expired. What do we display?
 - [ ] Get notifications working for errors
-- [ ] Show bad input front-end (Before submitting)
     - Specific errors for specific routes isnt a bad idea for this
 - [ ] Proper loading
+- [ ] Get markdown working
 - [ ] Start encrypting data
 - [ ] QOL for typing (Make enter not submit the entire form when making a new entry)
+    - [ ] Buttons for markdown
 - [ ] Random message in writing box as a prompt
-    - Maybe put tips here
 - [ ] Make sure user knows they cannot recover password upon registration
+    - Display a pop up or something
 
 # Other
 - [ ] Buy domain

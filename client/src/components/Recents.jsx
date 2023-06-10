@@ -48,9 +48,9 @@ function Recents() {
     }, [jwt]);
 
     if(!recents.loaded)
-        return <div>Loading...</div>
+        return <div>Loading...</div>;
 
-    if(recents.length === 0)
+    if(recents.data.length === 0)
         return (
             <p>you have no recent journals... create an entry and change that :)</p>
         );
