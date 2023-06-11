@@ -15,3 +15,37 @@
     color: white;
     text-decoration: none;
 }
+
+.username-dropdown {
+    color: white;
+    user-select: none;
+}
+
+.overlay {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+/* used so when you click off the dropdown on mobile, it wont click anything on the page */
+.screencover {
+    background-color: transparent;
+    height: 100%;
+}
+
+.dropdown {
+    background-color: black;
+    padding: 0;
+    margin: 0;
+}
+
+.dropdown-link {
+    display: block;
+    text-align: center;
+    width: 100%;
+    color: white;
+    text-decoration: none;
+}

@@ -52,9 +52,11 @@
     - Specific errors for specific routes isnt a bad idea for this
 - [ ] Proper loading
 - [ ] Get markdown working
+    - Should be on the fly, display what the markdown would look like as the user types
 - [ ] Start encrypting data
 - [ ] QOL for typing (Make enter not submit the entire form when making a new entry)
-    - [ ] Buttons for markdown
+- [ ] Buttons for markdown
+    - Bold, italics, list, tab, 
 - [ ] Random message in writing box as a prompt
 - [ ] Make sure user knows they cannot recover password upon registration
     - Display a pop up or something

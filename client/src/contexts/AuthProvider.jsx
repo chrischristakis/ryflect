@@ -15,6 +15,12 @@ export function AuthProvider({ children }) {
         return Cookies.get('jwt') !== undefined;
     }
 
+    // Get the cookie containing the username that is sent with the JWT cookie
+    function getUsernameCookie() {
+        const username = Cookies.get('username');
+        return username? username : 'undefined';
+    }
+
     async function login(username, password) {
         const body = {
             username: username,
@@ -36,13 +42,14 @@ export function AuthProvider({ children }) {
             navigate('/login'); // Redirect back to login page
         }
         catch(err) {
-            throw err;
+            console.log(err);
         }
     }
 
     return (
         <AuthContext.Provider value={{
                 checkLoginCookie,
+                getUsernameCookie,
                 login,
                 logout
             }}

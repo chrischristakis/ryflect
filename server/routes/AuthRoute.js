@@ -65,6 +65,7 @@ router.post('/login', validate(loginRules), async (req, res) => {
     const token = jwt.sign({username: user.username}, JWT_SECRET, { expiresIn: '1800s' });
 
     res.cookie("jwt", token, token_cookie);
+    res.cookie("username", user.username, token_cookie);
 
     return res.send(token);
 });
@@ -180,6 +181,7 @@ router.get('/verify/:id', validate(verificationRules), async (req, res) => {
     }
 
     res.cookie("jwt", entry.token, token_cookie);
+    res.cookie("username", decoded.username, token_cookie);
 
     res.send(entry.token);
 });

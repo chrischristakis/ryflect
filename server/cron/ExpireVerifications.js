@@ -19,7 +19,8 @@ module.exports.expireVerifications = async () => {
         // Return users and verifications that are inactive, and were created >= LIFESPAN_MINS ago.
         const usersToExpire = await User.deleteMany({active: false, created: {$lte: expiryThreshold}});
         const verificationsToExpire = await Verification.deleteMany({created: {$lte: expiryThreshold}});
-        console.log(`Num of expired Verifications: ${verificationsToExpire.deletedCount} / Users: ${verificationsToExpire.deletedCount}`);
+        if(verificationsToExpire.deletedCount + verificationsToExpire.deletedCount > 0)
+            console.log(`Num of expired Verifications: ${verificationsToExpire.deletedCount} / Users: ${verificationsToExpire.deletedCount}`);
     }
     catch(err) {
         console.log(err);
