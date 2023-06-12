@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import Button from '../components/Button';
 import axios from 'axios';
 import { API_URL } from '../config';
+import { handleError } from '../utils/HandleResponse';
+import { toast } from 'react-toastify';
 
 function Register() {
 
@@ -19,6 +21,7 @@ function Register() {
     const emailInput = useRef();
     const usernameInput = useRef();
 
+    // Check if passwords match whenever they change
     useEffect(() => {
         if(!password || !repassword) {
             repasswordInput.current.style.border = '1px solid black';
@@ -35,11 +38,29 @@ function Register() {
         }
     }, [password, repassword]);
 
+    const handleOffendingFields = (fields) => {
+        if(fields.length === 0) {
+            passwordInput.current.style.border = '1px solid black';
+            usernameInput.current.style.border = '1px solid black';
+            repasswordInput.current.style.border = '1px solid black';
+            emailInput.current.style.border = '1px solid black';
+        }
+
+        if(fields.includes('username') && usernameInput.current)
+            usernameInput.current.style.border = '1px solid red';
+        if(fields.includes('password') && passwordInput.current)
+            passwordInput.current.style.border = '1px solid red';
+        if(fields.includes('email') && passwordInput.current)
+            emailInput.current.style.border = '1px solid red';
+        if(fields.includes('repassword') && passwordInput.current)
+            repasswordInput.current.style.border = '1px solid red';
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         if(!passwordsMatch)
-            return alert('Passwords should match');
+            return toast.error('Passwords do not match.', {position: 'top-center'});
 
         const body = {
             username: username,
@@ -53,32 +74,15 @@ function Register() {
             setAwaitVerify(true);
         }
         catch(err) {
-            switch(err.response.status) {
-                case 400:
-                case 409:
-                    const data = err.response.data;
-                    for(const [field, errors] of Object.entries(data.error)) {
-                        if(field.toLowerCase() === 'username')
-                            usernameInput.current.style.border = '1px solid red';
-                        if(field.toLowerCase() === 'password')
-                            passwordInput.current.style.border = '1px solid red';
-                        if(field.toLowerCase() === 'email')
-                            emailInput.current.style.border = '1px solid red';
-                        
-                        alert(errors.join(', '));
-                    }
-                    break;
-                default:
-                    alert('Something went wrong on our end...');
-                    break;
-            }
+            const offendingFields = handleError(err);
+            handleOffendingFields(offendingFields);
         }
     }
 
     // We love currying in this house.
     const handleChange = (callback, ref) => {
         return (e) => {
-            ref.current.style.border = '1px solid black';  // resets old bad input red box
+            ref.current.style.border = '1px solid black';  // incase input box is red
             callback(e.target.value);
         };
     }
@@ -88,7 +92,7 @@ function Register() {
             await axios.get(API_URL+'/api/auth/resend/'+verificationId);
         }
         catch(err) {
-            console.log(err);
+            handleError(err);
         }
     }
 
@@ -97,7 +101,7 @@ function Register() {
         return (
             <div>
                 <p>please check your inbox for a verification email from us, and you’ll be on your way!</p>
-                <Button text='Resend email' clickEvent={resendEmail} cooldown={60000}></Button>
+                <Button text='Resend email' clickEvent={resendEmail} cooldown={20000}></Button>
             </div>
         );
 

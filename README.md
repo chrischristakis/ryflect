@@ -45,18 +45,21 @@
 - [x] Snoop around for rerenders to fix
 - [x] Cookies
     - Test what happens when user goes to other user's journal after being logged in, should bring them to unauthorized page
-- [ ] Add user bar in navbar, support logout, change password, FAQ
+- [x] Add user bar in navbar, support logout, change password, FAQ
+- [ ] Fix registration and login forms to use custom hooks
+    - Both handle errored fields the same way, try to streamline this so code is less bulky.
 - [ ] Handle errors on each page
     - For example, on verify email, decide what to do if verfication has expired. What do we display?
-- [ ] Get notifications working for errors
-    - Specific errors for specific routes isnt a bad idea for this
-- [ ] Proper loading
+- [ ] Do not let user go to create journal page if journal already exists, grey out button.
+    - If they try to click it, give them a notif telling them they can only journal once a day, and the reset time.
+- [ ] Proper loading (Animation?)
 - [ ] Get markdown working
     - Should be on the fly, display what the markdown would look like as the user types
 - [ ] Start encrypting data
+- [ ] Change password functionality
 - [ ] QOL for typing (Make enter not submit the entire form when making a new entry)
 - [ ] Buttons for markdown
-    - Bold, italics, list, tab, 
+    - Bold, italics, list, tab,  
 - [ ] Random message in writing box as a prompt
 - [ ] Make sure user knows they cannot recover password upon registration
     - Display a pop up or something

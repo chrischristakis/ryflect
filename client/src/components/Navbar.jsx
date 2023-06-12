@@ -26,9 +26,15 @@ function UserMenu() {
     const [expanded, setExpanded] = useState(false);
 
     function DropdownItem({text='placeholder', link='#', click= (e) => {}}) {
+        
+        const handleClick = (e) => {
+            click(e);
+            setExpanded(false);
+        }
+        
         return (
             <li>
-                <Link className={style['dropdown-link']} to={link} onClick={click}>{text}</Link>
+                <Link className={style['dropdown-link']} to={link} onClick={handleClick}>{text}</Link>
             </li>
         );
     }

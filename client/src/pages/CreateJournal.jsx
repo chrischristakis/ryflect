@@ -4,6 +4,7 @@ import { getDate } from '../utils/utils';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { API_URL } from '../config';
+import { toast } from 'react-toastify';
 
 function CreateJournal() {
 
@@ -24,17 +25,18 @@ function CreateJournal() {
         }; 
 
         try {
-            await axios.post(API_URL + '/api/journals', data,
-                {
-                    headers: {
-                        'Content-Type': 'application/json' 
-                    }
+            await axios.post(API_URL + '/api/journals', data, {
+                headers: {
+                    'Content-Type': 'application/json' 
                 }
-            );
+            });
             navigate('/');
         }
         catch(err) {
-            console.log(err);
+            if(err.response && err.response.data && err.response.data.error)
+                toast.error(err.response.data.error, {position: 'top-center'});
+            else
+                toast.error('Something went wrong.', {position: 'top-center'});
         }
         
     };
