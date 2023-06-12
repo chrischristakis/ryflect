@@ -11,6 +11,7 @@ const { JWT_SECRET, TEST_EMAIL } = require('../utils/config.js');
 const crypto = require('crypto');
 const mailHelper = require('../utils/Mailhelper.js');
 const { token_cookie } = require('../utils/CookieRules.js');
+const CookieRules = require('../utils/CookieRules.js');
 
 const loginRules = [
     check('username')
@@ -36,7 +37,7 @@ router.post('/login', validate(loginRules), async (req, res) => {
     const { username, password } = req.body;
 
     if(!username || !password)
-        return res.status(400).send({error: "Missing body fields"});
+        return res.status(400).send({error: "Missing body fields.", fields:['username', 'password']});
 
     // Note that the user can submit either username or email to login.
     const user = await User.findOne({
@@ -46,20 +47,21 @@ router.post('/login', validate(loginRules), async (req, res) => {
         ]
     });
     if(!user)
-        return res.status(404).send({error: "User cannot be found"});
+        return res.status(404).send({error: "User '" + username + "' cannot be found", fields:['username']});
 
     // Compare password to stored hashed/salted password
     try {
         if(!await bcrypt.compare(password, user.password))
-            return res.status(401).send({error: "Invalid password"});
+            return res.status(401).send({error: "Invalid password", fields:['password']});
     }
     catch(err) {
+        console.log('ERR [POST auth/login]:', err);
         return res.status(500).send({error: err});
     }
 
     // Check if user has verified their email yet
     if(!user.active) {
-        return res.status(401).send({error: "User has not been activated yet. Check your email"});
+        return res.status(401).send({error: "User has not been activated yet. Check your email for a verification"});
     }
 
     const token = jwt.sign({username: user.username}, JWT_SECRET, { expiresIn: '1800s' });
@@ -77,14 +79,13 @@ router.post('/register', validate(registerRules), async (req, res) => {
     // Check if username OR email already exists, if so, do not proceed.
     const foundUsername = await User.findOne({ username: username });
     const foundEmail = await User.findOne({ email: email });
-    let errorBody = {};
+
+    let errs = [];
+    let fields = [];
     if(foundUsername)
-        errorBody['username'] = ["Username already taken"];
+        return res.status(409).send({error: 'Username already taken', fields: ['username']});
     if(foundEmail)
-        errorBody['email'] = ["Email already registered"];
-    
-    if(Object.keys(errorBody).length !== 0)
-        return res.status(409).send({error: errorBody});
+        return res.status(409).send({error: 'Email already in use', fields: ['email']});
 
     // Hash password before storing in db.
     let hash;
@@ -93,6 +94,7 @@ router.post('/register', validate(registerRules), async (req, res) => {
         hash = await bcrypt.hash(password, salt);
     }
     catch(err) {
+        console.log('ERR [POST auth/register]:', err);
         return res.status(500).send({error: err});
     }
 
@@ -122,6 +124,7 @@ router.post('/register', validate(registerRules), async (req, res) => {
         await user.save();
     } 
     catch(err) {
+        console.log('ERR [POST auth/register]:', err);
         return res.status(500).send({error: err});
     } 
 
@@ -131,7 +134,8 @@ router.post('/register', validate(registerRules), async (req, res) => {
         return res.send(verificationID);
     }
     catch(err) {
-        return res.status(500).send({error: err});
+        console.log('ERR [POST auth/register]:', err);
+        return res.status(500).send({error: 'Something went wrong.'});
     }
 });
 
@@ -141,13 +145,14 @@ router.get('/resend/:id', validate(verificationRules), async (req, res) => {
 
     const entry = await Verification.findOne({ urlID: id });
     if(!entry)
-        return res.status(404).send({error: 'Could not find this pending ID for verification, try registering again.'});
+        return res.status(404).send({error: 'Could not find this ID pending for verification, try registering again.'});
 
     try {
         const response = await mailHelper.sendVerification(TEST_EMAIL, entry.id);
         return res.send(response);
     }
     catch(err) {
+        console.log('ERR [GET auth/resend/:id]:', err);
         return res.status(500).send({error: err});
     }
 });
@@ -177,6 +182,7 @@ router.get('/verify/:id', validate(verificationRules), async (req, res) => {
         await Verification.deleteOne({urlID: id});
     }
     catch(err) {
+        console.log('ERR [GET auth/verify/:id]:', err);
         return res.status(500).send({error: err.message});
     }
 
@@ -188,6 +194,7 @@ router.get('/verify/:id', validate(verificationRules), async (req, res) => {
 
 router.post('/logout', (req, res) => {
     res.clearCookie('jwt');
+    res.clearCookie('username');
     return res.send('Logged out');
 });
 

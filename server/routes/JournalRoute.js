@@ -97,18 +97,6 @@ router.post('/', verify.user, validate(journalRules), async (req, res) => {
     try {
         await journal.save();
 
-        // Now that we've saved a journal entry to the DB, lets add it to our list of journal entries in the user document.
-        // We can safely assume no journal entry exists for the day as we checked this on our ID earlier
-        await User.updateOne(
-            {username: req.userinfo.username}, 
-            {
-                $set: {
-                    [`journalIDs.${date.getUTCFullYear()}.ids.${getCurrentDayInYear(date)}`]: journalID
-                }
-            }
-        );
-
-        // Now, just save it into our recent journals list
         // Append beginning of list, then slice out excess.
         let recents = user.recentJournals;
         recents.unshift(journalID);
@@ -118,7 +106,8 @@ router.post('/', verify.user, validate(journalRules), async (req, res) => {
             {username: req.userinfo.username},
             {
                 $set: {
-                    recentJournals: recents
+                    recentJournals: recents,
+                    [`journalIDs.${date.getUTCFullYear()}.ids.${getCurrentDayInYear(date)}`]: journalID
                 }
             }
         );
@@ -126,6 +115,7 @@ router.post('/', verify.user, validate(journalRules), async (req, res) => {
         return res.send({message: "Journal was successfully saved!"});
     } 
     catch(err) {
+        console.log('ERR [POST journals/]: ', err);
         return res.status(500).send({error: err});
     }
 });
