@@ -4,68 +4,70 @@ import axios from 'axios';
 import { API_URL } from '../config';
 import { handleError } from '../utils/HandleResponse';
 import { toast } from 'react-toastify';
+import useForm from '../hooks/useForm';
 
 function Register() {
 
-    const [username, setUsername] = useState();
-    const [email, setEmail] = useState();
-    const [password, setPassword] = useState();
-    const [repassword, setRepassword] = useState();
     const [passwordsMatch, setPasswordsMatch] = useState(false);
-
     const [awaitVerify, setAwaitVerify] = useState();
     const [verificationId, setVerificationId] = useState();
+    const [resendDisabled, setResendDisabled] = useState(false);
 
-    const repasswordInput = useRef();
-    const passwordInput = useRef();
-    const emailInput = useRef();
-    const usernameInput = useRef();
+    const repasswordInput = useRef(null);
+    const passwordInput = useRef(null);
+    const emailInput = useRef(null);
+    const usernameInput = useRef(null);
+
+    const form = useForm({
+        username: {
+            value: '',
+            ref: usernameInput
+        },
+        email: {
+            value: '',
+            ref: emailInput
+        },
+        password: {
+            value: '',
+            ref: passwordInput
+        },
+        repassword: {
+            value: '',
+            ref: repasswordInput
+        },
+    });
 
     // Check if passwords match whenever they change
     useEffect(() => {
-        if(!password || !repassword) {
+        if(!repasswordInput.current || !passwordInput.current)  // Refs aren't properly set.
+            return;
+
+        if(!form.data.password.value || !form.data.repassword.value) {
             repasswordInput.current.style.border = '1px solid black';
             return;
         }
 
-        if(password !== repassword) {
+        if(form.data.password.value !== form.data.repassword.value) {
             setPasswordsMatch(false);
             repasswordInput.current.style.border = '1px solid red';
         }
         else {
             setPasswordsMatch(true);
-            repasswordInput.current.style.border = '1px solid green';
-        }
-    }, [password, repassword]);
-
-    const handleOffendingFields = (fields) => {
-        if(fields.length === 0) {
-            passwordInput.current.style.border = '1px solid black';
-            usernameInput.current.style.border = '1px solid black';
             repasswordInput.current.style.border = '1px solid black';
-            emailInput.current.style.border = '1px solid black';
         }
-
-        if(fields.includes('username') && usernameInput.current)
-            usernameInput.current.style.border = '1px solid red';
-        if(fields.includes('password') && passwordInput.current)
-            passwordInput.current.style.border = '1px solid red';
-        if(fields.includes('email') && passwordInput.current)
-            emailInput.current.style.border = '1px solid red';
-        if(fields.includes('repassword') && passwordInput.current)
-            repasswordInput.current.style.border = '1px solid red';
-    };
+    }, [form.data.password.value, form.data.repassword.value]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        form.resetFieldsStyle();
 
         if(!passwordsMatch)
             return toast.error('Passwords do not match.', {position: 'top-center'});
 
         const body = {
-            username: username,
-            password: password,
-            email: email
+            username: form.data.username.value,
+            password: form.data.password.value,
+            email: form.data.email.value
         }
 
         try {
@@ -75,33 +77,32 @@ function Register() {
         }
         catch(err) {
             const offendingFields = handleError(err);
-            handleOffendingFields(offendingFields);
+            form.handleOffendingFields(offendingFields);
         }
     }
 
-    // We love currying in this house.
-    const handleChange = (callback, ref) => {
-        return (e) => {
-            ref.current.style.border = '1px solid black';  // incase input box is red
-            callback(e.target.value);
-        };
-    }
-
-    const resendEmail = async () => {
+    const resendEmail = async (e) => {
+        setResendDisabled(true);
         try {
             await axios.get(API_URL+'/api/auth/resend/'+verificationId);
+            toast.success('Email sent!', {position: 'top-center'});
         }
         catch(err) {
             handleError(err);
         }
+        finally {
+            setTimeout(() => {
+                setResendDisabled(false);
+            }, 12000);
+        }
     }
 
-    // If user registered and is waiting verification, show them this instead
+    // If user registered and is waiting verification, show them this instead pf the registration form
     if(awaitVerify)
         return (
             <div>
                 <p>please check your inbox for a verification email from us, and you’ll be on your way!</p>
-                <Button text='Resend email' clickEvent={resendEmail} cooldown={20000}></Button>
+                <button onClick={resendEmail} disabled={resendDisabled}>resend email</button>
             </div>
         );
 
@@ -111,28 +112,28 @@ function Register() {
                 <label>
                     username:
                     <br/>
-                    <input ref={usernameInput} type='text' onChange={handleChange(setUsername, usernameInput)}></input>
+                    <input name='username' ref={usernameInput} type='text' onChange={form.handleDataChange}></input>
                 </label>
             </div>
             <div>
                 <label>
                     email:
                     <br/>
-                    <input ref={emailInput} type='text' onChange={handleChange(setEmail, emailInput)}></input>
+                    <input name='email' ref={emailInput} type='text' onChange={form.handleDataChange}></input>
                 </label>
             </div>
             <div>
                 <label>
                     password:
                     <br/>
-                    <input ref={passwordInput} type='text' onChange={handleChange(setPassword, passwordInput)}></input>
+                    <input name='password' ref={passwordInput} type='text' onChange={form.handleDataChange}></input>
                 </label>
             </div>
             <div>
                 <label>
                     re-enter password:
                     <br/>
-                    <input ref={repasswordInput} type='text' onChange={handleChange(setRepassword, repasswordInput)}></input>
+                    <input name='repassword' ref={repasswordInput} type='text' onChange={form.handleDataChange}></input>
                 </label>
             </div>
             <Button text='register' type='submit' clickEvent={handleSubmit}/>

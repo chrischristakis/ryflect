@@ -63,6 +63,7 @@
 - [ ] Random message in writing box as a prompt
 - [ ] Make sure user knows they cannot recover password upon registration
     - Display a pop up or something
+- [ ] Change TEST_EMAIL in registration route to the user's actual email
 
 # Other
 - [ ] Buy domain

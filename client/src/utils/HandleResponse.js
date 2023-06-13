@@ -1,7 +1,6 @@
 import { toast } from 'react-toastify';
 
 export function handleError(err) {
-    console.log(err)
     if(err.response && err.response.data && err.response.data.error) {
         if(Array.isArray(err.response.data.error)) {
             for(const msg of err.response.data.error) 

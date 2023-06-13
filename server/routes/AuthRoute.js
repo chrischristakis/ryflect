@@ -4,14 +4,12 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const { check, param } = require('express-validator');
 const validate = require('../middleware/validate.js');
-const verify = require('../middleware/verify.js');
 const User = require('../models/User.js');
 const Verification = require('../models/Verification.js');
 const { JWT_SECRET, TEST_EMAIL } = require('../utils/config.js');
 const crypto = require('crypto');
 const mailHelper = require('../utils/Mailhelper.js');
-const { token_cookie } = require('../utils/CookieRules.js');
-const CookieRules = require('../utils/CookieRules.js');
+const { token_cookie, username_cookie } = require('../utils/CookieRules.js');
 
 const loginRules = [
     check('username')
@@ -67,7 +65,7 @@ router.post('/login', validate(loginRules), async (req, res) => {
     const token = jwt.sign({username: user.username}, JWT_SECRET, { expiresIn: '1800s' });
 
     res.cookie("jwt", token, token_cookie);
-    res.cookie("username", user.username, token_cookie);
+    res.cookie("username", user.username, username_cookie);
 
     return res.send(token);
 });
@@ -82,10 +80,17 @@ router.post('/register', validate(registerRules), async (req, res) => {
 
     let errs = [];
     let fields = [];
-    if(foundUsername)
-        return res.status(409).send({error: 'Username already taken', fields: ['username']});
-    if(foundEmail)
-        return res.status(409).send({error: 'Email already in use', fields: ['email']});
+    if(foundUsername) {
+        errs.push('Username already taken'); 
+        fields.push('username');
+    }
+    if(foundEmail) {
+        errs.push('Email already in use'); 
+        fields.push('email');
+    }
+
+    if(errs.length > 0)
+        return res.status(409).send({error: errs, fields: fields});
 
     // Hash password before storing in db.
     let hash;
@@ -148,6 +153,7 @@ router.get('/resend/:id', validate(verificationRules), async (req, res) => {
         return res.status(404).send({error: 'Could not find this ID pending for verification, try registering again.'});
 
     try {
+        // TODO: CHANGE TEST EMAIL WITH THE USER'S EMAIL!
         const response = await mailHelper.sendVerification(TEST_EMAIL, entry.id);
         return res.send(response);
     }
@@ -187,7 +193,7 @@ router.get('/verify/:id', validate(verificationRules), async (req, res) => {
     }
 
     res.cookie("jwt", entry.token, token_cookie);
-    res.cookie("username", decoded.username, token_cookie);
+    res.cookie("username", decoded.username, username_cookie);
 
     res.send(entry.token);
 });
