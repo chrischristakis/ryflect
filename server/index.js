@@ -9,6 +9,14 @@ const mongoSanitize = require('express-mongo-sanitize');
 const cookieParser = require('cookie-parser');
 const cron = require('./cron');
 
+const cryptoHelper = require('./utils/CryptoHelper.js');
+
+// This is an example of how to use a string as a key
+const key = Buffer.from('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'hex');
+const encrypted = cryptoHelper.encrypt('This is my encrypted text', key);
+console.log(encrypted.ciphertext);
+console.log(cryptoHelper.decrypt(encrypted.ciphertext, key, encrypted.iv))
+
 app.use(cors({
     credentials: true,
     origin: 'http://localhost:3000' // Only needed in dev since in prod, will be served statically.
