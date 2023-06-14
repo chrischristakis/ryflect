@@ -12,7 +12,7 @@ export function AuthProvider({ children }) {
     
     // Check if we have a jwt cookie present, if so assume we're logged in already
     function checkLoginCookie() {        
-        return Cookies.get('jwt') !== undefined;
+        return Cookies.get('jwt') !== undefined && Cookies.get('username') !== undefined;
     }
 
     // Get the cookie containing the username that is sent with the JWT cookie

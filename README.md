@@ -3,23 +3,6 @@
 - [x] Get .env file working
 - [x] Init git repo
 - [x] Route planning
-    auth
-    POST(auth/login)
-    - return jwt
-    POST(auth/register)
-    - POST(auth/register/:verificationID)
-
-    journals (all headers contain jwt)
-    GET(/journals/year/:year)
-    - Get all journal IDs in a year
-    GET(/journals/recents)
-    - Get recent journals and their data
-    GET(/journals/:ID)
-    - Get journal data using a journalID
-    POST(/journals)
-    - body: text
-    - Make a new journal entry
-
 - [x] Mongo refresh
 - [x] Local Mongo (Atlas should be easy to switch to)
 - [x] Make dummy app which has basic mongo operations to test DO deploy
@@ -34,6 +17,7 @@
 - [x] Sanitize inputs
 - [x] Email registration code
 - [x] Set up CRON jobs for deleting old unactivated users and old verification entries (Can do both in one job)
+- [ ] Change routes to account for encryption
 
 # Front end
 - [x] Figma layout
@@ -46,8 +30,10 @@
 - [x] Cookies
     - Test what happens when user goes to other user's journal after being logged in, should bring them to unauthorized page
 - [x] Add user bar in navbar, support logout, change password, FAQ
-- [ ] Fix registration and login forms to use custom hooks
+- [x] Fix registration and login forms to use custom hooks
     - Both handle errored fields the same way, try to streamline this so code is less bulky.
+- [ ] Make sure if one cookie is missing, we force use to login again and reset cookies by logging them out
+- [ ] Start encrypting data, or do markdown
 - [ ] Handle errors on each page
     - For example, on verify email, decide what to do if verfication has expired. What do we display?
 - [ ] Do not let user go to create journal page if journal already exists, grey out button.
@@ -55,7 +41,6 @@
 - [ ] Proper loading (Animation?)
 - [ ] Get markdown working
     - Should be on the fly, display what the markdown would look like as the user types
-- [ ] Start encrypting data
 - [ ] Change password functionality
 - [ ] QOL for typing (Make enter not submit the entire form when making a new entry)
 - [ ] Buttons for markdown
