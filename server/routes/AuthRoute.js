@@ -15,10 +15,10 @@ const loginRules = [
     check('username')
         .isLength({min: 1}).withMessage("Username must be at least 1 charater long")
         .matches('^[A-Za-z0-9]+$').withMessage("Username must be within A-Z, a-z, 0-9")
-        .trim().escape(),
+        .escape(),
     check('password')
         .isLength({min: 6}).withMessage("Password must be at least 6 charaters long")
-        .trim().escape()
+        .escape()
 ];
 
 const registerRules = [

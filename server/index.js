@@ -13,7 +13,7 @@ const cryptoHelper = require('./utils/CryptoHelper.js');
 
 // This is an example of how to use a string as a key
 const key = Buffer.from('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'hex');
-const encrypted = cryptoHelper.encrypt('This is my encrypted text', key);
+const encrypted = cryptoHelper.encrypt('This is my encrypted text 🔥', key);
 console.log(encrypted.ciphertext);
 console.log(cryptoHelper.decrypt(encrypted.ciphertext, key, encrypted.iv))
 

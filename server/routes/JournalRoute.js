@@ -13,7 +13,7 @@ const journalRules = [
     check('text')
         .isString().withMessage("Text must be a string")
         .isLength({max: MAX_BYTES}).withMessage(`Journal entry cannot exceed ${MAX_BYTES} characters`)
-        .trim().escape(),
+        .escape()
 ];
 
 // Get all user's journal IDS through all years

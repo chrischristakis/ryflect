@@ -33,6 +33,9 @@
 - [x] Fix registration and login forms to use custom hooks
     - Both handle errored fields the same way, try to streamline this so code is less bulky.
 - [x] Make sure if one cookie is missing, we force use to login again and reset cookies by logging them out
+- [ ] Get markdown working
+    - Should be on the fly, display what the markdown would look like as the user types
+    - Fix error where we can highlight new line character, should be invisible.
 - [ ] Start encrypting data
     - Put server secret key into config, and change it once a day on a cron.
     - Encrypt text into db (with dummy user key)
@@ -43,12 +46,10 @@
 - [ ] Do not let user go to create journal page if journal already exists, grey out button.
     - If they try to click it, give them a notif telling them they can only journal once a day, and the reset time.
 - [ ] Proper loading (Animation?)
-- [ ] Get markdown working
-    - Should be on the fly, display what the markdown would look like as the user types
 - [ ] Change password functionality
 - [ ] QOL for typing (Make enter not submit the entire form when making a new entry)
 - [ ] Buttons for markdown
-    - Bold, italics, list, tab,  
+    - Bold, italics, list, tab  
 - [ ] Random message in writing box as a prompt
 - [ ] Make sure user knows they cannot recover password upon registration
     - Display a pop up or something
@@ -59,6 +60,7 @@
 - [x] Look into host (Heroku, digital ocean)
 - [ ] Start looking into https
 - [ ] Add time capsule feature
+- [ ] Scripts for different running configs, whatever needs to be automated on prod
 
 
 # Table design

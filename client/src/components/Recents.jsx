@@ -3,6 +3,7 @@ import axios from 'axios';
 import { API_URL } from '../config';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthProvider';
+import DOMPurify from 'dompurify';
 
 function Recents() {
 
@@ -35,13 +36,21 @@ function Recents() {
                         }
                     });
 
-                    return response.data; // Contains actual journal entries
+                    let tempEntry = response.data;
+
+                    // Format the data properly
+                    tempEntry.text = tempEntry.text.replace(/\*([^\s][^*]+?[^\s])\*/g, '<strong>$1</strong>');
+                    tempEntry.text = tempEntry.text.replace(/_([^\s][^_]+?[^\s])_/, '<em>$1</em>');
+                    tempEntry.text = tempEntry.text.replace(/&#x5C;n/g, ' ');  // just turn new lines into spaces so recent entries aren't vertical.
+
+                    return tempEntry;
                 }
                 catch(err) {
                     console.log(err);
                     return null;
                 }
             }));
+            responseIds = responseIds.filter((e) => e !== null);
 
             setRecents({data:responseIds, loaded: true});
         })();
@@ -58,14 +67,14 @@ function Recents() {
     return (
         <div>
             {
-                recents.data.map((e) => {
+                recents.data.map((e, i) => {
                     return (
-                        <div key={e.id}
+                        <div key={e.id + i}
                              onClick={_ => navigate('/view/' + e.id)}
                              style={{cursor: 'pointer'}}
                         >
                             <h3>{e.date}</h3>
-                            <p>{e.text}</p>
+                            <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(e.text) }}/>
                         </div>
                     );
                 })
