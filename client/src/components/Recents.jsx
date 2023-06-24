@@ -41,7 +41,6 @@ function Recents() {
                     // Format the data properly
                     tempEntry.text = tempEntry.text.replace(/\*([^\s][^*]+?[^\s])\*/g, '<strong>$1</strong>');
                     tempEntry.text = tempEntry.text.replace(/_([^\s][^_]+?[^\s])_/, '<em>$1</em>');
-                    tempEntry.text = tempEntry.text.replace(/&#x5C;n/g, ' ');  // just turn new lines into spaces so recent entries aren't vertical.
 
                     return tempEntry;
                 }
