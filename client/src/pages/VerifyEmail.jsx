@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, Link } from 'react-router-dom';
 import { API_URL } from '../config';
 import { useAuth } from '../contexts/AuthProvider';
 
@@ -12,6 +12,8 @@ function VerifyEmail() {
 
     // So we don't try to verify multiple times
     const [callMade, setCallMade] = useState(false);
+    
+    const [invalidLink, setInvalidLink] = useState(false);
 
     useEffect(() => {
         if(id && !callMade) {
@@ -22,7 +24,7 @@ function VerifyEmail() {
                     checkLoginCookie() && navigate('/'); // Bring them to the home page now that they're authenticated
                 }
                 catch(err) {
-                    console.log(err);
+                    setInvalidLink(true);
                 }
             })();
         }
@@ -30,7 +32,12 @@ function VerifyEmail() {
 
     return (
         <div>
-            <p>please wait a moment as you account becomes activated...</p>
+            {
+            (!invalidLink)? 
+                <p>please wait a moment as we activate your account...</p>   
+            :
+                <p>This link is no longer valid. Please try <Link to='/register'>registering</Link> again.</p>  
+            }
         </div>
     );
 }

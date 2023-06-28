@@ -60,6 +60,10 @@
 - [ ] Add time capsule feature
 - [ ] Scripts for different running configs, whatever needs to be automated on prod
 
+# Future features
+- [ ] Time capsules
+- [ ] Footnotes (Titles)
+- [ ] Mood tracking
 
 # Table design
 

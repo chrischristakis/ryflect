@@ -4,6 +4,7 @@ import { API_URL } from '../config';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthProvider';
 import DOMPurify from 'dompurify';
+import { handleError } from '../utils/HandleResponse';
 
 function Recents() {
 
@@ -35,11 +36,11 @@ function Recents() {
                             auth: jwt
                         }
                     });
-                    
+
                     return response.data;
                 }
                 catch(err) {
-                    console.log(err);
+                    handleError(err)
                     return null;
                 }
             }));

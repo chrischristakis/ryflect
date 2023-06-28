@@ -5,6 +5,7 @@ import Button from '../components/Button';
 import Recents from '../components/Recents';
 import { API_URL } from '../config.js';
 import { useNavigate } from 'react-router-dom';
+import { handleError } from '../utils/HandleResponse';
 
 function Home() {
 
@@ -18,7 +19,7 @@ function Home() {
                 setJournalIDs({data: response.data, loaded: true});
             }
             catch(err) {
-                console.log(err);
+                handleError(err);
             }
         })();
     }, []);

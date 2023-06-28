@@ -1,9 +1,8 @@
+import DisplayError from '../components/DisplayError';
+
 function NotFound() {
     return (
-        <div>
-            <h1>404</h1>
-            <h2>this page does not exist.</h2>
-        </div>
+        <DisplayError code='404' text="This page doesn't seem to exist... Stay a while?"/>
     );
 }
 

@@ -12,17 +12,28 @@ const mailHelper = require('../utils/Mailhelper.js');
 const { token_cookie, username_cookie } = require('../utils/CookieRules.js');
 
 const loginRules = [
-    check('username')
-        .isLength({min: 1}).withMessage("Username must be at least 1 charater long")
-        .matches('^[A-Za-z0-9]+$').withMessage("Username must be within A-Z, a-z, 0-9")
+    check('username', 'Enter a username').notEmpty()
+        .isString().withMessage("Username must be a string")
         .escape(),
-    check('password')
-        .isLength({min: 6}).withMessage("Password must be at least 6 charaters long")
+    check('password', 'Enter a password').notEmpty()
+        .isString().withMessage("Password must be a string")
         .escape()
 ];
 
 const registerRules = [
-    check('email', 'Email must be valid').isEmail().trim().escape().normalizeEmail()
+    check('username', 'Enter a username').notEmpty()
+        .isString().withMessage("Username must be a string")
+        .isLength({max: 50}).withMessage("Username should be less than 20 characters")
+        .matches('^[A-Za-z0-9]+$').withMessage("Username must be within A-Z, a-z, 0-9")
+        .escape(),
+    check('password')
+        .isString().withMessage("Password must be a string")
+        .isLength({min: 6}).withMessage("Password must be at least 6 charaters long")
+        .isLength({max: 100}).withMessage("Password should be less than 100 characters")
+        .escape(),
+    check('email', 'Email must be valid').isEmail()
+        .isLength({max: 100}).withMessage("Email should be less than 100 characters")
+        .trim().escape().normalizeEmail()
 ].concat(loginRules);
 
 const verificationRules = [
@@ -33,9 +44,6 @@ const verificationRules = [
 // Login with credentials and then return a JWT
 router.post('/login', validate(loginRules), async (req, res) => {
     const { username, password } = req.body;
-
-    if(!username || !password)
-        return res.status(400).send({error: "Missing body fields.", fields:['username', 'password']});
 
     // Note that the user can submit either username or email to login.
     const user = await User.findOne({
@@ -59,7 +67,7 @@ router.post('/login', validate(loginRules), async (req, res) => {
 
     // Check if user has verified their email yet
     if(!user.active) {
-        return res.status(401).send({error: "User has not been activated yet. Check your email for a verification"});
+        return res.status(401).send({error: "User has not been activated yet. Check your inbox for a verification email."});
     }
 
     const token = jwt.sign({username: user.username}, JWT_SECRET, { expiresIn: '1800s' });
