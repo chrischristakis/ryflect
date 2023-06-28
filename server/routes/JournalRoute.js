@@ -6,14 +6,15 @@ const { getDate, getDateID, getCurrentDayInYear } = require('../utils/utils.js')
 const verify = require('../middleware/verify.js');
 const validate = require('../middleware/validate.js');
 const { check } = require('express-validator');
+const DOMPurify = require('../utils/DOMPurify.js');
 
 const MAX_BYTES = 5000; // Max bytes for one journal entry
+const MAX_PLAINTEXT_CHARS = 100; // Maximum length for the plaintext preview to be stored.
 
 const journalRules = [
-    check('text')
+    check('text', 'Submitted text must not be empty').notEmpty()
         .isString().withMessage("Text must be a string")
         .isLength({max: MAX_BYTES}).withMessage(`Journal entry cannot exceed ${MAX_BYTES} characters`)
-        .escape()
 ];
 
 // Get all user's journal IDS through all years
@@ -74,7 +75,7 @@ router.get('/recents', verify.user, async (req, res) => {
 router.post('/', verify.user, validate(journalRules), async (req, res) => {
     const MAX_RECENTS = 5;
 
-    const text = req.body.text;
+    let text = DOMPurify.sanitize(req.body.text);
 
     // Make sure username exists, we'll use this user later
     const user = await User.findOne({username: req.userinfo.username});
@@ -88,10 +89,23 @@ router.post('/', verify.user, validate(journalRules), async (req, res) => {
     if(await Journals.findOne({id: journalID}))
         return res.status(409).send({error: `Journal with ID '${journalID} already exists'`});
 
+    let plaintext = text.replace(/<[^>]*>/g, ' ').replace(/\s+/g, " ").trim(); // Remove HTML tags to store plaintext variant, and remove any extra spacing.
+
+    // If the plaintext exceeds a certain size, we shrink it to save some memory in the database.
+    if (plaintext.length > MAX_PLAINTEXT_CHARS)
+        plaintext = plaintext.slice(0, MAX_PLAINTEXT_CHARS) + "...";
+
+    // If plaintext is empty, user wrote no meaningful content.
+    if(!plaintext) {
+        plaintext = 'Today I wrote nothing :(';
+        text = '<p>Today I wrote nothing :(</p>'
+    }
+
     const journal = new Journals({
         id: journalID,
         date: getDate(date),
-        text: text
+        richtext: text,
+        plaintext: plaintext
     });
 
     try {

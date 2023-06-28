@@ -10,9 +10,13 @@ const journalSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    text: {
+    plaintext: {
         type: String,
-        required: true
+        default: ''
+    },
+    richtext: {
+        type: String,
+        default: ''
     }
 });
 

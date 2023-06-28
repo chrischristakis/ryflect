@@ -15,10 +15,6 @@ function ViewJournal() {
                 const res = await axios.get(API_URL + '/api/journals/id/'+id);
                 let tempEntry = res.data;
 
-                // Format text, * is bold, _ is italics, \n is new line (&#x5C;n)
-                tempEntry.text = tempEntry.text.replace(/\*([^\s][^*]+?[^\s])\*/g, '<strong>$1</strong>');
-                tempEntry.text = tempEntry.text.replace(/_([^\s][^_]+?[^\s])_/g, '<em>$1</em>');
-
                 setEntry(tempEntry);
             }
             catch(err) {
@@ -35,7 +31,7 @@ function ViewJournal() {
             <h3>{entry.date}</h3>
             <div 
                 style={{whiteSpace: 'pre'}} 
-                dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(entry.text) }}
+                dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(entry.richtext) }}
             />
         </div>
     );

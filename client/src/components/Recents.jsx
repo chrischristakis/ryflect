@@ -35,14 +35,8 @@ function Recents() {
                             auth: jwt
                         }
                     });
-
-                    let tempEntry = response.data;
-
-                    // Format the data properly
-                    tempEntry.text = tempEntry.text.replace(/\*([^\s][^*]+?[^\s])\*/g, '<strong>$1</strong>');
-                    tempEntry.text = tempEntry.text.replace(/_([^\s][^_]+?[^\s])_/, '<em>$1</em>');
-
-                    return tempEntry;
+                    
+                    return response.data;
                 }
                 catch(err) {
                     console.log(err);
@@ -73,7 +67,7 @@ function Recents() {
                              style={{cursor: 'pointer'}}
                         >
                             <h3>{e.date}</h3>
-                            <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(e.text) }}/>
+                            <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(e.plaintext) }}/>
                         </div>
                     );
                 })
