@@ -9,7 +9,6 @@ const { check } = require('express-validator');
 const DOMPurify = require('../utils/DOMPurify.js');
 
 const MAX_BYTES = 5000; // Max bytes for one journal entry
-const MAX_PLAINTEXT_CHARS = 100; // Maximum length for the plaintext preview to be stored.
 
 const journalRules = [
     check('text', 'Submitted text must not be empty').notEmpty()
@@ -62,13 +61,26 @@ router.get('/year/:year', verify.user, async (req, res) => {
     return res.send(user.journalIDs.get(req.params.year));
 });
 
-// Compile a list of our most recent journal entries
+// Compile a list of a user's most recent journal entries
 router.get('/recents', verify.user, async (req, res) => {
     const user = await User.findOne({username: req.userinfo.username});
     if(!user)
         return res.status(400).send("Username does not exist");
 
-    return res.send(user.recentJournals);
+    try {
+        const recentIDs = user.recentJournals;
+        let recents = await Promise.all(recentIDs.map(async (id) => await Journals.findOne({id: id})));
+
+        // If a id is in recents, but the journal was deleted for some reason, just removes null entries.
+        // shouldn't really happen outside of dev but whatever.
+        recents = recents.filter((obj) => obj); 
+
+        return res.send(recents);
+    }
+    catch(err) {
+        console.log('ERR [GET journals/recents]: ', err);
+        return res.status(500).send({error: err});
+    }
 });
 
 // Save a new journal entry
@@ -91,21 +103,14 @@ router.post('/', verify.user, validate(journalRules), async (req, res) => {
 
     let plaintext = text.replace(/<[^>]*>/g, ' ').replace(/\s+/g, " ").trim(); // Remove HTML tags to store plaintext variant, and remove any extra spacing.
 
-    // If the plaintext exceeds a certain size, we shrink it to save some memory in the database.
-    if (plaintext.length > MAX_PLAINTEXT_CHARS)
-        plaintext = plaintext.slice(0, MAX_PLAINTEXT_CHARS) + "...";
-
     // If plaintext is empty, user wrote no meaningful content.
-    if(!plaintext) {
-        plaintext = 'Today I wrote nothing :(';
+    if(!plaintext)
         text = '<p>Today I wrote nothing :(</p>'
-    }
 
     const journal = new Journals({
         id: journalID,
         date: getDate(date),
         richtext: text,
-        plaintext: plaintext
     });
 
     try {
@@ -132,6 +137,15 @@ router.post('/', verify.user, validate(journalRules), async (req, res) => {
         console.log('ERR [POST journals/]: ', err);
         return res.status(500).send({error: err});
     }
+});
+
+// Check if a user has already made a post today
+router.get('/check', verify.user, async (req, res) => {
+     const found = await Journals.findOne({id: getDateID(new Date(), req.userinfo.username)});
+     if(found)
+        return res.send(true);
+    
+    return res.send(false);
 });
 
 module.exports = router;

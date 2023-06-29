@@ -5,16 +5,13 @@ import { FaArrowLeft } from 'react-icons/fa'
 import { FaArrowRight } from 'react-icons/fa'
 import TimelineCell from './TimelineCell';
 
-function Timeline(props) {
+function Timeline({ids, date}) {
     const [timeline, setTimeline] = useState([]);
-    const [date, setDate] = useState();
     const [year, setYear] = useState(0);
 
     useEffect(() => {
-        const d = new Date();
-        setDate(d);
-        setYear(d.getUTCFullYear());
-    }, [])
+        setYear(date.getUTCFullYear());
+    }, [date])
 
     useEffect(() => {
         if(!date)  // date must be initialized for this to work
@@ -26,7 +23,7 @@ function Timeline(props) {
         let temp_timeline = [];
         for(let i = 0; i < daysInYear; i++) {
 
-            const journalId = (year in props.ids && props.ids[year].ids[i])? props.ids[year].ids[i] : null;
+            const journalId = (year in ids && ids[year].ids[i])? ids[year].ids[i] : null;
 
             // So that we dont see the current day selector on other years as we scroll through them
             const isCurrentDay = (i === currDay.day && year === currDay.year); 
@@ -35,7 +32,7 @@ function Timeline(props) {
             temp_timeline.push(<TimelineCell key={i} journalId={journalId} isCurrentDay={isCurrentDay} date={dateInYear}/>);
         }
         setTimeline(temp_timeline);
-    }, [year, props.ids, date]); // We reload timeline either when our ids are loaded, or year is changed.
+    }, [year, ids, date]); // We reload timeline either when our ids are loaded, or year is changed.
 
     return (
         <div style={{overflow:'hidden'}}>

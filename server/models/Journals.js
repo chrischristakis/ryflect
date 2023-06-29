@@ -10,10 +10,6 @@ const journalSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    plaintext: {
-        type: String,
-        default: ''
-    },
     richtext: {
         type: String,
         default: ''

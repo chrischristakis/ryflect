@@ -6,6 +6,8 @@ import { useAuth } from '../contexts/AuthProvider';
 import DOMPurify from 'dompurify';
 import { handleError } from '../utils/HandleResponse';
 
+const MAX_PLAINTEXT_CHARS = 100;
+
 function Recents() {
 
     const [recents, setRecents] = useState({data:[], loaded: false});
@@ -14,41 +16,27 @@ function Recents() {
 
     useEffect(() => {
         (async function() {
-            let responseIds = [];
             try {
-                // Get our recent journal's IDs
                 let response = await axios.get(API_URL+"/api/journals/recents", {
                     headers: {
                         auth: jwt
                     }
                 });
-                responseIds = response.data;
+
+                setRecents({data:response.data, loaded: true});
             }
             catch(err) {
-                console.log(err);
+                handleError(err);
             }
-            
-            // Use the IDs to get the actual journals
-            responseIds = await Promise.all(responseIds.map(async (id) => {
-                try {
-                    let response = await axios.get(API_URL+"/api/journals/id/"+id, {
-                        headers: {
-                            auth: jwt
-                        }
-                    });
 
-                    return response.data;
-                }
-                catch(err) {
-                    handleError(err)
-                    return null;
-                }
-            }));
-            responseIds = responseIds.filter((e) => e !== null);
-
-            setRecents({data:responseIds, loaded: true});
         })();
     }, [jwt]);
+
+    const richtextToPlaintext = (richtext) => {
+        // Removes html tags first, then removes any double spaces for formatting.
+        let plaintext = richtext.replace(/<[^>]*>/g, ' ').replace(/\s+/g, " ");
+        return (plaintext.length >= MAX_PLAINTEXT_CHARS)? plaintext.slice(0, MAX_PLAINTEXT_CHARS) + '...' : plaintext;
+    };
 
     if(!recents.loaded)
         return <div>Loading...</div>;
@@ -68,7 +56,7 @@ function Recents() {
                              style={{cursor: 'pointer'}}
                         >
                             <h3>{e.date}</h3>
-                            <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(e.plaintext) }}/>
+                            <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(richtextToPlaintext(e.richtext)) }}/>
                         </div>
                     );
                 })

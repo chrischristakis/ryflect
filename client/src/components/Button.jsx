@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-function Button({text="placeholder", clickEvent=async ()=>{}, type='button', cooldown=0}) {
+function Button({text="placeholder", clickEvent=async ()=>{}, type='button', cooldown=0, disabled=false}) {
 
     const [loading , setLoading] = useState(false);
 
@@ -25,7 +25,7 @@ function Button({text="placeholder", clickEvent=async ()=>{}, type='button', coo
     };
 
     return (
-        <button onClick={handleClick} type={type} disabled={loading}>{text}</button>
+        <button onClick={handleClick} type={type} disabled={loading || disabled}>{text}</button>
     );
 }
 

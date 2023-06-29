@@ -36,10 +36,10 @@
 - [x] Get markdown working
     - Should be on the fly, display what the markdown would look like as the user types
 - [x] save a html journal entry and a plaintext entry with no tags.
-- [ ] Handle errors on each page
+- [x] Handle errors on each page
     - For example, on verify email, decide what to do if verfication has expired. What do we display?
-- [ ] Do not let user go to create journal page if journal already exists, grey out button.
-    - If they try to click it, give them a notif telling them they can only journal once a day, and the reset time.
+- [x] If user plaintext cuts off an escaped character (since plaintext is escaped) we need to handle it appropriately.
+- [x] Do not let user go to create journal page if journal already exists, grey out button.
 - [ ] Start encrypting data
     - Put server secret key into config, and change it once a day on a cron.
     - Encrypt text into db (with dummy user key)
@@ -47,7 +47,6 @@
     - Set up user key method, encrypt on client.
 - [ ] Proper loading (Animation?)
 - [ ] Change password functionality
-- [ ] QOL for typing (Make enter not submit the entire form when making a new entry)
 - [ ] Random message in writing box as a prompt
 - [ ] Make sure user knows they cannot recover password upon registration
     - Display a pop up or something
