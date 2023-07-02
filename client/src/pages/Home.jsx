@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { handleError } from '../utils/HandleResponse';
 import useCountdown from '../hooks/useCountdown';
 import { ReactComponent as Loading } from '../assets/loading.svg';
+import style from './Home.module.css';
 
 let endDate = new Date();
 endDate.setUTCDate(endDate.getUTCDate() + 1); // Date until 12am of the next day
@@ -54,17 +55,28 @@ function Home() {
     }
 
     return (
-        <div>
+        <div className={style['home-wrapper']}>
             <Timeline ids={journalIDs.data} date={date}/>
+            <div className={style['create-entry-wrapper']}>
             {
                 entryCreated?
-                    <div>
-                        <Button text={countdown} clickEvent={() => navigate('/create')} disabled={entryCreated}/>
-                        <p>You finished a journal today :)</p>
-                    </div>
+                    <>
+                        <Button 
+                            text={countdown} 
+                            clickEvent={() => navigate('/create')} 
+                            disabled={entryCreated}
+                        />
+                        <p>you made a journal today :)</p>
+                    </>
                     :
-                    <Button text='new entry' clickEvent={() => navigate('/create')} disabled={entryCreated}/>
+                    <Button 
+                        text='new entry' 
+                        clickEvent={() => navigate('/create')} 
+                        disabled={entryCreated}
+                    />
             }
+            </div>
+            <hr/>
             <Recents/>
         </div>
     );

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { ReactComponent as Loading } from '../assets/loading.svg';
+import style from './Button.module.css';
 
 function Button({text="placeholder", clickEvent=async ()=>{}, type='button', disabled=false}) {
 
@@ -18,7 +19,7 @@ function Button({text="placeholder", clickEvent=async ()=>{}, type='button', dis
     };
 
     return (
-        <button onClick={handleClick} type={type} disabled={loading || disabled}>
+        <button className={style.button} onClick={handleClick} type={type} disabled={loading || disabled}>
             {loading? <Loading/> : text}
         </button>
     );

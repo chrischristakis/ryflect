@@ -35,7 +35,7 @@ function Timeline({ids, date}) {
     }, [year, ids, date]); // We reload timeline either when our ids are loaded, or year is changed.
 
     return (
-        <div style={{overflow:'hidden'}}>
+        <div className={style['timeline-wrapper']}>
             <div className={style['year-selector']}>
                 <span onClick={() => setYear(year-1)} style={{cursor: 'pointer'}}><FaArrowLeft style={{color: 'black', fontSize: '30px'}}/></span>
                 <span>{year}</span>

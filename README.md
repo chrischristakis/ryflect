@@ -44,6 +44,9 @@
 - [x] Dummy FAQ, Change password pages
 - [x] Button loading gif while waiting for a response
 - [x] Put in Michelle's gif (Ty Michelle)
+- [ ] More basic styling...
+- [ ] Test deploy + feedback
+- [ ] Consider time capsule functionality
 - [ ] Start encrypting data
     - Put server secret key into config, and change it once a day on a cron.
     - Encrypt text into db (with dummy user key)
@@ -53,6 +56,7 @@
 - [ ] Make sure user knows they cannot recover password upon registration
     - Display a pop up or something
 - [ ] Random message in writing box as a prompt
+- [ ] Styling
 - [ ] Change TEST_EMAIL in registration route to the user's actual email
 
 # Other

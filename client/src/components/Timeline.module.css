@@ -1,5 +1,13 @@
+.timeline-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+}
+
 .year-selector {
     height: 50px;
+    width: 100px;
+    margin: 0 auto;
     display: table;
 }
 
@@ -15,4 +23,7 @@
     justify-content: center; /*Horizontal align*/
     align-items: center; /*Vertical align*/
     gap: 4px;
+
+    width: 500px;
+    margin: 0 auto; /* centers horizontally */
 }
