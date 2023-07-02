@@ -7,13 +7,19 @@ const verify = require('../middleware/verify.js');
 const validate = require('../middleware/validate.js');
 const { check } = require('express-validator');
 const DOMPurify = require('../utils/DOMPurify.js');
+const { emojis } = require('../utils/Constants.js');
 
 const MAX_BYTES = 5000; // Max bytes for one journal entry
 
 const journalRules = [
     check('text', 'Submitted text must not be empty').notEmpty()
         .isString().withMessage("Text must be a string")
-        .isLength({max: MAX_BYTES}).withMessage(`Journal entry cannot exceed ${MAX_BYTES} characters`)
+        .isLength({max: MAX_BYTES}).withMessage(`Journal entry cannot exceed ${MAX_BYTES} characters`),
+    check('emoji')
+        .isString().withMessage("Emoji must be a string")
+        .matches(`^[${emojis}]+$`).withMessage("Emoji field must be a valid emoji")
+        .isLength({max: 2}).withMessage(`Emoji should be 2 bytes max`)
+        .escape().trim()
 ];
 
 // Get all user's journal IDS through all years
@@ -111,6 +117,7 @@ router.post('/', verify.user, validate(journalRules), async (req, res) => {
         id: journalID,
         date: getDate(date),
         richtext: text,
+        emoji: req.body.emoji
     });
 
     try {

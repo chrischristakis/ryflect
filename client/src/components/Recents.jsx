@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthProvider';
 import DOMPurify from 'dompurify';
 import { handleError } from '../utils/HandleResponse';
+import { ReactComponent as Loading } from '../assets/loading.svg';
 
 const MAX_PLAINTEXT_CHARS = 100;
 
@@ -39,7 +40,7 @@ function Recents() {
     };
 
     if(!recents.loaded)
-        return <div>Loading...</div>;
+        return <Loading/>;
 
     if(recents.data.length === 0)
         return (
@@ -55,7 +56,7 @@ function Recents() {
                              onClick={_ => navigate('/view/' + e.id)}
                              style={{cursor: 'pointer'}}
                         >
-                            <h3>{e.date}</h3>
+                            <h3>{e.date} {e.emoji}</h3>
                             <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(richtextToPlaintext(e.richtext)) }}/>
                         </div>
                     );

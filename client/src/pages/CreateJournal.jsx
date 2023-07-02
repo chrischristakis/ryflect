@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Button from '../components/Button';
 import { getDate } from '../utils/utils';
 import { useNavigate } from 'react-router-dom';
@@ -6,7 +6,8 @@ import axios from 'axios';
 import { API_URL } from '../config';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import { handleError } from '../utils/HandleResponse';
+import { handleError } from '../utils/HandleResponse.js';
+import { emojis } from '../utils/Constants.js';
 
 // For quill
 const modules = {
@@ -19,15 +20,27 @@ const modules = {
 
 function CreateJournal() {
     const [entryText, setEntryText] = useState('');
+    const [emoji, setEmoji] = useState();
     const navigate = useNavigate();
     const date = new Date();
+
+    const randomEmoji = () => {
+        const emojiArray = [...emojis];
+        const selected = emojiArray[Math.floor(Math.random() * emojiArray.length)];
+        return selected;
+    }
+
+    useEffect(() => {
+        setEmoji(randomEmoji());
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();  // Stop default reload after submitting form
 
         // Submit data via post then re route to home.
         const data = {
-            text: entryText
+            text: entryText,
+            emoji: emoji
         }; 
 
         try {
@@ -46,7 +59,7 @@ function CreateJournal() {
 
     return (
         <div>
-            <h3>{getDate(date)}</h3>
+            <h3>{getDate(date)} <span style={{userSelect: 'none'}} onClick={() => setEmoji(randomEmoji())}>{emoji}</span></h3>
             <ReactQuill modules={modules} placeholder="Type here..." onChange={setEntryText} theme="snow"/>
             <Button text="i'm done!" clickEvent={handleSubmit}/>
         </div>

@@ -59,7 +59,6 @@
 - [ ] Buy domain
 - [x] Look into host (Heroku, digital ocean)
 - [ ] Start looking into https (certbot)
-- [ ] Add time capsule feature
 - [ ] Scripts for different running configs, whatever needs to be automated on prod
 
 # Future features

@@ -13,6 +13,10 @@ const journalSchema = new mongoose.Schema({
     richtext: {
         type: String,
         default: ''
+    },
+    emoji: {
+        type: String,
+        default: '📕'
     }
 });
 

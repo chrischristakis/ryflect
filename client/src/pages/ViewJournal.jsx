@@ -45,7 +45,7 @@ function ViewJournal() {
 
     return (
         <div>
-            <h3>{entry.date}</h3>
+            <h3>{entry.date} {entry.emoji}</h3>
             <div 
                 style={{whiteSpace: 'pre'}} 
                 dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(entry.richtext) }}
