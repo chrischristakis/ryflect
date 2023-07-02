@@ -4,9 +4,9 @@ import { getDate } from '../utils/utils';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { API_URL } from '../config';
-import { toast } from 'react-toastify';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import { handleError } from '../utils/HandleResponse';
 
 // For quill
 const modules = {
@@ -39,10 +39,7 @@ function CreateJournal() {
             navigate('/');
         }
         catch(err) {
-            if(err.response && err.response.data && err.response.data.error)
-                toast.error(err.response.data.error, {position: 'top-center'});
-            else
-                toast.error('Something went wrong.', {position: 'top-center'});
+            handleError(err);
         }
         
     };
@@ -51,9 +48,7 @@ function CreateJournal() {
         <div>
             <h3>{getDate(date)}</h3>
             <ReactQuill modules={modules} placeholder="Type here..." onChange={setEntryText} theme="snow"/>
-            <form onSubmit={handleSubmit}>
-                <Button text="i'm done!" type='submit'/>
-            </form>
+            <Button text="i'm done!" clickEvent={handleSubmit}/>
         </div>
     );
 }

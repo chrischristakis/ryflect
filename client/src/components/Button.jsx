@@ -1,31 +1,26 @@
 import { useState } from 'react';
+import { ReactComponent as Loading } from '../assets/loading.svg';
 
-function Button({text="placeholder", clickEvent=async ()=>{}, type='button', cooldown=0, disabled=false}) {
+function Button({text="placeholder", clickEvent=async ()=>{}, type='button', disabled=false}) {
 
     const [loading , setLoading] = useState(false);
-
-    const doneLoadingWithCooldown = () => {
-        if(cooldown <= 0)
-            return setLoading(false);
-        
-        setTimeout(() => {
-            setLoading(false);
-        }, cooldown);
-    }
 
     const handleClick = async (e) => {
         setLoading(true);
         try {
+            //await new Promise(resolve => setTimeout(resolve, 5000)); For throttle testing
             await clickEvent(e);
-            doneLoadingWithCooldown();
+            setLoading(false);
         }
         catch(err) {
-            doneLoadingWithCooldown();
+            setLoading(false);
         }
     };
 
     return (
-        <button onClick={handleClick} type={type} disabled={loading || disabled}>{text}</button>
+        <button onClick={handleClick} type={type} disabled={loading || disabled}>
+            {loading? <Loading/> : text}
+        </button>
     );
 }
 

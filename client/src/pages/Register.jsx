@@ -107,7 +107,7 @@ function Register() {
         );
 
     return (
-        <form>
+        <div>
             <div>
                 <label>
                     username:
@@ -137,7 +137,7 @@ function Register() {
                 </label>
             </div>
             <Button text='register' type='submit' clickEvent={handleSubmit}/>
-        </form>
+        </div>
     );
 }
 

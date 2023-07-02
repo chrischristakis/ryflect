@@ -40,22 +40,25 @@
     - For example, on verify email, decide what to do if verfication has expired. What do we display?
 - [x] If user plaintext cuts off an escaped character (since plaintext is escaped) we need to handle it appropriately.
 - [x] Do not let user go to create journal page if journal already exists, grey out button.
+- [x] Proper loading (Animation?)
+- [x] Dummy FAQ, Change password pages
+- [x] Button loading gif while waiting for a response
+- [x] Put in Michelle's gif (Ty Michelle)
 - [ ] Start encrypting data
     - Put server secret key into config, and change it once a day on a cron.
     - Encrypt text into db (with dummy user key)
     - Decrpyt data (with dummy user key)
     - Set up user key method, encrypt on client.
-- [ ] Proper loading (Animation?)
 - [ ] Change password functionality
-- [ ] Random message in writing box as a prompt
 - [ ] Make sure user knows they cannot recover password upon registration
     - Display a pop up or something
+- [ ] Random message in writing box as a prompt
 - [ ] Change TEST_EMAIL in registration route to the user's actual email
 
 # Other
 - [ ] Buy domain
 - [x] Look into host (Heroku, digital ocean)
-- [ ] Start looking into https
+- [ ] Start looking into https (certbot)
 - [ ] Add time capsule feature
 - [ ] Scripts for different running configs, whatever needs to be automated on prod
 
@@ -63,32 +66,3 @@
 - [ ] Time capsules
 - [ ] Footnotes (Titles)
 - [ ] Mood tracking
-
-# Table design
-
-users:
-    - username
-    - hashed password
-    - journalIDs
-        [
-            {
-                year: 2023
-                ids: { key: index of day in overall year, value is journal ID
-                    123: id
-                    98: id
-                }
-            },
-            {
-                year: 2024
-                ids: { key: index of day in overall year, value is journal ID
-                    123: id
-                    98: id
-                } 
-            }
-        ]
-    - email
-
-journals:
-    - id
-    - date
-    - text

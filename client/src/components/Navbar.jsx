@@ -50,8 +50,8 @@ function UserMenu() {
                     <div className={style.overlay}>
                         <ul className={style.dropdown}>
                             <DropdownItem text='logout' click={logout}/>
-                            <DropdownItem text='FAQ'/>
-                            <DropdownItem text='change password'/>
+                            <DropdownItem text='FAQ' link='/faq'/>
+                            <DropdownItem text='change password' link='/change-password'/>
                         </ul>
                         <div className={style.screencover} onClick={(_) => setExpanded(false)}></div>
                     </div>

@@ -5,6 +5,7 @@ import { API_URL } from '../config';
 import DOMPurify from "dompurify";
 import { handleError } from '../utils/HandleResponse';
 import DisplayError from '../components/DisplayError';
+import { ReactComponent as Loading } from '../assets/loading.svg';
 
 function ViewJournal() {
 
@@ -34,7 +35,7 @@ function ViewJournal() {
     }, [id]);
 
     if(loading)
-        return <p>Loading...</p>;
+        return <Loading/>;
 
     if(unauthorized)
         return <DisplayError code='403' text='You are not authorized to view this content'/>;

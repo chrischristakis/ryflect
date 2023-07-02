@@ -7,6 +7,7 @@ import { API_URL } from '../config.js';
 import { useNavigate } from 'react-router-dom';
 import { handleError } from '../utils/HandleResponse';
 import useCountdown from '../hooks/useCountdown';
+import { ReactComponent as Loading } from '../assets/loading.svg';
 
 let endDate = new Date();
 endDate.setUTCDate(endDate.getUTCDate() + 1); // Date until 12am of the next day
@@ -39,20 +40,17 @@ function Home() {
         if(!countdownDone) return;
 
         endDate = new Date();
-        endDate.setUTCHours(23);
-        endDate.setUTCMinutes(59);
-        endDate.setUTCSeconds(0);
         endDate.setUTCDate(endDate.getUTCDate() + 1); // Date until 12am of the next day
         endDate.setUTCHours(0, 0, 0, 0);         
 
         setEndDate(endDate);
-        setEntryCreated(false);
-        setDate(new Date());
-        setCountdownDone(false);
+        setEntryCreated(false); // Turn button back on
+        setDate(new Date());  // Updates the timeline
+        setCountdownDone(false); // Count down resets
     }, [countdownDone, setCountdownDone, setEndDate, setEntryCreated, setDate]);
 
     if(!journalIDs.loaded) {
-        return <div>Loading...</div>;
+        return <Loading/>;
     }
 
     return (

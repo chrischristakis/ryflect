@@ -39,7 +39,7 @@ function Login() {
     };
 
     return (
-        <form>
+        <div>
             <div>
                 <label>
                     username:
@@ -55,7 +55,7 @@ function Login() {
                 </label>
             </div>
             <Button text='login' type='submit' clickEvent={handleSubmit}/>
-        </form>
+        </div>
     );
 }
 

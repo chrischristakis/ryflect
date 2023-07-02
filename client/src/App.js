@@ -11,6 +11,8 @@ import VerifyEmail from './pages/VerifyEmail.jsx';
 import Home from './pages/Home.jsx';
 import Landing from './pages/Landing.jsx';
 import { ToastContainer } from 'react-toastify';
+import ChangePassword from './pages/ChangePassword.jsx';
+import FAQ from './pages/FAQ.jsx';
 
 function App() {
 
@@ -42,6 +44,14 @@ function App() {
             <AuthRoute redirect={<Navigate to='/login'/>}>
               <ViewJournal/>
             </AuthRoute>
+          }/>
+          <Route path='/change-password' element={
+            <AuthRoute redirect={<Navigate to='/login'/>}>
+              <ChangePassword/>
+            </AuthRoute>
+          }/>
+          <Route path='/faq' element={
+              <FAQ/>
           }/>
           <Route path='*' element={<NotFound/>}/>
         </Routes>
