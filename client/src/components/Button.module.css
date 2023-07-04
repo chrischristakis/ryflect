@@ -1,18 +1,36 @@
 .button {
     padding: 10px;
-    min-width: 250px;
+    min-width: 180px;
     font-size: large;
     background-color: black;
     color: white;
-    border-radius: 15px;
-
+    border-radius: 15px;  
     cursor: pointer;
+}
+
+.normal {
+    background-color: black;
+    color: white; 
     border: none;
+    transition: background-color 0.25s ease;
+}
+
+.confirm {
+    background-color: white;
+    color: black;
+    border: 1px solid black;
+
+    transition: color 2.25s ease;
     transition: background-color 0.25s ease;
 }
 
 .button:hover {
     background-color: rgb(45, 45, 45);
+}
+
+.confirm:hover {
+    color: white;
+    background-color: black;
 }
 
 .button:disabled {
