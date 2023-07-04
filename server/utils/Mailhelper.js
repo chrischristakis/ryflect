@@ -34,14 +34,15 @@ module.exports.sendVerification = async function(recipient, verificationID) {
         <tr>
             <td align="center">
                 <br/><br/>
-                <h1>Thank you for registering!</h1>
-                <h3>To start using ryflect, please visit the following link:</h3>
+                <h1 style='color: black;'>Thank you for registering!</h1>
+                <h3 style='color: black;'>To start using ryflect, please visit the following link:</h3>
                 <br/>
                 <a href='${WEBAPP_URL}/verify/${verificationID}'
-                   style='text-decoration:none!important; border: 4px solid black; padding: 25px; font-size: 1.8em; color: black;'\
+                   style='text-decoration:none!important; border: 4px solid black; padding: 20px; font-size: 1.8em; color: black;'\
                 >
                         Click here
-                </a>    
+                </a>
+                <br/><br/><br/>    
                 <p><em style='color: #6a6a6a;'>If you did not register, please ignore this email.</em></p>
                 <p><em style='color: #6a6a6a;'>This link will expire in 15 minutes.</em></p>
             </td>

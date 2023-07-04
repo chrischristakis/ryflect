@@ -103,6 +103,7 @@ function Register() {
         return (
             <div className={style['await-verification-wrapper']}>
                 <p>please check your inbox for a verification email from us, and you’ll be on your way!</p>
+                <p><em>if you did not get an email, please check your spam folder.</em></p>
                 <button onClick={resendEmail} disabled={resendDisabled}>resend email</button>
             </div>
         );

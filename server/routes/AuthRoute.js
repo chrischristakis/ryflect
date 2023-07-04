@@ -37,7 +37,7 @@ const registerRules = [
 ].concat(loginRules);
 
 const verificationRules = [
-    param('id').isString()
+    param('id').isString().withMessage("ID must be a string")
         .trim().escape()
 ];
 
@@ -119,7 +119,7 @@ router.post('/register', validate(registerRules), async (req, res) => {
         email: email
     });
  
-    const token = jwt.sign({username: username}, JWT_SECRET, { expiresIn: '1800s' });
+    const token = jwt.sign({username: username, email: email}, JWT_SECRET, { expiresIn: '1800s' });
 
     // Generate random ID for email verirification, make sure its not taken (unikely)
     let verificationID = crypto.randomBytes(16).toString('hex');
@@ -143,7 +143,7 @@ router.post('/register', validate(registerRules), async (req, res) => {
 
     // Finally, send an email to the user to verify.
     try {
-        await mailHelper.sendVerification(TEST_EMAIL, verificationID);
+        await mailHelper.sendVerification(email, verificationID);
         return res.send(verificationID);
     }
     catch(err) {
@@ -160,9 +160,20 @@ router.get('/resend/:id', validate(verificationRules), async (req, res) => {
     if(!entry)
         return res.status(404).send({error: 'Could not find this ID pending for verification, try registering again.'});
 
+    let email;
+    try {
+        // Verify jwt and store the payload of our token in the request
+        const body = jwt.verify(entry.token, JWT_SECRET);
+        email = body.email;
+    }
+    catch(err) {
+        console.log('ERR [GET auth/resend/:id]:', err);
+        return res.status(500).send({error: err});
+    }
+
     try {
         // TODO: CHANGE TEST EMAIL WITH THE USER'S EMAIL!
-        const response = await mailHelper.sendVerification(TEST_EMAIL, entry.id);
+        const response = await mailHelper.sendVerification(email, entry.urlID);
         return res.send(response);
     }
     catch(err) {
