@@ -5,6 +5,7 @@ import { API_URL } from '../config';
 import { handleError } from '../utils/HandleResponse';
 import { toast } from 'react-toastify';
 import useForm from '../hooks/useForm';
+import style from './Register.module.css';
 
 function Register() {
 
@@ -100,14 +101,14 @@ function Register() {
     // If user registered and is waiting verification, show them this instead pf the registration form
     if(awaitVerify)
         return (
-            <div>
+            <div className={style['await-verification-wrapper']}>
                 <p>please check your inbox for a verification email from us, and you’ll be on your way!</p>
                 <button onClick={resendEmail} disabled={resendDisabled}>resend email</button>
             </div>
         );
 
     return (
-        <div>
+        <div className={style['register-wrapper']}>
             <div>
                 <label>
                     username:
@@ -126,16 +127,17 @@ function Register() {
                 <label>
                     password:
                     <br/>
-                    <input name='password' ref={passwordInput} type='text' onChange={form.handleDataChange}></input>
+                    <input name='password' ref={passwordInput} type='password' onChange={form.handleDataChange}></input>
                 </label>
             </div>
             <div>
                 <label>
                     re-enter password:
                     <br/>
-                    <input name='repassword' ref={repasswordInput} type='text' onChange={form.handleDataChange}></input>
+                    <input name='repassword' ref={repasswordInput} type='password' onChange={form.handleDataChange}></input>
                 </label>
             </div>
+            <br/>
             <Button text='register' type='submit' clickEvent={handleSubmit}/>
         </div>
     );

@@ -4,6 +4,7 @@ import { useAuth } from '../contexts/AuthProvider';
 import { useNavigate } from 'react-router-dom';
 import { handleError } from '../utils/HandleResponse';
 import useForm from '../hooks/useForm';
+import style from './Login.module.css';
 
 function Login() {
 
@@ -39,7 +40,7 @@ function Login() {
     };
 
     return (
-        <div>
+        <div className={style['login-wrapper']}>
             <div>
                 <label>
                     username:
@@ -51,9 +52,10 @@ function Login() {
                 <label>
                     password:
                     <br/>
-                    <input name='password' ref={passwordInput} type='text' onChange={form.handleDataChange}></input>
+                    <input name='password' ref={passwordInput} type='password' onChange={form.handleDataChange}></input>
                 </label>
             </div>
+            <br/>
             <Button text='login' type='submit' clickEvent={handleSubmit}/>
         </div>
     );

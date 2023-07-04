@@ -28,7 +28,7 @@ function Button({text="placeholder", clickEvent=async ()=>{}, type='button', dis
 
         setLoading(true);
         try {
-            //await new Promise(resolve => setTimeout(resolve, 5000)); For throttle testing
+            //await new Promise(resolve => setTimeout(resolve, 5000)); //For throttle testing
             await clickEvent(e);
             setLoading(false);
         }
@@ -44,7 +44,7 @@ function Button({text="placeholder", clickEvent=async ()=>{}, type='button', dis
     return (
         <button className={`${style.button} ${displayConfirm? style.confirm : style.normal}`} onClick={handleClick} type={type} disabled={loading || disabled}>
             {loading? 
-                <Loading/> 
+                <Loading fill='white'/> 
                 : 
                 displayConfirm ? 
                     'you sure?'

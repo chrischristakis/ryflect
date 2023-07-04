@@ -66,7 +66,7 @@ function Home() {
                             clickEvent={() => navigate('/create')} 
                             disabled={entryCreated}
                         />
-                        <p>you made a journal today :)</p>
+                        <p><em>you made a journal today :)</em></p>
                     </>
                     :
                     <Button 

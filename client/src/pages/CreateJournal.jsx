@@ -61,6 +61,7 @@ function CreateJournal() {
         <div>
             <h3>{getDate(date)} <span style={{userSelect: 'none'}} onClick={() => setEmoji(randomEmoji())}>{emoji}</span></h3>
             <ReactQuill modules={modules} placeholder="Type here..." onChange={setEntryText} theme="snow"/>
+            <br/>
             <Button text="i'm done!" clickEvent={handleSubmit} shouldConfirm={true}/>
         </div>
     );
