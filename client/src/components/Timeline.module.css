@@ -24,6 +24,8 @@
     align-items: center; /*Vertical align*/
     gap: 4px;
 
+    overflow-x: hidden;
+
     width: 500px;
 
     margin: 0 auto; /* centers horizontally */
