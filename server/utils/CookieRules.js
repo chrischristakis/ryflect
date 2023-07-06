@@ -6,7 +6,7 @@ const COOKIE_LIFESPAN = 1800 * 1000; //in MS
 module.exports = { 
     token_cookie: (ENV !== 'development')?
         {
-            sameSite: 'strict',
+            sameSite: 'lax',
             httpOnly: true,
             maxAge: COOKIE_LIFESPAN
         }

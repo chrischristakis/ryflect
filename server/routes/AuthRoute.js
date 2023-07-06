@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const { check, param } = require('express-validator');
 const validate = require('../middleware/validate.js');
+const verify = require('../middleware/verify.js');
 const User = require('../models/User.js');
 const Verification = require('../models/Verification.js');
 const { JWT_SECRET, TEST_EMAIL } = require('../utils/config.js');
@@ -215,6 +216,11 @@ router.get('/verify/:id', validate(verificationRules), async (req, res) => {
     res.cookie("username", decoded.username, username_cookie);
 
     res.send(entry.token);
+});
+
+router.get('/ping', verify.user, (req, res) => {
+    res.cookie("username", req.userinfo.username, username_cookie);  // Might as well refresh the username incase it was changed by the user.
+    res.send('Pong');
 });
 
 router.post('/logout', (req, res) => {
