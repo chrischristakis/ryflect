@@ -2,12 +2,10 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { API_URL } from '../config';
-import { useAuth } from '../contexts/AuthProvider';
 
 function VerifyEmail() {
 
     const { id } = useParams();
-    const { checkLoginCookie } = useAuth();
     const navigate = useNavigate();
 
     // So we don't try to verify multiple times
@@ -21,14 +19,14 @@ function VerifyEmail() {
             (async function() {
                 try {
                     await axios.get(API_URL + '/api/auth/verify/'+id);
-                    checkLoginCookie() && navigate('/'); // Bring them to the home page now that they're authenticated
+                    navigate('/'); // Bring them to the home page now that they're authenticated
                 }
                 catch(err) {
                     setInvalidLink(true);
                 }
             })();
         }
-    }, [id, navigate, callMade, checkLoginCookie]);
+    }, [id, navigate, callMade]);
 
     return (
         <div>
