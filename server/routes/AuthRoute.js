@@ -4,7 +4,6 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const { check, param } = require('express-validator');
 const validate = require('../middleware/validate.js');
-const verify = require('../middleware/verify.js');
 const User = require('../models/User.js');
 const Verification = require('../models/Verification.js');
 const { JWT_SECRET, TEST_EMAIL } = require('../utils/config.js');
@@ -49,7 +48,7 @@ router.post('/login', validate(loginRules), async (req, res) => {
     // Note that the user can submit either username or email to login.
     const user = await User.findOne({
         $or: [  // $or lets us match either on username or email, or both.
-            {username: username}, 
+            {username_lower: username.toLowerCase()}, 
             {email: username}
         ]
     });
@@ -83,7 +82,7 @@ router.post('/register', validate(registerRules), async (req, res) => {
     const {username, email, password} = req.body;
 
     // Check if username OR email already exists, if so, do not proceed.
-    const foundUsername = await User.findOne({ username: username });
+    const foundUsername = await User.findOne({ username_lower: username.toLowerCase() });
     const foundEmail = await User.findOne({ email: email });
 
     let errs = [];
@@ -114,6 +113,7 @@ router.post('/register', validate(registerRules), async (req, res) => {
     const date = new Date();
     const user = new User({
         username: username,
+        username_lower: username.toLowerCase(),
         password: hash,
         active: false,
         email: email
@@ -199,11 +199,11 @@ router.get('/verify/:id', validate(verificationRules), async (req, res) => {
         return res.status(401).send('JWT expired, try registering again');
     }
 
-    if(!(await User.findOne({username: decoded.username})))
+    if(!(await User.findOne({username_lower: decoded.username.toLowerCase()})))
         return res.status(404).send('User not found, please try registering again.')
 
     try {
-        await User.updateOne({username: decoded.username}, {active: true});
+        await User.updateOne({username_lower: decoded.username.toLowerCase()}, {active: true});
         await Verification.deleteOne({urlID: id});
     }
     catch(err) {
