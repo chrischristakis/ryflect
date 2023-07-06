@@ -49,7 +49,7 @@ function UserMenu() {
                     expanded &&
                     <div className={style.overlay}>
                         <ul className={style.dropdown}>
-                            <DropdownItem text='logout' click={logout}/>
+                            <DropdownItem text='logout' click={async () => {await logout()}}/>
                             <DropdownItem text='FAQ' link='/faq'/>
                             <DropdownItem text='change password' link='/change-password'/>
                         </ul>
