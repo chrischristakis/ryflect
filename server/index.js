@@ -19,7 +19,14 @@ console.log(cryptoHelper.decrypt(encrypted.ciphertext, key, encrypted.iv))
 
 app.use(cors({
     credentials: true,  // We need this for cookies
-    origin: ['http://localhost:3000', '64.227.24.190', 'ryflect.ca', 'www.ryflect.ca'] // Localhost and website public ip
+    origin: [
+        'http://localhost:3000',
+        'http://64.227.24.190',
+        'http://ryflect.ca',
+        'http://www.ryflect.ca',
+        'https://ryflect.ca',
+        'https://www.ryflect.ca'
+    ] // Localhost and website public ip
 }));
 app.use(mongoSanitize());
 app.use(express.json());
