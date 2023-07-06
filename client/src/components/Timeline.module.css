@@ -25,5 +25,13 @@
     gap: 4px;
 
     width: 500px;
+
     margin: 0 auto; /* centers horizontally */
 }
+
+
+@media only screen and (max-width: 600px) {
+    .timeline {
+        width: 100%;
+    }
+  }

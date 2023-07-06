@@ -44,7 +44,7 @@
 - [x] Dummy FAQ, Change password pages
 - [x] Button loading gif while waiting for a response
 - [x] Put in Michelle's gif (Ty Michelle)
-- [ ] More basic styling...
+- [x] More basic styling...
 - [ ] Test deploy + feedback
 - [ ] Consider time capsule functionality
 - [ ] Start encrypting data
@@ -60,10 +60,10 @@
 - [ ] Change TEST_EMAIL in registration route to the user's actual email
 
 # Other
-- [ ] Buy domain
+- [x] Buy domain
 - [x] Look into host (Heroku, digital ocean)
 - [ ] Start looking into https (certbot)
-- [ ] Scripts for different running configs, whatever needs to be automated on prod
+- [ ] Scripts for running on prod
 
 # Future features
 - [ ] Time capsules
