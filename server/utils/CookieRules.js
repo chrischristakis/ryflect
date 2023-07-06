@@ -16,18 +16,10 @@ module.exports = {
             secure: true,
             maxAge: COOKIE_LIFESPAN
         },
-    username_cookie: (ENV !== 'development')?
+    username_cookie:
         {
             sameSite: 'lax',
             httpOnly: false,
-            secure: true,
-            maxAge: COOKIE_LIFESPAN
-        }
-        :
-        { 
-            sameSite: 'none',
-            httpOnly: false,
-            secure: true,
             maxAge: COOKIE_LIFESPAN
         }
 };

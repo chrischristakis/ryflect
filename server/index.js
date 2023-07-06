@@ -18,8 +18,7 @@ console.log(encrypted.ciphertext);
 console.log(cryptoHelper.decrypt(encrypted.ciphertext, key, encrypted.iv))
 
 app.use(cors({
-    credentials: true,
-    origin: ['http://localhost:3000', 'http://localhost:5000'] // Only needed in dev since in prod, will be served statically.
+    origin: ['localhost', '64.227.24.190'] // Localhost and website public ip
 }));
 app.use(mongoSanitize());
 app.use(express.json());
