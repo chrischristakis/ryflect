@@ -15,11 +15,5 @@ module.exports = {
             sameSite: 'none',
             secure: true,
             maxAge: COOKIE_LIFESPAN
-        },
-    username_cookie:
-        {
-            sameSite: 'lax',
-            httpOnly: false,
-            maxAge: COOKIE_LIFESPAN
         }
 };

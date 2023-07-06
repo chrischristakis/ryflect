@@ -1,24 +1,32 @@
-import { createContext, useContext } from 'react';
+import { createContext, useContext, useState } from 'react';
 import axios from 'axios';
 import { API_URL } from '../config';
-import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
+import { handleError } from '../utils/HandleResponse';
 
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
 
     const navigate = useNavigate();
+    const [username, setUsername] = useState(null);
     
     // Check if we have a jwt cookie present, if so assume we're logged in already
-    function checkLoginCookie() {        
-        return Cookies.get('jwt') !== undefined && Cookies.get('username') !== undefined;
-    }
-
-    // Get the cookie containing the username that is sent with the JWT cookie
-    function getUsernameCookie() {
-        const username = Cookies.get('username');
-        return username? username : 'undefined';
+    async function isAuthenticated() { 
+        try {
+            const res = await axios.get(API_URL+"/api/auth/ping");
+            if(!res.data.auth) {
+                setUsername(null)
+                return false;
+            }
+            setUsername(res.data.username)
+            return true;
+        }
+        catch(err) {
+            handleError(err);
+            setUsername(null);
+            return false;
+        }
     }
 
     async function login(username, password) {
@@ -48,8 +56,8 @@ export function AuthProvider({ children }) {
 
     return (
         <AuthContext.Provider value={{
-                checkLoginCookie,
-                getUsernameCookie,
+                isAuthenticated,
+                username,
                 login,
                 logout
             }}

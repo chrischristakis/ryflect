@@ -22,7 +22,7 @@ function App() {
         <Navbar/>
         <Routes>
           <Route path='/' element={
-            <AuthRoute redirect={<Landing/>}>
+            <AuthRoute key='/' redirect={<Landing/>}>
               <Home/>
             </AuthRoute>
           }/>
@@ -36,17 +36,17 @@ function App() {
             <VerifyEmail/>
           }/>
           <Route path='/create' element={
-            <AuthRoute redirect={<Navigate to='/login'/>}>
+            <AuthRoute key='/create' redirect={<Navigate to='/login'/>}>
               <CreateJournal/>
             </AuthRoute>
           }/>
           <Route path='/view/:id' element={
-            <AuthRoute redirect={<Navigate to='/login'/>}>
+            <AuthRoute key='/view/:id' redirect={<Navigate to='/login'/>}>
               <ViewJournal/>
             </AuthRoute>
           }/>
           <Route path='/change-password' element={
-            <AuthRoute redirect={<Navigate to='/login'/>}>
+            <AuthRoute key='/change-password' redirect={<Navigate to='/login'/>}>
               <ChangePassword/>
             </AuthRoute>
           }/>

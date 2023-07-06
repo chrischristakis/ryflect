@@ -22,7 +22,7 @@ function Navbar() {
 
 function UserMenu() {
 
-    const { logout, checkLoginCookie, getUsernameCookie } = useAuth();
+    const { logout, username } = useAuth();
     const [expanded, setExpanded] = useState(false);
 
     function DropdownItem({text='placeholder', link='#', click= (e) => {}}) {
@@ -39,11 +39,11 @@ function UserMenu() {
         );
     }
 
-    if(checkLoginCookie())
+    if(username)
         return(
             <>
                 <div className={style['username-dropdown']} onClick={(_) => setExpanded(!expanded)}>
-                    {getUsernameCookie()} <span style={{fontSize: '0.7em'}}>{expanded? '▲' : '▼'}</span>
+                    {username} <span style={{fontSize: '0.7em'}}>{expanded? '▲' : '▼'}</span>
                 </div>
                 {
                     expanded &&

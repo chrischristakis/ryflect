@@ -10,7 +10,7 @@ const Verification = require('../models/Verification.js');
 const { JWT_SECRET, TEST_EMAIL } = require('../utils/config.js');
 const crypto = require('crypto');
 const mailHelper = require('../utils/Mailhelper.js');
-const { token_cookie, username_cookie } = require('../utils/CookieRules.js');
+const { token_cookie } = require('../utils/CookieRules.js');
 
 const loginRules = [
     check('username', 'Enter a username').notEmpty()
@@ -74,7 +74,6 @@ router.post('/login', validate(loginRules), async (req, res) => {
     const token = jwt.sign({username: user.username}, JWT_SECRET, { expiresIn: '1800s' });
 
     res.cookie("jwt", token, token_cookie);
-    res.cookie("username", user.username, username_cookie);
 
     return res.send(token);
 });
@@ -213,19 +212,31 @@ router.get('/verify/:id', validate(verificationRules), async (req, res) => {
     }
 
     res.cookie("jwt", entry.token, token_cookie);
-    res.cookie("username", decoded.username, username_cookie);
 
     res.send(entry.token);
 });
 
-router.get('/ping', verify.user, (req, res) => {
-    res.cookie("username", req.userinfo.username, username_cookie);  // Might as well refresh the username incase it was changed by the user.
-    res.send('Pong');
+router.get('/ping', (req, res) => {
+    // I don't want an error to show up in the browser console if the user isn't authed on the ping route, so instead
+    // of sending backa 401, if they aren't authed we're just sending back false.
+
+    const token = req.cookies['jwt'];
+    if(!token)
+        return res.send({auth: false})
+
+    try {
+        const body = jwt.verify(token, JWT_SECRET);
+        return res.send({auth: true, username: body.username});
+    }
+    catch(err) {
+        if(err.message)
+            return res.send({auth: false});
+        return res.status(500).send({error: err});
+    };
 });
 
 router.post('/logout', (req, res) => {
     res.clearCookie('jwt');
-    res.clearCookie('username');
     return res.send('Logged out');
 });
 

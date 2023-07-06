@@ -18,7 +18,8 @@ console.log(encrypted.ciphertext);
 console.log(cryptoHelper.decrypt(encrypted.ciphertext, key, encrypted.iv))
 
 app.use(cors({
-    origin: ['localhost', '64.227.24.190'] // Localhost and website public ip
+    credentials: true,  // We need this for cookies
+    origin: ['http://localhost:3000', '64.227.24.190'] // Localhost and website public ip
 }));
 app.use(mongoSanitize());
 app.use(express.json());
