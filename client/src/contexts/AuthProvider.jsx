@@ -47,6 +47,7 @@ export function AuthProvider({ children }) {
         // TODO: clear cookie with express call
         try {
             await axios.post(API_URL+"/api/auth/logout");
+            setUsername(null);
             navigate('/login'); // Redirect back to login page
         }
         catch(err) {

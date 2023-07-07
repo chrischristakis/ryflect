@@ -45,7 +45,7 @@
 - [x] Button loading gif while waiting for a response
 - [x] Put in Michelle's gif (Ty Michelle)
 - [x] More basic styling...
-- [ ] Test deploy + feedback
+- [x] Test deploy + feedback
 - [ ] Consider time capsule functionality
 - [ ] Start encrypting data
     - Put server secret key into config, and change it once a day on a cron.
@@ -62,7 +62,7 @@
 # Other
 - [x] Buy domain
 - [x] Look into host (Heroku, digital ocean)
-- [ ] Start looking into https (certbot)
+- [x] Start looking into https (certbot)
 - [ ] Scripts for running on prod
 
 # Future features
