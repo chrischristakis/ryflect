@@ -17,6 +17,11 @@
 - [x] Sanitize inputs
 - [x] Email registration code
 - [x] Set up CRON jobs for deleting old unactivated users and old verification entries (Can do both in one job)
+- [ ] Time capsule implementation
+- [ ] Email users whenever a time capsule is opened.
+    - How do we do this efficiently with bulk... make sure each email is sent asynchronously.
+- [ ] Move username validation (if it exists) into verify middleware instead.
+- [ ] Pagination for recents
 - [ ] Change routes to account for encryption
 
 # Front end
@@ -46,7 +51,13 @@
 - [x] Put in Michelle's gif (Ty Michelle)
 - [x] More basic styling...
 - [x] Test deploy + feedback
-- [ ] Consider time capsule functionality
+- [ ] Make API call per year on home for timeline so we dont get the entire bulky JournalIDs object when we only need it for a year.
+- [ ] Display time capsules
+- [ ] Only let user go back to the year they started journaling
+    - Also add upper bound to how far in the future they can scroll?
+- [ ] Timeline overflow bug
+- [ ] Pagination for recents (infinite scroll)
+- [ ] Word counter on frontend to match back end.
 - [ ] Start encrypting data
     - Put server secret key into config, and change it once a day on a cron.
     - Encrypt text into db (with dummy user key)
@@ -57,13 +68,15 @@
     - Display a pop up or something
 - [ ] Random message in writing box as a prompt
 - [ ] Styling
-- [ ] Change TEST_EMAIL in registration route to the user's actual email
+    - Consider web/mobile
 
 # Other
 - [x] Buy domain
 - [x] Look into host (Heroku, digital ocean)
 - [x] Start looking into https (certbot)
 - [ ] Scripts for running on prod
+- [ ] Change email to custom domain to hopefully avoid spam.
+    - If this doesn't work, look into DMARC
 
 # Future features
 - [ ] Time capsules

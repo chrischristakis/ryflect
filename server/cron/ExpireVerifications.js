@@ -11,7 +11,7 @@ function getExpiryThresholdDate(threshold) {
     return d;
 }
 
-module.exports.expireVerifications = async () => {
+module.exports = async () => {
     let expired = 0;
     const expiryThreshold = getExpiryThresholdDate(LIFESPAN_MINS);
 

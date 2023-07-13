@@ -6,6 +6,10 @@ const journalSchema = new mongoose.Schema({
         unique: true,
         required: true
     },
+    username: {
+        type: String,
+        required: true 
+    },
     date: { 
         type: String,
         required: true
@@ -17,7 +21,18 @@ const journalSchema = new mongoose.Schema({
     emoji: {
         type: String,
         default: '📕'
+    },
+
+    // Below are only for time capsule entries.
+    unlock_date: {
+        type: Date,
+        required: false,
+    },
+    locked: {
+        type: Boolean,
+        required: false
     }
+
 });
 
 module.exports = mongoose.model('Journal', journalSchema);

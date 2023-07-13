@@ -43,6 +43,18 @@ const userSchema = new mongoose.Schema({
             }
         },
         default: {}
+    },
+    capsuleIDs: { // Deliberately seperate from JournalIDs for easier parsing.
+        type: Map,
+        of: {
+            _id: false,
+            ids: {
+                _id: false,
+                type: Map,
+                of: String
+            }
+        },
+        default: {}
     }
 });
 

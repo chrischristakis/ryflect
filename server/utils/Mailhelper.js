@@ -1,5 +1,5 @@
 const nodemailer = require('nodemailer');
-const { WEBAPP_URL } = require('../utils/config.js');
+const { WEBAPP_URL, ENV, TEST_EMAIL } = require('../utils/config.js');
 
 const client = nodemailer.createTransport({
     service: "gmail",
@@ -48,6 +48,8 @@ module.exports.sendVerification = async function(recipient, verificationID) {
             </td>
         </tr>
     </table>`;
+    
+    recipient = (ENV !== 'development')? recipient : TEST_EMAIL;
     
     try {
         const response = await sendMail(recipient, 
