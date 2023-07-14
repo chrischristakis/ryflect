@@ -61,3 +61,30 @@ module.exports.sendVerification = async function(recipient, verificationID) {
         throw err;
     }
 };
+
+module.exports.sendCapsuleNotification = async (recipient, capsuleDate) => {
+    const emailBody = `
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+                <td align="center">
+                    <h1>A time capsule you made on ${capsuleDate} has been unlocked!</h1>
+                    <br/><br>
+                    <p>This is an automated response to inform you that your time capsule has opened and you can view it.</p>
+                    <p>Please visit <a href='https://ryflect.ca'>ryflect</a> to see what you left for yourself :)</p>
+                </td>
+            </tr>
+        </table>
+    `;
+
+    recipient = (ENV !== 'development')? recipient : TEST_EMAIL;
+    
+    try {
+        const response = await sendMail(recipient, 
+                                        'A time capsule has unlocked!', 
+                                        emailBody);
+        return response;
+    }
+    catch(err) {
+        throw err;
+    }
+}

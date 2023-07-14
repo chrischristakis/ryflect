@@ -17,10 +17,10 @@
 - [x] Sanitize inputs
 - [x] Email registration code
 - [x] Set up CRON jobs for deleting old unactivated users and old verification entries (Can do both in one job)
-- [ ] Time capsule implementation
-- [ ] Email users whenever a time capsule is opened.
+- [x] Time capsule implementation
+- [x] Email users whenever a time capsule is opened.
     - How do we do this efficiently with bulk... make sure each email is sent asynchronously.
-- [ ] Move username validation (if it exists) into verify middleware instead.
+- [x] Move username validation (if it exists) into verify middleware instead.
 - [ ] Pagination for recents
 - [ ] Change routes to account for encryption
 
@@ -77,8 +77,3 @@
 - [ ] Scripts for running on prod
 - [ ] Change email to custom domain to hopefully avoid spam.
     - If this doesn't work, look into DMARC
-
-# Future features
-- [ ] Time capsules
-- [ ] Footnotes (Titles)
-- [ ] Mood tracking

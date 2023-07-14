@@ -20,7 +20,7 @@ module.exports = async () => {
         const usersToExpire = await User.deleteMany({active: false, created: {$lte: expiryThreshold}});
         const verificationsToExpire = await Verification.deleteMany({created: {$lte: expiryThreshold}});
         if(verificationsToExpire.deletedCount + verificationsToExpire.deletedCount > 0)
-            console.log(`Num of expired Verifications: ${verificationsToExpire.deletedCount} / Users: ${verificationsToExpire.deletedCount}`);
+            console.log(`[CRON]: Num of expired Verifications: ${verificationsToExpire.deletedCount} / Users: ${usersToExpire.deletedCount}`);
     }
     catch(err) {
         console.log(err);

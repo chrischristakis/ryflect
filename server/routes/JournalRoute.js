@@ -52,6 +52,11 @@ router.get('/id/:id', verify.user, async (req, res) => {
     if(usernameInId !== req.user.username)
         return res.status(403).send({error: `You are not authorized to view this content.`});
 
+    if(found.locked) {
+        const unlock_date = (found.unlock_date)? new Date(found.unlock_date) : 'null';
+        return res.status(403).send({error: `You cannot view this capsule entry yet! Come back on ${getDate(unlock_date)}`});
+    }
+
     return res.send(found);
 });
 
@@ -141,7 +146,7 @@ router.post('/', verify.user, validate(journalRules), async (req, res) => {
 // Create a new time capsule entry
 router.post('/timecapsule', verify.user, validate(capsuleRules), async (req, res) => {
 
-    const UPPER_YEAR_BOUND = 100; // Only allow capsules 100 years in the future tops.
+    const UPPER_YEAR_BOUND = 100; // Only allow capsules 100 years in the future.
     const MAX_PENDING_CAPSULES = 100;
 
     let {text, emoji, unlock_year, unlock_month, unlock_day} = req.body;
