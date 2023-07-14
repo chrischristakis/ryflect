@@ -21,9 +21,6 @@ app.use(cors({
     credentials: true,  // We need this for cookies
     origin: [
         'http://localhost:3000',
-        'http://64.227.24.190',
-        'http://ryflect.ca',
-        'http://www.ryflect.ca',
         'https://ryflect.ca',
         'https://www.ryflect.ca'
     ] // Localhost and website public ip
@@ -42,9 +39,9 @@ mongoose.connect(MONGO_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 }).then(() => {
-    console.log("Connected to MongoDB!");
+    console.log("[INFO] Connected to MongoDB!");
 }).catch((err) => {
-    console.log("Cannot connect to MongoDB: ", err);
+    console.log("[INFO] Cannot connect to MongoDB: ", err);
 });
 
 // All get requests not handled by our other routes serve the front end
@@ -54,5 +51,14 @@ app.get('*', (req, res) => {
 
 // Setup express server to listen on port
 app.listen(PORT, async () => {
-    console.log(`Running Ryflect as a ${ENV} app on port = ${PORT}`);
+    console.log(`
+                         __ _           _   
+                        / _| |         | |  
+             _ __ _   _| |_| | ___  ___| |_ 
+            | '__| | | |  _| |/ _ \\/ __| __|
+            | |  | |_| | | | |  __/ (__| |_ 
+            |_|   \\__, |_| |_|\\___|\\___|\\__|
+                   __/ |          ${ENV}          
+                  |___/           PORT: ${PORT}          
+    `)
 });
