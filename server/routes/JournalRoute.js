@@ -65,7 +65,7 @@ router.get('/year/:year', verify.user, async (req, res) => {
 
     // Check if the map actually contains and ids for a given year
     if(!req.user.journalIDs.has(req.params.year))
-        return res.status(400).send(`No journal entries made in ${req.params.year}`);
+        return res.status(200).send({});
 
     return res.send(req.user.journalIDs.get(req.params.year));
 });

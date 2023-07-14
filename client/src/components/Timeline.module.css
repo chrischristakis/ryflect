@@ -5,15 +5,23 @@
 }
 
 .year-selector {
-    height: 50px;
-    width: 100px;
-    margin: 0 auto;
+    margin: 10px auto;
     display: table;
 }
 
 .year-selector span {
     display: table-cell;
     vertical-align: middle;
+}
+
+.year-selector .arrow-wrapper {
+    min-width: 45px;
+}
+
+.year-selector .selected-year {
+    user-select: none;
+    min-width: 80px;
+    padding-bottom: 2px; /* to nudge text vertically a bit for a more pleasing effect */
 }
 
 .timeline {

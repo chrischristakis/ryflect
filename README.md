@@ -51,12 +51,15 @@
 - [x] Put in Michelle's gif (Ty Michelle)
 - [x] More basic styling...
 - [x] Test deploy + feedback
-- [ ] Make API call per year on home for timeline so we dont get the entire bulky JournalIDs object when we only need it for a year.
-- [ ] Display time capsules
-- [ ] Only let user go back to the year they started journaling
+- [x] Only let user go back to the year they started journaling
     - Also add upper bound to how far in the future they can scroll?
+- [ ] Add carousel for years
+    - 'Scroll along the line' and enlarge center year
+    - animate it!
+- [ ] Display time capsules
 - [ ] Timeline overflow bug
 - [ ] Pagination for recents (infinite scroll)
+- [ ] Text shoudln't overflow if one continuous line on view journal
 - [ ] Word counter on frontend to match back end.
 - [ ] Start encrypting data
     - Put server secret key into config, and change it once a day on a cron.
