@@ -4,5 +4,5 @@ const unlockAndNotifyCapsules = require('./UnlockAndNotifyCapsules');
 
 module.exports.beginCrons = () => {
     cron.schedule('* * * * *', expireVerifications);
-    cron.schedule('* * * * *', unlockAndNotifyCapsules);
+    cron.schedule('0 * * * *', unlockAndNotifyCapsules); // Once an hour
 }
