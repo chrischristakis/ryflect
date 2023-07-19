@@ -1,0 +1,27 @@
+.carousel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    mask-image: linear-gradient(to right, rgba(0,0,0,0.1), rgba(0,0,0,1), rgba(0,0,0,0.1));
+}
+
+.carousel-item {
+    overflow: hidden;
+    color: grey;
+    user-select: none;
+    cursor: pointer;
+
+    /* to center text */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: margin-left 0.35s ease;
+}
+
+.selected-item {
+    color: black;
+    font-weight: bold;
+    font-size: larger;
+}

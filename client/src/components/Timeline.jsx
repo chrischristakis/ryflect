@@ -1,46 +1,46 @@
 import { useEffect, useState } from 'react';
 import { getDaysInYear, getCurrentDayInYear, getDate, getDateFromIndex } from '../utils/utils';
 import style from './Timeline.module.css';
-import { FaArrowLeft } from 'react-icons/fa'
-import { FaArrowRight } from 'react-icons/fa'
 import TimelineCell from './TimelineCell';
 import { handleError } from '../utils/HandleResponse';
 import axios from 'axios';
 import { API_URL } from '../config';
-import { ReactComponent as Loading } from '../assets/loading.svg'; 
+import { ReactComponent as Loading } from '../assets/loading.svg';
+import Carousel from '../components/Carousel.jsx';
 
-const MAX_FUTURE_YEARS = 100;
+const MAX_FUTURE_YEARS = 50;
 
 function Timeline({date}) {
     const [timeline, setTimeline] = useState([]);
     const [selectedYear, setSelectedYear] = useState(date.getUTCFullYear());
-    const [upperYearBound, setUpperYearBound] = useState(date.getUTCFullYear() + MAX_FUTURE_YEARS);
-    const [lowerYearBound, setLowerYearBound] = useState(date.getUTCFullYear());
     const [journalIDs, setJournalIDs] = useState(null);
+    const [carouselVals, setCarouselVals] = useState([]);
 
     useEffect(() => {
         (async function() {
             try {
-                const response = await axios.get(API_URL + '/api/journals');
+                const journalResponse = await axios.get(API_URL + '/api/journals');
 
                 // get the lowest year in the map
-                const earliest_year = Math.min(...Object.keys(response.data));
+                const earliest_year = Math.min(...Object.keys(journalResponse.data), 2023);
 
-                setLowerYearBound(earliest_year);
-                setJournalIDs(response.data);
+                let yearRange = [];
+                for (let i = earliest_year; i <= earliest_year + MAX_FUTURE_YEARS; i++)
+                    yearRange.push(i);
+
+                setCarouselVals(yearRange);
+                setJournalIDs(journalResponse.data);
             }
             catch(err) {
                 console.log(err);
                 handleError(err);
             }
         })();
-    }, []);
+    }, [date]);
 
     useEffect(() => {
         if(!journalIDs || !date)
             return;
-
-        setUpperYearBound(date.getUTCFullYear() + MAX_FUTURE_YEARS);
 
         // - Build timeline based off these journalIDs - //
         const daysInYear = getDaysInYear(selectedYear);
@@ -61,35 +61,27 @@ function Timeline({date}) {
         setTimeline(temp_timeline);
     }, [date, journalIDs, selectedYear]); // We reload timeline either when our ids are loaded, or year is changed.
 
-    if(!journalIDs)
-        return <Loading/>;
-
     return (
         <div className={style['timeline-wrapper']}>
-            <div className={style['year-selector']}>
-                <span className={style['arrow-wrapper']}>
-                    {
-                        selectedYear <= lowerYearBound? null
-                        :
-                        <FaArrowLeft style={{color: 'black', fontSize: '40px', cursor: 'pointer'}} onClick={() => setSelectedYear(selectedYear-1)}/>
-                    }
-                </span>
-
-                <span className={style['selected-year']} onClick={() => setSelectedYear(date.getUTCFullYear())}>
-                    {selectedYear}
-                </span>
-
-                <span className={style['arrow-wrapper']}>
-                    {
-                        selectedYear >= upperYearBound? null
-                        :
-                        <FaArrowRight style={{color: 'black', fontSize: '40px', cursor: 'pointer'}} onClick={() => setSelectedYear(selectedYear+1)}/>
-                    }
-                </span>
-            </div>
-            <div className={style.timeline}>
-                {timeline}
-            </div>
+            {!journalIDs?
+                <div><Loading/></div>
+            :
+                <>
+                <div className={style['year-selector']}>
+                    <Carousel
+                        values={carouselVals.map((e) => e.toString())}
+                        cellWidth={60}
+                        cellHeight={35}
+                        cellGap={25}
+                        selectedIndex={1}
+                        indexChangeCallback={(index) => {setSelectedYear(carouselVals[index])}}
+                    />
+                </div>
+                <div className={style.timeline}>
+                    {timeline}
+                </div>
+                </>
+            }
         </div>
     );
 }

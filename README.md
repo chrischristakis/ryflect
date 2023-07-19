@@ -53,9 +53,10 @@
 - [x] Test deploy + feedback
 - [x] Only let user go back to the year they started journaling
     - Also add upper bound to how far in the future they can scroll?
-- [ ] Add carousel for years
+- [x] Add carousel for years
     - 'Scroll along the line' and enlarge center year
     - animate it!
+- [x] Reconsider how we render the 'create entry' button, since the entire timeline is being rerendered every second. Try to isolate just the button to rerender.
 - [ ] Display time capsules
 - [ ] Timeline overflow bug
 - [ ] Pagination for recents (infinite scroll)
