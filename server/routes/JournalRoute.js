@@ -42,6 +42,7 @@ router.get('/', verify.user, async (req, res) => {
 
 // Get a journal entry with a specified journal ID
 router.get('/id/:id', verify.user, async (req, res) => {
+    // TODO: Validate
     const id = req.params.id;
 
     const found = await Journals.findOne({id: id});
@@ -58,16 +59,6 @@ router.get('/id/:id', verify.user, async (req, res) => {
     }
 
     return res.send(found);
-});
-
-// Get all journal entries in a year
-router.get('/year/:year', verify.user, async (req, res) => {
-
-    // Check if the map actually contains and ids for a given year
-    if(!req.user.journalIDs.has(req.params.year))
-        return res.status(200).send({});
-
-    return res.send(req.user.journalIDs.get(req.params.year));
 });
 
 // Compile a list of a user's most recent journal entries

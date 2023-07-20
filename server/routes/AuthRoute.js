@@ -33,7 +33,7 @@ const registerRules = [
         .escape(),
     check('email', 'Email must be valid').isEmail()
         .isLength({max: 100}).withMessage("Email should be less than 100 characters")
-        .trim().escape().normalizeEmail()
+        .normalizeEmail()
 ].concat(loginRules);
 
 const verificationRules = [
@@ -218,7 +218,7 @@ router.get('/verify/:id', validate(verificationRules), async (req, res) => {
 
 router.get('/ping', (req, res) => {
     // I don't want an error to show up in the browser console if the user isn't authed on the ping route, so instead
-    // of sending backa 401, if they aren't authed we're just sending back false.
+    // of sending back a 401, if they aren't authed we're just sending back false.
 
     const token = req.cookies['jwt'];
     if(!token)

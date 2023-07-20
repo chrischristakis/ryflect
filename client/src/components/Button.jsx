@@ -13,10 +13,8 @@ function Button({text="placeholder", clickEvent=async ()=>{}, type='button', dis
             return;
 
         setTimeout(() => {
-            if(displayConfirm) {
-                console.log('running!')
+            if(displayConfirm)
                 setDisplayConfirm(false);
-            }
         }, 4000);
     }, [displayConfirm, setDisplayConfirm])
 

@@ -21,6 +21,8 @@
 - [x] Email users whenever a time capsule is opened.
     - How do we do this efficiently with bulk... make sure each email is sent asynchronously.
 - [x] Move username validation (if it exists) into verify middleware instead.
+- [ ] Consider revamping JournalIDs and CapsuleIDs, since it may bloat the user document.
+    - Make it open to journal titles too.
 - [ ] Pagination for recents
 - [ ] Change routes to account for encryption
 
@@ -57,11 +59,12 @@
     - 'Scroll along the line' and enlarge center year
     - animate it!
 - [x] Reconsider how we render the 'create entry' button, since the entire timeline is being rerendered every second. Try to isolate just the button to rerender.
+- [ ] Pagination for recents (infinite scroll)
 - [ ] Display time capsules
 - [ ] Timeline overflow bug
-- [ ] Pagination for recents (infinite scroll)
 - [ ] Text shoudln't overflow if one continuous line on view journal
 - [ ] Word counter on frontend to match back end.
+    - Front end word count can be a little smaller than back end to account for html.
 - [ ] Start encrypting data
     - Put server secret key into config, and change it once a day on a cron.
     - Encrypt text into db (with dummy user key)
