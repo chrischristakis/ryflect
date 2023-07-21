@@ -11,7 +11,7 @@ const journalSchema = new mongoose.Schema({
         required: true 
     },
     date: { 
-        type: String,
+        type: Date,
         required: true
     },
     richtext: {
@@ -24,7 +24,11 @@ const journalSchema = new mongoose.Schema({
     },
 
     // Below are only for time capsule entries.
-    unlock_date: {
+    is_time_capsule: {
+        type: Boolean,
+        default: false
+    },
+    created_date: {
         type: Date,
         required: false,
     },

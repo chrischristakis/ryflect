@@ -16,7 +16,7 @@ export function AuthRoute({ children, redirect }) {
                 setAuthed({valid: false, loading: false});
         })();
 
-        return () => {
+        return () => {  // On unmount. We never get a loading state the second time we visit this component otherwise.
             setAuthed({valid: false, loading: true});
         };
     }, [isAuthenticated]);

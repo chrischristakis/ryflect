@@ -15,7 +15,7 @@ function ViewJournal() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        (async function() {
+        id && (async function() {
             try {
                 const res = await axios.get(API_URL + '/api/journals/id/'+id);
                 let tempEntry = res.data;

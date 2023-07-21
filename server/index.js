@@ -8,6 +8,7 @@ const { PORT, MONGO_URL, ENV } = require('./utils/config.js');
 const mongoSanitize = require('express-mongo-sanitize');
 const cookieParser = require('cookie-parser');
 const cron = require('./cron');
+const JSONValidator = require('./middleware/JSONValidator.js');
 
 const cryptoHelper = require('./utils/CryptoHelper.js');
 
@@ -18,7 +19,7 @@ console.log(encrypted.ciphertext);
 console.log(cryptoHelper.decrypt(encrypted.ciphertext, key, encrypted.iv))
 
 app.use(cors({
-    credentials: true,  // We need this for cookies
+    credentials: true,  // We need this for cookiesv to be stored on browser.
     origin: [
         'http://localhost:3000',
         'https://ryflect.ca',
@@ -26,7 +27,7 @@ app.use(cors({
     ] // Localhost and website public ip
 }));
 app.use(mongoSanitize());
-app.use(express.json());
+app.use(JSONValidator());
 app.use(cookieParser());
 app.use('/api', router);
 
