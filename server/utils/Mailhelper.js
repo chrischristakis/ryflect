@@ -6,7 +6,8 @@ const client = nodemailer.createTransport({
     auth: {
         user: 'ryflectsite@gmail.com',
         pass: process.env.GMAIL_APP_PASSWORD
-    }
+    },
+    from: 'ryflectsite@gmail.com'
 });
 
 async function sendMail(recipient, subject, body) {

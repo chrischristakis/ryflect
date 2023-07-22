@@ -10,7 +10,6 @@ import style from './Home.module.css';
 import axios from 'axios';
 import { handleError } from '../utils/HandleResponse';
 import { ReactComponent as Loading } from '../assets/loading.svg';
-import InfiniteScroll from 'react-infinite-scroll-component';
 
 let now = new Date();
 let endDate = new Date();
@@ -81,7 +80,6 @@ function NewEntryButton({setDate}) {
 
 function Home() {
     const [date, setDate] = useState(now);
-    const [items, setItems] = useState(['hi','hi','hi','hi','hi']);
 
     return (
         <div className={style['home-wrapper']}>
@@ -92,21 +90,6 @@ function Home() {
                 <NewEntryButton setDate={setDate}/>
             </JournalProvider>
             <hr/>
-            <div id={'infinite-scroll'} className={style['infinite-scroll']}>
-                <InfiniteScroll
-                    dataLength={items.length}
-                    next={() => {
-                        setItems([...items, 'hi','hi','hi','hi','hi'])
-                    }}
-                    hasMore={true}
-                    loader={<Loading/>}
-                    scrollableTarget='infinite-scroll'
-                >
-                    {items.map((e) => {
-                        return <p>{e}</p>
-                    })}
-                </InfiniteScroll>
-            </div>
             <div className={style['recents-wrapper']}>
                 <Recents/>
             </div>

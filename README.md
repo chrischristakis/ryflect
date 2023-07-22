@@ -21,9 +21,11 @@
 - [x] Email users whenever a time capsule is opened.
     - How do we do this efficiently with bulk... make sure each email is sent asynchronously.
 - [x] Move username validation (if it exists) into verify middleware instead.
-- [ ] Consider revamping JournalIDs and CapsuleIDs, since it may bloat the user document.
-    - Make it open to journal titles too.
-- [ ] Pagination for recents
+- [x] Consider revamping JournalIDs and CapsuleIDs, since it may bloat the user document.
+- [x] Pagination for recents
+- [x] Manual rate limit for registration, 5 registrations per ip per day
+- [x] NGINX rate limit for all routes, 5r/s
+- [ ] Set up mailing service instead of gmail
 - [ ] Change routes to account for encryption
 
 # Front end
@@ -60,6 +62,7 @@
     - animate it!
 - [x] Reconsider how we render the 'create entry' button, since the entire timeline is being rerendered every second. Try to isolate just the button to rerender.
 - [ ] Pagination for recents (infinite scroll)
+- [ ] One more production build to test spam emails and other new additions + feedback
 - [ ] Display time capsules
 - [ ] Timeline overflow bug
 - [ ] Text shoudln't overflow if one continuous line on view journal

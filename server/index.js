@@ -19,7 +19,7 @@ console.log(encrypted.ciphertext);
 console.log(cryptoHelper.decrypt(encrypted.ciphertext, key, encrypted.iv))
 
 app.use(cors({
-    credentials: true,  // We need this for cookiesv to be stored on browser.
+    credentials: true,  // We need this for cookies to be stored on browser.
     origin: [
         'http://localhost:3000',
         'https://ryflect.ca',

@@ -36,7 +36,6 @@ const journalSchema = new mongoose.Schema({
         type: Boolean,
         required: false
     }
-
 });
 
 module.exports = mongoose.model('Journal', journalSchema);

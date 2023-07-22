@@ -5,7 +5,7 @@ const User = require('../models/User.js');
 const { getDate, getDateID, getCurrentDayInYear } = require('../utils/utils.js');
 const verify = require('../middleware/verify.js');
 const validate = require('../middleware/validate.js');
-const { check, param } = require('express-validator');
+const { check, query } = require('express-validator');
 const DOMPurify = require('../utils/DOMPurify.js');
 const { emojis } = require('../utils/Constants.js');
 
@@ -30,7 +30,9 @@ const capsuleRules = [
 ];
 
 const recentRules = [
-    param('pageNumber').isInt({min: 0}).withMessage('Page number should be a psoitive integer')
+    query('limit').isInt({min: 0}).withMessage('Limit number should be a psoitive integer')
+        .escape().trim(),
+    query('skip').isInt({min: 0}).withMessage('Skip number should be a psoitive integer')
         .escape().trim()
 ];
 
@@ -115,19 +117,23 @@ router.get('/id/:id', verify.user, async (req, res) => {
 
 // Compile a paginated list of a user's most recent journal entries 
 // ! (Page index starts at 0)
-router.get('/recents/:pageNumber', verify.user, validate(recentRules), async (req, res) => {
-    const ENTRIES_PER_PAGE = 5;
-    const pageNumber = req.params.pageNumber;
+router.get('/recents', verify.user, validate(recentRules), async (req, res) => {
+    const {limit, skip} = req.query;
 
-    const paginatedRecents = await Journals.find(
-        {   
-            username: req.user.username, 
-            locked: {$ne: true}, 
-            date: {$lte: new Date().toUTCString()}
-        },
-    ).sort({date: -1}).skip(ENTRIES_PER_PAGE * pageNumber).limit(ENTRIES_PER_PAGE);
-
-    return res.send(paginatedRecents);
+    try {
+        const paginatedRecents = await Journals.find(
+            {   
+                username: req.user.username, 
+                locked: {$ne: true}, 
+                date: {$lte: new Date().toUTCString()}
+            },
+        ).sort({date: -1}).skip(skip).limit(limit);
+        return res.send(paginatedRecents);
+    }
+    catch(err) {
+        console.log('ERR [GET journals/recents]: ', err);
+        return res.status(500).send({error: err});
+    }
 });
 
 // Save a new journal entry
@@ -168,7 +174,7 @@ router.post('/', verify.user, validate(journalRules), async (req, res) => {
 // Create a new time capsule entry
 router.post('/timecapsule', verify.user, validate(capsuleRules), async (req, res) => {
 
-    const UPPER_YEAR_BOUND = 50; // Only allow capsules 100 years in the future.
+    const UPPER_YEAR_BOUND = 50; // Only allow capsules 50 years in the future.
     const MAX_PENDING_CAPSULES = 100;
 
     let {text, emoji, unlock_year, unlock_month, unlock_day} = req.body;
@@ -176,7 +182,7 @@ router.post('/timecapsule', verify.user, validate(capsuleRules), async (req, res
 
     const pendingCapsules = await Journals.find({username: req.user.username, locked: true});
     if(pendingCapsules.length >= MAX_PENDING_CAPSULES)
-        return res.status(429).send({error: `Sorry, but you can only have ${MAX_PENDING_CAPSULES} pending capsules at one time.`});
+        return res.status(400).send({error: `Sorry, but you can only have ${MAX_PENDING_CAPSULES} pending capsules at one time.`});
 
     const today = new Date();
 

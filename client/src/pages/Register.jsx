@@ -91,11 +91,6 @@ function Register() {
         catch(err) {
             handleError(err);
         }
-        finally {
-            setTimeout(() => {
-                setResendDisabled(false);
-            }, 12000);
-        }
     }
 
     // If user registered and is waiting verification, show them this instead pf the registration form
