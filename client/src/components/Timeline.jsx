@@ -13,57 +13,70 @@ const MAX_FUTURE_YEARS = 50;
 function Timeline({date}) {
     const [timeline, setTimeline] = useState([]);
     const [selectedYear, setSelectedYear] = useState(date.getUTCFullYear());
-    const [journalIDs, setJournalIDs] = useState(null);
+    const [journalMap, setJournalMap] = useState(null);
     const [carouselVals, setCarouselVals] = useState([]);
+    const [initialYearIndex, setInitialYearIndex] = useState(0);
 
     useEffect(() => {
         (async function() {
             try {
-                const journalResponse = await axios.get(API_URL + '/api/journals');
+                const res = await axios.get(API_URL + '/api/journals');
 
-                // get the lowest year in the map
-                const earliest_year = Math.min(...Object.keys(journalResponse.data), 2023);
+                const current_year = date.getUTCFullYear();
+                const earliest_year = Math.min(...Object.keys(res.data), current_year);
 
                 let yearRange = [];
-                for (let i = earliest_year; i <= earliest_year + MAX_FUTURE_YEARS; i++)
+                for (let i = earliest_year; i <= current_year + MAX_FUTURE_YEARS; i++) {
                     yearRange.push(i);
+                    
+                    // Centers the carousel at the current year, not the year of the first entry.
+                    if(i === current_year)
+                        setInitialYearIndex(yearRange.length - 1);
+                }
 
                 setCarouselVals(yearRange);
-                setJournalIDs(journalResponse.data);
+                setJournalMap(res.data);
             }
             catch(err) {
-                console.log(err);
                 handleError(err);
             }
         })();
     }, [date]);
 
     useEffect(() => {
-        if(!journalIDs || !date)
+        if(!journalMap || !date)
             return;
 
         // - Build timeline based off these journalIDs - //
         const daysInYear = getDaysInYear(selectedYear);
         const currDay = {year: date.getUTCFullYear(), day:getCurrentDayInYear(date)};
 
+        const yearMap = journalMap[selectedYear];
+
         let temp_timeline = [];
         for(let i = 0; i < daysInYear; i++) {
-
-            const journalId = (selectedYear in journalIDs && journalIDs[selectedYear].ids[i])? 
-                journalIDs[selectedYear].ids[i] : null;
 
             // So that we dont see the current day selector on other years as we scroll through them
             const isCurrentDay = (i === currDay.day && selectedYear === currDay.year); 
             const dateString = getDate(getDateFromIndex(i, selectedYear));
 
-            temp_timeline.push(<TimelineCell key={i} journalId={journalId} isCurrentDay={isCurrentDay} date={dateString}/>);
+            if(!yearMap) {
+                temp_timeline.push(<TimelineCell key={i} isCurrentDay={isCurrentDay} date={dateString}/>);
+                continue;
+            }
+
+            const ids = yearMap[i];
+            const journalID = (ids && ids['journalID'])? ids['journalID']: null;
+            const capsuleID = (ids && ids['capsuleID'])? ids['capsuleID']: null;
+
+            temp_timeline.push(<TimelineCell key={i} journalID={journalID} capsuleID={capsuleID} isCurrentDay={isCurrentDay} date={dateString}/>);
         }
         setTimeline(temp_timeline);
-    }, [date, journalIDs, selectedYear]); // We reload timeline either when our ids are loaded, or year is changed.
+    }, [date, journalMap, selectedYear]); // We reload timeline either when our ids are loaded, or year is changed.
 
     return (
         <div className={style['timeline-wrapper']}>
-            {!journalIDs?
+            {!journalMap?
                 <div><Loading/></div>
             :
                 <>
@@ -73,7 +86,7 @@ function Timeline({date}) {
                         cellWidth={60}
                         cellHeight={35}
                         cellGap={25}
-                        selectedIndex={1}
+                        initialIndex={initialYearIndex}
                         indexChangeCallback={(index) => {setSelectedYear(carouselVals[index])}}
                     />
                 </div>

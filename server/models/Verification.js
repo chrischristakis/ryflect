@@ -12,6 +12,10 @@ const verificationSchema = new mongoose.Schema({
     created: {
         type: Date,
         default: Date.now
+    },
+    hasResentEmail: {
+        type: Boolean,
+        default: false
     }
 });
 

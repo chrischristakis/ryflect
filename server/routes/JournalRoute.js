@@ -5,7 +5,7 @@ const User = require('../models/User.js');
 const { getDate, getDateID, getCurrentDayInYear } = require('../utils/utils.js');
 const verify = require('../middleware/verify.js');
 const validate = require('../middleware/validate.js');
-const { check } = require('express-validator');
+const { check, query } = require('express-validator');
 const DOMPurify = require('../utils/DOMPurify.js');
 const { emojis } = require('../utils/Constants.js');
 
@@ -29,15 +29,69 @@ const capsuleRules = [
     check('unlock_day').isInt({min: 0}).withMessage('Unlock day must be a positive number')
 ];
 
-// Get all user's journal IDS through all years
-router.get('/', verify.user, async (req, res) => {
-    // Transform from a map object to a object
-    let idMap = {};
-    for(const [key, value] of req.user.journalIDs) {
-        idMap[key] = value;
-    }
+const recentRules = [
+    query('limit').isInt({min: 0}).withMessage('Limit number should be a psoitive integer')
+        .escape().trim(),
+    query('skip').isInt({min: 0}).withMessage('Skip number should be a psoitive integer')
+        .escape().trim()
+];
 
-    return res.status(200).send(idMap);
+// Get all journal IDs and Capsule IDs neatly arranged into indices of a year
+router.get('/', verify.user, async (req, res) => {
+    try {
+        // Group journal entries belonging to a user by their year, and only return relevant properties (NOT ORDERED)
+        const groupedJournalsByYear = await Journals.aggregate([
+            { $match: { username: req.user.username } },
+            {
+                $group: {
+                    _id: { $year: '$date' },
+                    journals: { 
+                        $push: {
+                            id: '$id',
+                            date: '$date',
+                            is_time_capsule: '$is_time_capsule',
+                            created_date: '$created_date'
+                        } 
+                    }
+                }
+            },
+            {
+                $project: {
+                    year: '$_id',
+                    journals: 1
+                }
+            }
+        ]);
+
+        let idMap = new Map();
+
+        for(const yearGroup of groupedJournalsByYear) {
+            let yearMap = new Map();
+    
+            for(const journal of yearGroup.journals) {
+                // Index from [0-364/365]
+                const dayIndex = getCurrentDayInYear(new Date(journal.date));
+    
+                let data = {};
+                if(yearMap.has(dayIndex))
+                    data = {...yearMap.get(dayIndex)}
+    
+                if(journal.is_time_capsule)
+                    data['capsuleID'] = journal.id;
+                else
+                    data['journalID'] = journal.id;
+    
+                yearMap.set(dayIndex, data);
+            }
+            idMap.set(yearGroup.year, Object.fromEntries(yearMap.entries()))
+        }
+    
+        return res.send(Object.fromEntries(idMap.entries()));
+    }
+    catch(err) {
+        console.log('ERR [GET journals/]: ', err);
+        return res.status(500).send({error: err});
+    }
 });
 
 // Get a journal entry with a specified journal ID
@@ -54,24 +108,27 @@ router.get('/id/:id', verify.user, async (req, res) => {
         return res.status(403).send({error: `You are not authorized to view this content.`});
 
     if(found.locked) {
-        const unlock_date = (found.unlock_date)? new Date(found.unlock_date) : 'null';
+        const unlock_date = found.date;
         return res.status(403).send({error: `You cannot view this capsule entry yet! Come back on ${getDate(unlock_date)}`});
     }
 
     return res.send(found);
 });
 
-// Compile a list of a user's most recent journal entries
-router.get('/recents', verify.user, async (req, res) => {
+// Compile a paginated list of a user's most recent journal entries 
+// ! (Page index starts at 0)
+router.get('/recents', verify.user, validate(recentRules), async (req, res) => {
+    const {limit, skip} = req.query;
+
     try {
-        const recentIDs = req.user.recentJournals;
-        let recents = await Promise.all(recentIDs.map(async (id) => await Journals.findOne({id: id})));
-
-        // If a id is in recents, but the journal was deleted for some reason, just removes null entries.
-        // shouldn't really happen outside of dev but whatever.
-        recents = recents.filter((obj) => obj); 
-
-        return res.send(recents);
+        const paginatedRecents = await Journals.find(
+            {   
+                username: req.user.username, 
+                locked: {$ne: true}, 
+                date: {$lte: new Date().toUTCString()}
+            },
+        ).sort({date: -1}).skip(skip).limit(limit);
+        return res.send(paginatedRecents);
     }
     catch(err) {
         console.log('ERR [GET journals/recents]: ', err);
@@ -81,11 +138,7 @@ router.get('/recents', verify.user, async (req, res) => {
 
 // Save a new journal entry
 router.post('/', verify.user, validate(journalRules), async (req, res) => {
-    const MAX_RECENTS = 5;
-
     let text = DOMPurify.sanitize(req.body.text);
-
-    const user = await User.findOne({username: req.user.username});
 
     const date = new Date();
     const journalID = getDateID(date, req.user.username);
@@ -103,29 +156,13 @@ router.post('/', verify.user, validate(journalRules), async (req, res) => {
     const journal = new Journals({
         id: journalID,
         username: req.user.username,
-        date: getDate(date),
+        date: date.toISOString(),
         richtext: text,
         emoji: req.body.emoji
     });
 
     try {
         await journal.save();
-
-        // Append beginning of list, then slice out excess.
-        let recents = req.user.recentJournals;
-        recents.unshift(journalID);
-        recents = recents.slice(0, MAX_RECENTS);
-
-        await User.updateOne(
-            {username: req.user.username},
-            {
-                $set: {
-                    recentJournals: recents,
-                    [`journalIDs.${date.getUTCFullYear()}.ids.${getCurrentDayInYear(date)}`]: journalID
-                }
-            }
-        );
-    
         return res.send({message: "Journal was successfully saved!"});
     } 
     catch(err) {
@@ -137,7 +174,7 @@ router.post('/', verify.user, validate(journalRules), async (req, res) => {
 // Create a new time capsule entry
 router.post('/timecapsule', verify.user, validate(capsuleRules), async (req, res) => {
 
-    const UPPER_YEAR_BOUND = 100; // Only allow capsules 100 years in the future.
+    const UPPER_YEAR_BOUND = 50; // Only allow capsules 50 years in the future.
     const MAX_PENDING_CAPSULES = 100;
 
     let {text, emoji, unlock_year, unlock_month, unlock_day} = req.body;
@@ -145,7 +182,7 @@ router.post('/timecapsule', verify.user, validate(capsuleRules), async (req, res
 
     const pendingCapsules = await Journals.find({username: req.user.username, locked: true});
     if(pendingCapsules.length >= MAX_PENDING_CAPSULES)
-        return res.status(429).send({error: `Sorry, but you can only have ${MAX_PENDING_CAPSULES} pending capsules at one time.`});
+        return res.status(400).send({error: `Sorry, but you can only have ${MAX_PENDING_CAPSULES} pending capsules at one time.`});
 
     const today = new Date();
 
@@ -168,7 +205,6 @@ router.post('/timecapsule', verify.user, validate(capsuleRules), async (req, res
     if(await Journals.findOne({id: capsuleID}))
         return res.status(409).send({error: `Capsule with ID '${capsuleID} already exists'`});
 
-
     let plaintext = text.replace(/<[^>]*>/g, ' ').replace(/\s+/g, " ").trim();
     if(!plaintext)
         text = '<p>I have nothing to say to you, future self. Good day.</p>'
@@ -176,22 +212,16 @@ router.post('/timecapsule', verify.user, validate(capsuleRules), async (req, res
     const capsule = new Journals({
         id: capsuleID,
         username: req.user.username,
-        date: getDate(today),
+        date: unlock_date.toISOString(),
         richtext: text,
         emoji: emoji,
-        unlock_date: unlock_date,
+        is_time_capsule: true,
+        created_date: today.toISOString(),
         locked: true
     });
 
     try {
         await capsule.save();
-        await User.updateOne(
-            {username: req.user.username},
-            {
-                $set: { [`capsuleIDs.${unlock_date.getUTCFullYear()}.ids.${getCurrentDayInYear(unlock_date)}`]: capsuleID }
-            }
-        );
-    
         return res.send({message: "Capsule was successfully saved!"});
     } 
     catch(err) {

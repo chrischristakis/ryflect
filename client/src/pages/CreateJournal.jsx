@@ -49,6 +49,7 @@ function CreateJournal() {
                     'Content-Type': 'application/json' 
                 }
             });
+            
             navigate('/');
         }
         catch(err) {

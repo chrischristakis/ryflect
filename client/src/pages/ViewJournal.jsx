@@ -4,6 +4,7 @@ import axios from 'axios';
 import { API_URL } from '../config';
 import DOMPurify from "dompurify";
 import { handleError } from '../utils/HandleResponse';
+import { getDate } from '../utils/utils.js';
 import DisplayError from '../components/DisplayError';
 import { ReactComponent as Loading } from '../assets/loading.svg';
 
@@ -13,14 +14,16 @@ function ViewJournal() {
     const [entry, setEntry] = useState(null);
     const [unauthorized, setUnauthorized] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [formattedDate, setFormattedDate] = useState();
 
     useEffect(() => {
-        (async function() {
+        id && (async function() {
             try {
                 const res = await axios.get(API_URL + '/api/journals/id/'+id);
                 let tempEntry = res.data;
 
                 setEntry(tempEntry);
+                setFormattedDate(getDate(new Date(tempEntry.date)));
             }
             catch(err) {
                 if(err.response && err.response.status === 403)
@@ -45,7 +48,7 @@ function ViewJournal() {
 
     return (
         <div>
-            <h3>{entry.date} {entry.emoji}</h3>
+            <h3>{formattedDate} {entry.emoji}</h3>
             <div 
                 style={{whiteSpace: 'pre'}} 
                 dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(entry.richtext) }}

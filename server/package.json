@@ -13,6 +13,7 @@
     "mongoose": "^7.0.3",
     "node-cron": "^3.0.2",
     "nodemailer": "^6.9.3",
+    "nodemailer-smtp-transport": "^2.7.4",
     "nodemon": "^2.0.22",
     "path": "^0.12.7"
   }

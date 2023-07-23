@@ -44,7 +44,6 @@ export function AuthProvider({ children }) {
     }
 
     async function logout() {
-        // TODO: clear cookie with express call
         try {
             await axios.post(API_URL+"/api/auth/logout");
             setUsername(null);

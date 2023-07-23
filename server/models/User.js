@@ -31,30 +31,6 @@ const userSchema = new mongoose.Schema({
     created: {
         type: Date,
         default: Date.now
-    },
-    journalIDs: {
-        type: Map,
-        of: {
-            _id: false,
-            ids: {
-                _id: false,
-                type: Map,
-                of: String
-            }
-        },
-        default: {}
-    },
-    capsuleIDs: { // Deliberately seperate from JournalIDs for easier parsing.
-        type: Map,
-        of: {
-            _id: false,
-            ids: {
-                _id: false,
-                type: Map,
-                of: String
-            }
-        },
-        default: {}
     }
 });
 

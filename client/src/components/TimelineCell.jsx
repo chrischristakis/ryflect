@@ -9,7 +9,7 @@ function getDistanceFromArrowToCell(arrowRef, cellRef) {
     return (cellBounds.left + cellBounds.width/2) - (arrowBounds.left + arrowBounds.width/2);
 }
 
-function TimelineCell({journalId, isCurrentDay, date}) {
+function TimelineCell({journalID, capsuleID, isCurrentDay, date}) {
 
     // We're gonna need to access all of these DOM elements, store them in refs
     const tooltip = useRef(null)
@@ -41,16 +41,24 @@ function TimelineCell({journalId, isCurrentDay, date}) {
     }
 
     const clickCell = (e) => {
-        if(!journalId)
+        if(!journalID && !capsuleID)
             return;
         
-        navigate('/view/'  + journalId);
+        if(journalID && capsuleID)
+            return alert('Both capsule and Journal exist. Must differentiate!');
+        
+        if(journalID)
+            return navigate('/view/' + journalID);
+
+        if(capsuleID)
+            return navigate('/view/' + capsuleID);
     }
 
     return (
         <div ref = {cell}
              className={`${style.cell} 
-                         ${journalId && style['active-cell']} 
+                         ${journalID && style['active-cell']} 
+                         ${capsuleID && style['capsule-cell']} 
                          ${isCurrentDay && style['current-cell']}`}
              onMouseEnter={tooltipMouseEnter}
              onMouseLeave={tooltipMouseLeave}

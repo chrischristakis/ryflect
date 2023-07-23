@@ -4,9 +4,10 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const { check, param } = require('express-validator');
 const validate = require('../middleware/validate.js');
+const { RateLimit, incrementRateAttempts } = require('../middleware/RateLimit.js');
 const User = require('../models/User.js');
 const Verification = require('../models/Verification.js');
-const { JWT_SECRET, TEST_EMAIL } = require('../utils/config.js');
+const { JWT_SECRET } = require('../utils/config.js');
 const crypto = require('crypto');
 const mailHelper = require('../utils/Mailhelper.js');
 const { token_cookie } = require('../utils/CookieRules.js');
@@ -77,8 +78,8 @@ router.post('/login', validate(loginRules), async (req, res) => {
     return res.send(token);
 });
 
-// Register a new user
-router.post('/register', validate(registerRules), async (req, res) => {
+// Register a new user (Allow 5 registrations per 24 hours)
+router.post('/register', validate(registerRules), RateLimit('/auth/register', 5, 1000 * 60 * 60 * 24), async (req, res) => {
     const {username, email, password} = req.body;
 
     // Check if username OR email already exists, if so, do not proceed.
@@ -144,6 +145,7 @@ router.post('/register', validate(registerRules), async (req, res) => {
     // Finally, send an email to the user to verify.
     try {
         await mailHelper.sendVerification(email, verificationID);
+        await incrementRateAttempts(req.headers['x-forwarded-for'] || req.socket.remoteAddress, '/auth/register');
         return res.send(verificationID);
     }
     catch(err) {
@@ -152,13 +154,16 @@ router.post('/register', validate(registerRules), async (req, res) => {
     }
 });
 
-// Resend the email.
+// Resend the email, limited to once, since we're using a servide to send emails.
 router.get('/resend/:id', validate(verificationRules), async (req, res) => {
     const id = req.params.id;
 
     const entry = await Verification.findOne({ urlID: id });
     if(!entry)
         return res.status(404).send({error: 'Could not find this ID pending for verification, try registering again.'});
+
+    if(entry.hasResentEmail) 
+        return res.status(429).send({error: 'You have already resent an email.'});
 
     let email;
     try {
@@ -172,8 +177,8 @@ router.get('/resend/:id', validate(verificationRules), async (req, res) => {
     }
 
     try {
-        // TODO: CHANGE TEST EMAIL WITH THE USER'S EMAIL!
         const response = await mailHelper.sendVerification(email, entry.urlID);
+        await Verification.updateOne({urlID: id}, { $set: { hasResentEmail: true } })
         return res.send(response);
     }
     catch(err) {
