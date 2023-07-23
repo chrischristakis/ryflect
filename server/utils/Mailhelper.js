@@ -1,6 +1,6 @@
 const nodemailer = require('nodemailer');
 const smtpTransport = require('nodemailer-smtp-transport');
-const { WEBAPP_URL, ENV, TEST_EMAIL } = require('../utils/config.js');
+const { WEBAPP_URL, ENV, TEST_EMAIL, GMAIL_USERNAME } = require('../utils/config.js');
 
 const client = nodemailer.createTransport(smtpTransport({
     service: "gmail",
@@ -8,17 +8,17 @@ const client = nodemailer.createTransport(smtpTransport({
     port: 587,
     secure: true,
     auth: {
-        user: 'ryflectsite@gmail.com',
+        user: GMAIL_USERNAME,
         pass: process.env.GMAIL_APP_PASSWORD
     },
-    from: 'ryflectsite@gmail.com'
+    from: GMAIL_USERNAME
 }));
 
 async function sendMail(recipient, subject, body, text='This email contains HTML content. Please use a supported viewer.') {
     try {
         const response = await client.sendMail(
             {
-                from: "ryflect <ryflectsite@gmail.com>",
+                from: "ryflect <"+GMAIL_USERNAME+">",
                 to: recipient,
                 subject: subject,
                 text: text,
