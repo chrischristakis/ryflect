@@ -55,6 +55,7 @@ module.exports.sendVerification = async function(recipient, verificationID) {
                         >
                                 Verify
                         </a>
+                        <br/>
                         <a href='${WEBAPP_URL}/verify/${verificationID}'>${WEBAPP_URL}/verify/${verificationID}</a>
                         <br/><br/><br/>    
                         <p><em style='color: #6a6a6a;'>If you did not register, please ignore this email.</em></p>
