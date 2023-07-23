@@ -37,8 +37,16 @@ function Recents() {
         return (plaintext.length >= MAX_PLAINTEXT_CHARS)? plaintext.slice(0, MAX_PLAINTEXT_CHARS) + '...' : plaintext;
     };
 
-    const loadMoreRecents = (pageNumber) => {
-        // TODO: Fetch with axios here
+    const loadMoreRecents = async () => {
+        try {
+            let response = await axios.get(API_URL+"/api/journals/recents?skip="+recents.length+"&limit="+PAGE_LIMIT);
+            setRecents([...recents, ...response.data]);
+            if(response.data.length == 0)
+                setHasMore(false);
+        }
+        catch(err) {
+            handleError(err);
+        }
     }
 
     if(!recents)

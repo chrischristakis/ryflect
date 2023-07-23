@@ -10,17 +10,3 @@
 .timeline-wrapper {
     margin-top: 30px;
 }
-
-.recents-wrapper {
-    margin-top: 30px;
-}
-
-.infinite-scroll {
-    background-color: aliceblue;
-    max-height: 200px;
-    overflow-y: scroll;
-}
-
-.infinite-scroll > * > * > * {
-    margin: 50px;
-}

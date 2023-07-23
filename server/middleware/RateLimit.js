@@ -9,7 +9,7 @@ module.exports =  {
         return async (req, res, next) => {
             const address = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
             if(!address)
-                return res.status(401).send({error: "Unauthorized, missing 'x-user-ip' header"});
+                return res.status(401).send({error: "Unauthorized, missing 'x-forwarded-for' or IP header"});
 
             try {
                 const found = await LimitTable.findOne({address: address, route: route});
