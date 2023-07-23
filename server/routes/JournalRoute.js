@@ -121,11 +121,13 @@ router.get('/recents', verify.user, validate(recentRules), async (req, res) => {
     const {limit, skip} = req.query;
 
     try {
+        const d = new Date();
+        d.setMinutes(d.getMinutes() + 5);
         const paginatedRecents = await Journals.find(
             {   
                 username: req.user.username, 
                 locked: {$ne: true}, 
-                date: {$lte: new Date().toUTCString()}
+                date: {$lte: d.toUTCString()}
             },
         ).sort({date: -1}).skip(skip).limit(limit);
         return res.send(paginatedRecents);
