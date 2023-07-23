@@ -8,17 +8,17 @@ const client = nodemailer.createTransport(smtpTransport({
     port: 587,
     secure: true,
     auth: {
-        user: GMAIL_USERNAME,
+        user: process.env.GMAIL_USERNAME,
         pass: process.env.GMAIL_APP_PASSWORD
     },
-    from: GMAIL_USERNAME
+    from: process.env.GMAIL_USERNAME
 }));
 
 async function sendMail(recipient, subject, body, text='This email contains HTML content. Please use a supported viewer.') {
     try {
         const response = await client.sendMail(
             {
-                from: "ryflect <"+GMAIL_USERNAME+">",
+                from: "ryflect <"+process.env.GMAIL_USERNAME+">",
                 to: recipient,
                 subject: subject,
                 text: text,
