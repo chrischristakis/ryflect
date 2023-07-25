@@ -50,6 +50,7 @@ router.get('/', verify.user, async (req, res) => {
                             id: '$id',
                             date: '$date',
                             is_time_capsule: '$is_time_capsule',
+                            locked: '$locked',
                             created_date: '$created_date'
                         } 
                     }
@@ -77,7 +78,7 @@ router.get('/', verify.user, async (req, res) => {
                     data = {...yearMap.get(dayIndex)}
     
                 if(journal.is_time_capsule)
-                    data['capsuleID'] = journal.id;
+                    data['capsuleInfo'] = {id: journal.id, locked: journal.locked};
                 else
                     data['journalID'] = journal.id;
     

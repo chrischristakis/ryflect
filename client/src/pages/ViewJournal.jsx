@@ -49,6 +49,12 @@ function ViewJournal() {
     return (
         <div>
             <h3>{formattedDate} {entry.emoji}</h3>
+            {
+                entry.is_time_capsule?
+                    <h4 style={{color: '#F28C28'}}><em>time capsule</em></h4>
+                :
+                null
+            }
             <div 
                 style={{whiteSpace: 'pre'}} 
                 dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(entry.richtext) }}

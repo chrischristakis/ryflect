@@ -1,6 +1,10 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import style from './TimelineCell.module.css';
 import { useNavigate } from 'react-router-dom';
+import { FaLock } from 'react-icons/fa';
+import { FaUnlock } from 'react-icons/fa';
+import PopUp from './PopUp.jsx';
+import Button from './Button';
 
 // Calculate the x distance from the arrow to the cell it belongs to
 function getDistanceFromArrowToCell(arrowRef, cellRef) {
@@ -9,7 +13,10 @@ function getDistanceFromArrowToCell(arrowRef, cellRef) {
     return (cellBounds.left + cellBounds.width/2) - (arrowBounds.left + arrowBounds.width/2);
 }
 
-function TimelineCell({journalID, capsuleID, isCurrentDay, date}) {
+function TimelineCell({journalID, capsuleInfo, canCreateCapsule, isCurrentDay, date}) {
+
+    const [hideCapsulePopUp, setHideCapsulePopUp] = useState(true);
+    const [hideSelectPopUp, setHideSelectPopUp] = useState(true);
 
     // We're gonna need to access all of these DOM elements, store them in refs
     const tooltip = useRef(null)
@@ -41,34 +48,73 @@ function TimelineCell({journalID, capsuleID, isCurrentDay, date}) {
     }
 
     const clickCell = (e) => {
-        if(!journalID && !capsuleID)
-            return;
+        if(!journalID && !capsuleInfo && canCreateCapsule)
+            return setHideCapsulePopUp(false);
         
-        if(journalID && capsuleID)
-            return alert('Both capsule and Journal exist. Must differentiate!');
+        if(journalID && capsuleInfo)
+            return setHideSelectPopUp(false);
         
         if(journalID)
             return navigate('/view/' + journalID);
 
-        if(capsuleID)
-            return navigate('/view/' + capsuleID);
+        if(capsuleInfo && capsuleInfo.id && !capsuleInfo.locked)
+            return navigate('/view/' + capsuleInfo.id);
     }
 
     return (
-        <div ref = {cell}
+        <>
+        <PopUp 
+            hidden={hideCapsulePopUp} 
+            setHiddenState={setHideCapsulePopUp}
+        >
+            <div className={style['create-capsule-popup']}>
+                <p>Create a new time capsule entry on <br/><strong>{date}</strong>?</p>
+                <p><em>You won't be able to open it until then!</em></p>
+                <Button text='create' clickEvent={(e) => {console.log('clicked!!')}} lightButton={true}/>
+            </div>
+        </PopUp>
+        <PopUp 
+            hidden={hideSelectPopUp} 
+            setHiddenState={setHideSelectPopUp}
+        >
+            <div className={style['select-popup']}>
+                <div className={style['select-popup-journal']} 
+                     onClick={() => journalID && navigate('/view/'+journalID)}
+                >
+                    View Journal
+                </div>
+                <div className={style['select-popup-capsule']} 
+                     onClick={() => capsuleInfo && navigate('/view/'+capsuleInfo.id)}
+                >
+                    View Capsule
+                </div>
+            </div>
+        </PopUp>
+        <div ref={cell}
              className={`${style.cell} 
-                         ${journalID && style['active-cell']} 
-                         ${capsuleID && style['capsule-cell']} 
+                         ${journalID && style['journal-cell']} 
                          ${isCurrentDay && style['current-cell']}`}
              onMouseEnter={tooltipMouseEnter}
              onMouseLeave={tooltipMouseLeave}
              onClick={clickCell}
         >
+            {   // For time capsules only
+                capsuleInfo && (
+                    capsuleInfo.locked?
+                    <FaLock size={14} color={journalID? 'white' : 'black'}/>
+                    :
+                    <FaUnlock size={14} color={journalID? 'white' : 'black'}/>
+                )
+            }
             <span ref={tooltip} className={style['tooltip']}>
-                <p>{date}</p>
+                <p>
+                    {capsuleInfo? <><em style={{color: '#FFBF00'}}>unlocks on:</em><br/></> : null}
+                    {date}
+                </p>
                 <span ref={arrow} className={style['tooltip-arrow']}></span>
             </span>
         </div>
+        </>
     );
 }
 

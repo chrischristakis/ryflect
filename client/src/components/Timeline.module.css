@@ -13,8 +13,8 @@
 
 .timeline {
     display: grid;
-    grid-template-columns: repeat(auto-fill, 18px);
-    grid-auto-rows: 18px;
+    grid-template-columns: repeat(auto-fill, 22px);
+    grid-auto-rows: 22px;
     justify-content: center; /*Horizontal align*/
     align-items: center; /*Vertical align*/
     gap: 4px;

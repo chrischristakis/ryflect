@@ -41,7 +41,7 @@ function Recents() {
         try {
             let response = await axios.get(API_URL+"/api/journals/recents?skip="+recents.length+"&limit="+PAGE_LIMIT);
             setRecents([...recents, ...response.data]);
-            if(response.data.length == 0)
+            if(response.data.length === 0)
                 setHasMore(false);
         }
         catch(err) {
@@ -74,7 +74,7 @@ function Recents() {
                             >
                                 <h3 className={style['date-title']}>{getDate(new Date(e.date))} {e.emoji}</h3>
                                 { e.is_time_capsule ?
-                                    <em>time capsule</em>
+                                    <em style={{color: '#F28C28'}}>time capsule</em>
                                     : 
                                     null
                                 }

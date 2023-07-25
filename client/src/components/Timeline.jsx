@@ -59,17 +59,29 @@ function Timeline({date}) {
             // So that we dont see the current day selector on other years as we scroll through them
             const isCurrentDay = (i === currDay.day && selectedYear === currDay.year); 
             const dateString = getDate(getDateFromIndex(i, selectedYear));
+            const isAfterToday = selectedYear > currDay.year || (selectedYear === currDay.year && i > currDay.day);
 
+            // If no data exists for a year, just skip the later logic.
             if(!yearMap) {
-                temp_timeline.push(<TimelineCell key={i} isCurrentDay={isCurrentDay} date={dateString}/>);
+                temp_timeline.push({
+                    canCreateCapsule: isAfterToday,
+                    isCurrentDay: isCurrentDay,
+                    dateString: dateString
+                });
                 continue;
             }
 
             const ids = yearMap[i];
             const journalID = (ids && ids['journalID'])? ids['journalID']: null;
-            const capsuleID = (ids && ids['capsuleID'])? ids['capsuleID']: null;
+            const capsuleInfo = (ids && ids['capsuleInfo'])? ids['capsuleInfo']: null;
 
-            temp_timeline.push(<TimelineCell key={i} journalID={journalID} capsuleID={capsuleID} isCurrentDay={isCurrentDay} date={dateString}/>);
+            temp_timeline.push({
+                journalID: journalID,
+                capsuleInfo: capsuleInfo,
+                canCreateCapsule: isAfterToday,
+                isCurrentDay: isCurrentDay,
+                dateString: dateString
+            });
         }
         setTimeline(temp_timeline);
     }, [date, journalMap, selectedYear]); // We reload timeline either when our ids are loaded, or year is changed.
@@ -91,7 +103,16 @@ function Timeline({date}) {
                     />
                 </div>
                 <div className={style.timeline}>
-                    {timeline}
+                    {timeline.map((cell, index) =>
+                        <TimelineCell
+                            key={index}
+                            journalID={cell.journalID}
+                            capsuleInfo={cell.capsuleInfo}
+                            canCreateCapsule={cell.canCreateCapsule}
+                            isCurrentDay={cell.isCurrentDay}
+                            date={cell.dateString}
+                        />
+                    )}
                 </div>
                 </>
             }

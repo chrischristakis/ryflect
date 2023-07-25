@@ -4,6 +4,7 @@ const { getDate } = require('../utils/utils.js');
 
 module.exports = async () => {
     const date = new Date();
+    date.setUTCHours(23,59,59,999);  // Get all entries at the end of today.
     try {
         const toUnlock = await Journals.find({date: {$lte: date}, locked: true, is_time_capsule: true}); 
         const idsToUnlock = toUnlock.map((e) => e.id);

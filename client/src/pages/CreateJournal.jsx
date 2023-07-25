@@ -8,6 +8,8 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { handleError } from '../utils/HandleResponse.js';
 import { emojis } from '../utils/Constants.js';
+import PopUp from '../components/PopUp.jsx';
+import style from './CreateJournal.module.css';
 
 // For quill
 const modules = {
@@ -21,6 +23,7 @@ const modules = {
 function CreateJournal() {
     const [entryText, setEntryText] = useState('');
     const [emoji, setEmoji] = useState();
+    const [hideConfirmPopup, setHideConfirmPopup] = useState(true);
     const navigate = useNavigate();
     const date = new Date();
 
@@ -59,12 +62,24 @@ function CreateJournal() {
     };
 
     return (
+        <>
+        <PopUp
+            hidden={hideConfirmPopup}
+            setHiddenState={setHideConfirmPopup}
+        >
+            <div className={style['confirm-popup-wrapper']}>
+                <p>Are you sure you'd like to create this entry?</p>
+                <p><em>Journals can only be made once per day!</em></p>
+                <Button text={"i'm sure"} clickEvent={handleSubmit} lightButton={true}/>
+            </div>
+        </PopUp>
         <div>
             <h3>{getDate(date)} <span style={{userSelect: 'none'}} onClick={() => setEmoji(randomEmoji())}>{emoji}</span></h3>
             <ReactQuill modules={modules} placeholder="Type here..." onChange={setEntryText} theme="snow"/>
             <br/>
-            <Button text="i'm done!" clickEvent={handleSubmit} shouldConfirm={true}/>
+            <Button text="i'm done!" clickEvent={() => setHideConfirmPopup(false)}/>
         </div>
+        </>
     );
 }
 

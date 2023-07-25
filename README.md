@@ -24,8 +24,7 @@
 - [x] Consider revamping JournalIDs and CapsuleIDs, since it may bloat the user document.
 - [x] Pagination for recents
 - [x] Manual rate limit for registration, 5 registrations per ip per day
-- [x] NGINX rate limit for all routes, 5r/s
-- [ ] Set up mailing service instead of gmail
+- [x] NGINX rate limit for all routes, 15r/s
 - [ ] Change routes to account for encryption
 
 # Front end
@@ -61,13 +60,18 @@
     - 'Scroll along the line' and enlarge center year
     - animate it!
 - [x] Reconsider how we render the 'create entry' button, since the entire timeline is being rerendered every second. Try to isolate just the button to rerender.
-- [ ] Pagination for recents (infinite scroll)
-- [ ] One more production build to test spam emails and other new additions + feedback
-- [ ] Display time capsules
+- [x] Pagination for recents (infinite scroll)
+- [x] One more production build to test spam emails and other new additions + feedback
+- [x] Display time capsules
+- [x] Handle viewing normal entry vs time capsule
+    - Differentiate between journal and capsule if both exist on one day
+- [ ] Make creating a time capsule page differentiate from a normal journal entry
+    - Same page and use props, or different page?
 - [ ] Timeline overflow bug
-- [ ] Text shoudln't overflow if one continuous line on view journal
+- [ ] Text shouldn't overflow if one continuous line on view journal
 - [ ] Word counter on frontend to match back end.
     - Front end word count can be a little smaller than back end to account for html.
+- [ ] Random message in writing box as a prompt
 - [ ] Start encrypting data
     - Put server secret key into config, and change it once a day on a cron.
     - Encrypt text into db (with dummy user key)
@@ -76,7 +80,6 @@
 - [ ] Change password functionality
 - [ ] Make sure user knows they cannot recover password upon registration
     - Display a pop up or something
-- [ ] Random message in writing box as a prompt
 - [ ] Styling
     - Consider web/mobile
 
@@ -85,5 +88,3 @@
 - [x] Look into host (Heroku, digital ocean)
 - [x] Start looking into https (certbot)
 - [ ] Scripts for running on prod
-- [ ] Change email to custom domain to hopefully avoid spam.
-    - If this doesn't work, look into DMARC

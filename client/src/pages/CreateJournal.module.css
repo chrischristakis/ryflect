@@ -1,0 +1,12 @@
+.confirm-popup-wrapper {
+    background-color: white;
+    border-radius: 10px;
+    text-align: center;
+    user-select: none;
+
+    padding: 30px 50px;
+}
+
+.confirm-popup-wrapper Button {
+    margin-top: 15px;
+}
