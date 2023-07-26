@@ -1,14 +1,13 @@
 import { useEffect, useState } from 'react';
-import { getDaysInYear, getCurrentDayInYear, getDate, getDateFromIndex } from '../utils/utils';
+import { getDaysInYear, getCurrentDayInYear, getDateFromIndex } from '../utils/utils';
 import style from './Timeline.module.css';
 import TimelineCell from './TimelineCell';
 import { handleError } from '../utils/HandleResponse';
 import axios from 'axios';
 import { API_URL } from '../config';
+import { MAX_FUTURE_YEARS } from '../utils/Constants';
 import { ReactComponent as Loading } from '../assets/loading.svg';
 import Carousel from '../components/Carousel.jsx';
-
-const MAX_FUTURE_YEARS = 50;
 
 function Timeline({date}) {
     const [timeline, setTimeline] = useState([]);
@@ -58,7 +57,7 @@ function Timeline({date}) {
 
             // So that we dont see the current day selector on other years as we scroll through them
             const isCurrentDay = (i === currDay.day && selectedYear === currDay.year); 
-            const dateString = getDate(getDateFromIndex(i, selectedYear));
+            const dateObj = getDateFromIndex(i, selectedYear);
             const isAfterToday = selectedYear > currDay.year || (selectedYear === currDay.year && i > currDay.day);
 
             // If no data exists for a year, just skip the later logic.
@@ -66,7 +65,7 @@ function Timeline({date}) {
                 temp_timeline.push({
                     canCreateCapsule: isAfterToday,
                     isCurrentDay: isCurrentDay,
-                    dateString: dateString
+                    dateObj: dateObj
                 });
                 continue;
             }
@@ -80,7 +79,7 @@ function Timeline({date}) {
                 capsuleInfo: capsuleInfo,
                 canCreateCapsule: isAfterToday,
                 isCurrentDay: isCurrentDay,
-                dateString: dateString
+                dateObj: dateObj
             });
         }
         setTimeline(temp_timeline);
@@ -110,7 +109,7 @@ function Timeline({date}) {
                             capsuleInfo={cell.capsuleInfo}
                             canCreateCapsule={cell.canCreateCapsule}
                             isCurrentDay={cell.isCurrentDay}
-                            date={cell.dateString}
+                            date={cell.dateObj}
                         />
                     )}
                 </div>

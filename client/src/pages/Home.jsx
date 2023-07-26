@@ -10,6 +10,8 @@ import style from './Home.module.css';
 import axios from 'axios';
 import { handleError } from '../utils/HandleResponse';
 import { ReactComponent as Loading } from '../assets/loading.svg';
+import { FaQuestionCircle } from 'react-icons/fa';
+import PopUp from '../components/PopUp';
 
 let now = new Date();
 let endDate = new Date();
@@ -78,6 +80,21 @@ function NewEntryButton({setDate}) {
     );
 }
 
+function CreateCapsuleButton() {
+    const [hideCapsulePopup, setHideCapsulePopUp] = useState(true);
+    return (
+        <>
+            <PopUp
+                hidden={hideCapsulePopup}
+                setHiddenState={setHideCapsulePopUp}
+            >
+                <div className={style['create-capsule-popup']}>Info to make time capsules goes here!</div>
+            </PopUp>
+            <Button text={<>create time capsule <FaQuestionCircle/></>} lightButton={true} clickEvent={(e) => setHideCapsulePopUp(false)}/>
+        </>
+    );
+}
+
 function Home() {
     const [date, setDate] = useState(now);
 
@@ -88,6 +105,7 @@ function Home() {
                     <Timeline date={date}/>
                 </div>
                 <NewEntryButton setDate={setDate}/>
+                <CreateCapsuleButton/>
             </JournalProvider>
             <hr/>
             <div className={style['recents-wrapper']}>

@@ -5,6 +5,7 @@ import { FaLock } from 'react-icons/fa';
 import { FaUnlock } from 'react-icons/fa';
 import PopUp from './PopUp.jsx';
 import Button from './Button';
+import { getDate } from '../utils/utils';
 
 // Calculate the x distance from the arrow to the cell it belongs to
 function getDistanceFromArrowToCell(arrowRef, cellRef) {
@@ -17,6 +18,7 @@ function TimelineCell({journalID, capsuleInfo, canCreateCapsule, isCurrentDay, d
 
     const [hideCapsulePopUp, setHideCapsulePopUp] = useState(true);
     const [hideSelectPopUp, setHideSelectPopUp] = useState(true);
+    const [shakeLock, setShakeLock] = useState(false); // little animation
 
     // We're gonna need to access all of these DOM elements, store them in refs
     const tooltip = useRef(null)
@@ -61,6 +63,15 @@ function TimelineCell({journalID, capsuleInfo, canCreateCapsule, isCurrentDay, d
             return navigate('/view/' + capsuleInfo.id);
     }
 
+    const applyShakeAnim = () => {
+        if(shakeLock) return;
+
+        setShakeLock(true);
+        setTimeout(() => {
+            setShakeLock(false);
+        }, 600);
+    }
+
     return (
         <>
         <PopUp 
@@ -68,9 +79,13 @@ function TimelineCell({journalID, capsuleInfo, canCreateCapsule, isCurrentDay, d
             setHiddenState={setHideCapsulePopUp}
         >
             <div className={style['create-capsule-popup']}>
-                <p>Create a new time capsule entry on <br/><strong>{date}</strong>?</p>
+                <p>Create a new time capsule entry on <br/><strong>{getDate(date)}</strong>?</p>
                 <p><em>You won't be able to open it until then!</em></p>
-                <Button text='create' clickEvent={(e) => {console.log('clicked!!')}} lightButton={true}/>
+                <Button text='create' 
+                    clickEvent={(e) => {navigate(`/create?selectedYear=${date.getUTCFullYear()}&selectedDay=${date.getUTCDate()}&selectedMonth=${date.getUTCMonth()}`)}} 
+                    lightButton={true}
+                    slideHover={true}
+                />
             </div>
         </PopUp>
         <PopUp 
@@ -92,7 +107,7 @@ function TimelineCell({journalID, capsuleInfo, canCreateCapsule, isCurrentDay, d
         </PopUp>
         <div ref={cell}
              className={`${style.cell} 
-                         ${journalID && style['journal-cell']} 
+                         ${journalID && style['journal-cell']}
                          ${isCurrentDay && style['current-cell']}`}
              onMouseEnter={tooltipMouseEnter}
              onMouseLeave={tooltipMouseLeave}
@@ -101,7 +116,11 @@ function TimelineCell({journalID, capsuleInfo, canCreateCapsule, isCurrentDay, d
             {   // For time capsules only
                 capsuleInfo && (
                     capsuleInfo.locked?
-                    <FaLock size={14} color={journalID? 'white' : 'black'}/>
+                    <FaLock 
+                        size={14} color={journalID? 'white' : 'black'}
+                        onClick={applyShakeAnim} 
+                        className={shakeLock && style['shake-anim']}
+                    />
                     :
                     <FaUnlock size={14} color={journalID? 'white' : 'black'}/>
                 )
@@ -109,7 +128,7 @@ function TimelineCell({journalID, capsuleInfo, canCreateCapsule, isCurrentDay, d
             <span ref={tooltip} className={style['tooltip']}>
                 <p>
                     {capsuleInfo? <><em style={{color: '#FFBF00'}}>unlocks on:</em><br/></> : null}
-                    {date}
+                    {getDate(date)}
                 </p>
                 <span ref={arrow} className={style['tooltip-arrow']}></span>
             </span>

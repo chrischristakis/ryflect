@@ -65,8 +65,9 @@
 - [x] Display time capsules
 - [x] Handle viewing normal entry vs time capsule
     - Differentiate between journal and capsule if both exist on one day
-- [ ] Make creating a time capsule page differentiate from a normal journal entry
+- [x] Make creating a time capsule page differentiate from a normal journal entry
     - Same page and use props, or different page?
+    - Use Params/query or pass data 
 - [ ] Timeline overflow bug
 - [ ] Text shouldn't overflow if one continuous line on view journal
 - [ ] Word counter on frontend to match back end.
@@ -88,3 +89,5 @@
 - [x] Look into host (Heroku, digital ocean)
 - [x] Start looking into https (certbot)
 - [ ] Scripts for running on prod
+- [ ] Proper readme!
+- [ ] Privacy policy

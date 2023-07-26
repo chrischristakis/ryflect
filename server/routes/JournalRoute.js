@@ -178,14 +178,14 @@ router.post('/', verify.user, validate(journalRules), async (req, res) => {
 router.post('/timecapsule', verify.user, validate(capsuleRules), async (req, res) => {
 
     const UPPER_YEAR_BOUND = 50; // Only allow capsules 50 years in the future.
-    const MAX_PENDING_CAPSULES = 100;
+    const MAX_PENDING_CAPSULES = 50;
 
     let {text, emoji, unlock_year, unlock_month, unlock_day} = req.body;
     text = DOMPurify.sanitize(text);
 
     const pendingCapsules = await Journals.find({username: req.user.username, locked: true});
     if(pendingCapsules.length >= MAX_PENDING_CAPSULES)
-        return res.status(400).send({error: `Sorry, but you can only have ${MAX_PENDING_CAPSULES} pending capsules at one time.`});
+        return res.status(400).send({error: `Sorry, but you can only have ${MAX_PENDING_CAPSULES} pending capsules at a time.`});
 
     const today = new Date();
 

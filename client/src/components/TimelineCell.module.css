@@ -97,3 +97,16 @@
     margin-top: -5px;
     margin-left: -15px;
 }
+
+.shake-anim {
+    animation: shake 0.15s;
+    animation-iteration-count: infinite; 
+}
+
+@keyframes shake {
+    0% { transform: translateX(0) }
+    25% { transform: translateX(2px) }
+    50% { transform: translateX(-2px) }
+    75% { transform: translateX(2px) }
+    100% { transform: translateX(0) }
+}

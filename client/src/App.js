@@ -1,6 +1,6 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar.jsx';
-import CreateJournal from './pages/CreateJournal.jsx';
+import CreatePage from './pages/CreatePage.jsx';
 import ViewJournal from './pages/ViewJournal.jsx';
 import NotFound from './pages/NotFound.jsx';
 import Login from './pages/Login.jsx';
@@ -37,7 +37,7 @@ function App() {
           }/>
           <Route path='/create' element={
             <AuthRoute key='/create' redirect={<Navigate to='/login'/>}>
-              <CreateJournal/>
+              <CreatePage/>
             </AuthRoute>
           }/>
           <Route path='/view/:id' element={

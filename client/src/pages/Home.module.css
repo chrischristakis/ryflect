@@ -10,3 +10,8 @@
 .timeline-wrapper {
     margin-top: 30px;
 }
+
+.create-capsule-popup {
+    background-color: white;
+    padding: 15px 30px;
+}

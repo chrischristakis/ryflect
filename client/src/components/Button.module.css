@@ -26,7 +26,7 @@
     transition: color 0.19s ease-in;
 }
 
-.light::before {
+.slide-hover::before {
     content: '';
     position: absolute;
     top: 0;
@@ -43,10 +43,10 @@
     background-color: rgb(45, 45, 45);
 }
 
-.light:not([disabled]):hover {
+.slide-hover:not([disabled]):hover {
     color: white;
 }
-.light:not([disabled]):hover:before {
+.slide-hover:not([disabled]):hover:before {
     width: 100%;
 }
 

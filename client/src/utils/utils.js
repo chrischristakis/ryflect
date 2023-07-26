@@ -11,6 +11,8 @@ export const getDaysInYear = (year) => {
 
 // Return a nicely formatted date
 export const getDate = (date) => {
+    if(!(date instanceof Date) || isNaN(date))
+        return 'Invalid date'
     // Suffixes 'st', 'nd', etc to end of date. 
     const nth = function(d) {
         if (d > 3 && d < 21) return 'th';
