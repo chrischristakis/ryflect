@@ -81,6 +81,9 @@
 - [ ] Change password functionality
 - [ ] Make sure user knows they cannot recover password upon registration
     - Display a pop up or something
+- [ ] Faq
+- [ ] Footer
+- [ ] Privacy policy
 - [ ] Styling
     - Consider web/mobile
 
@@ -90,4 +93,3 @@
 - [x] Start looking into https (certbot)
 - [ ] Scripts for running on prod
 - [ ] Proper readme!
-- [ ] Privacy policy

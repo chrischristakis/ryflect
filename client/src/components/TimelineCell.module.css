@@ -1,5 +1,5 @@
 .cell {
-    box-shadow:inset 0px 0px 0px 0.124em #000; /*Lets us do inset shadows, border pertrudes out of cell bounds.*/
+    box-shadow:inset 0px 0px 0px 0.1em #000; /*Lets us do inset shadows, border pertrudes out of cell bounds.*/
     width: 100%;
     height: 100%;
     position: relative;

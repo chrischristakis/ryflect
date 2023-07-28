@@ -9,6 +9,7 @@
     border-radius: 15px;  
     cursor: pointer;
     z-index: 1;
+    user-select: none;
 }
 
 .normal {

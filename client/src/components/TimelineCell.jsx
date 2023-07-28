@@ -108,6 +108,7 @@ function TimelineCell({journalID, capsuleInfo, canCreateCapsule, isCurrentDay, d
         <div ref={cell}
              className={`${style.cell} 
                          ${journalID && style['journal-cell']}
+                         ${shakeLock && style['shake-anim']}
                          ${isCurrentDay && style['current-cell']}`}
              onMouseEnter={tooltipMouseEnter}
              onMouseLeave={tooltipMouseLeave}
@@ -119,7 +120,6 @@ function TimelineCell({journalID, capsuleInfo, canCreateCapsule, isCurrentDay, d
                     <FaLock 
                         size={14} color={journalID? 'white' : 'black'}
                         onClick={applyShakeAnim} 
-                        className={shakeLock && style['shake-anim']}
                     />
                     :
                     <FaUnlock size={14} color={journalID? 'white' : 'black'}/>
