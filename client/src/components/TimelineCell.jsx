@@ -127,7 +127,6 @@ function TimelineCell({journalID, capsuleInfo, canCreateCapsule, isCurrentDay, d
             }
             <span ref={tooltip} className={style['tooltip']}>
                 <p>
-                    {capsuleInfo? <><em style={{color: '#FFBF00'}}>unlocks on:</em><br/></> : null}
                     {getDate(date)}
                 </p>
                 <span ref={arrow} className={style['tooltip-arrow']}></span>
