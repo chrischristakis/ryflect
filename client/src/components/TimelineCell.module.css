@@ -63,25 +63,25 @@
 }
 
 .tooltip {
+    visibility: hidden;
     pointer-events: none;
     user-select: none;
-    visibility: hidden;
-    display: inline-block;
-    width: 190px;
+}
+
+.tooltip-text {
     background-color: black;
+
     position: absolute;
     bottom: 150%;
     left: 50%;
-    margin-left: -95px; /*-95px (half width) + -5px (acocunt for padding)*/
-
+    
     border-radius: 5px;
-}
 
-.tooltip p {
+    /* For actual text */
     color: white;
     text-align: center;
     font-size: 0.95em;
-    margin: 5px 0;
+    padding: 5px 0;
 }
 
 .tooltip-arrow {
@@ -90,11 +90,14 @@
     height:0;
     position:absolute;
 
+    top: 0;
+    left: 50%;
+
     border-left: 15px solid transparent;
     border-right: 15px solid transparent;
     border-top: 15px solid black;
-    left: 50%;
-    margin-top: -5px;
+
+    margin-top: -15px;
     margin-left: -15px;
 }
 

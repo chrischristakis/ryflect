@@ -21,8 +21,7 @@ function Carousel({values=[], cellWidth=50, cellHeight=50, cellGap=30, initialIn
         const offsetToCenterSelectedIndex = widthOfCellPlusGap * (centerIndex - currIndex - ((values.length % 2 === 0)? 1 : 0));
 
         setSelectedOffset(offsetToCenterSelectedIndex);
-        indexChangeCallback(currIndex);
-    }, [currIndex, values.length, centerIndex, widthOfCellPlusGap, indexChangeCallback]);
+    }, [currIndex, values.length, centerIndex, widthOfCellPlusGap]);
 
     return (
         <div 
@@ -41,7 +40,10 @@ function Carousel({values=[], cellWidth=50, cellHeight=50, cellGap=30, initialIn
                         style={{marginLeft: offset, 
                             minWidth: `${cellWidth}px`, maxWidth: `${cellWidth}px`, 
                             minHeight: `${cellHeight}px`, maxHeight: `${cellHeight}px`}}
-                        onClick={() => setCurrIndex(index)}
+                        onClick={() => {
+                            setCurrIndex(index);
+                            indexChangeCallback(index);
+                        }}
                     >
                         {value}
                     </div>

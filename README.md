@@ -69,6 +69,7 @@
     - Same page and use props, or different page?
     - Use Params/query or pass data 
 - [ ] Timeline overflow bug
+    - [ ] Fix double shift bug
 - [ ] Text shouldn't overflow if one continuous line on view journal
 - [ ] Word counter on frontend to match back end.
     - Front end word count can be a little smaller than back end to account for html.

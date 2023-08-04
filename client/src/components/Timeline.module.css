@@ -5,6 +5,8 @@
 
     width: 500px;
     margin: 0 auto;
+
+    overflow-x: hidden;
 }
 
 .year-selector {
@@ -18,8 +20,6 @@
     justify-content: center; /*Horizontal align*/
     align-items: center; /*Vertical align*/
     gap: 4px;
-
-    overflow-x: hidden;
 
     width: 100%;
 }

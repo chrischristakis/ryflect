@@ -7,40 +7,36 @@ import PopUp from './PopUp.jsx';
 import Button from './Button';
 import { getDate } from '../utils/utils';
 
-// Calculate the x distance from the arrow to the cell it belongs to
-function getDistanceFromArrowToCell(arrowRef, cellRef) {
-    const arrowBounds = arrowRef.getBoundingClientRect();
-    const cellBounds = cellRef.getBoundingClientRect();
-    return (cellBounds.left + cellBounds.width/2) - (arrowBounds.left + arrowBounds.width/2);
-}
+const TOOLTIP_WIDTH = 190; //px
 
-function TimelineCell({journalID, capsuleInfo, canCreateCapsule, isCurrentDay, date}) {
+function TimelineCell({journalID, capsuleInfo, canCreateCapsule, isCurrentDay, date, containerRef}) {
 
     const [hideCapsulePopUp, setHideCapsulePopUp] = useState(true);
     const [hideSelectPopUp, setHideSelectPopUp] = useState(true);
     const [shakeLock, setShakeLock] = useState(false); // little animation
 
     // We're gonna need to access all of these DOM elements, store them in refs
-    const tooltip = useRef(null)
+    const tooltipText = useRef(null);
+    const tooltip = useRef(null);
     const cell = useRef(null);
     const arrow = useRef(null);
     const navigate = useNavigate();
 
     const tooltipMouseEnter = (e) => {
-    
-        // Make sure tooltip cannot leave the screen bounds
-        const tooltipBounds = tooltip.current.getBoundingClientRect();
+        // Check if the tooltip is in the bounds of the div horizontally,
+        // if it isn't, we'll nudge it.
 
-        if(tooltipBounds.left < 0) {
-            tooltip.current.style.marginLeft = `${-tooltipBounds.width/2 - tooltipBounds.left}px`;
+        if(!tooltip.current || !containerRef.current)
+            return;
 
-            // Since tooltip is locked in place, arrow must attach to the cell the cursor is actually on
-            arrow.current.style.marginLeft = `${getDistanceFromArrowToCell(arrow.current, cell.current) - 15}px`;
-        }
-        if(tooltipBounds.right > window.innerWidth) {
-            tooltip.current.style.marginLeft = `${-tooltipBounds.width/2 - (tooltipBounds.right - window.innerWidth)}px`;
-            arrow.current.style.marginLeft = `${getDistanceFromArrowToCell(arrow.current, cell.current) - 15}px`;
-        }
+        const textRef = tooltipText.current;
+        const textBounds = textRef.getBoundingClientRect();
+        const containerBounds = containerRef.current.getBoundingClientRect();
+
+        if(textBounds.left <= containerBounds.left)
+            textRef.style.marginLeft = `-${TOOLTIP_WIDTH/2 - (containerBounds.left - textBounds.left)}px`;
+        if(textBounds.right >= containerBounds.right)
+            textRef.style.marginLeft = `-${TOOLTIP_WIDTH/2 + (textBounds.right - containerBounds.right)}px`;
 
         tooltip.current.style.visibility = 'visible';
     }
@@ -70,7 +66,7 @@ function TimelineCell({journalID, capsuleInfo, canCreateCapsule, isCurrentDay, d
         setTimeout(() => {
             setShakeLock(false);
         }, 600);
-    }
+    };
 
     return (
         <>
@@ -110,9 +106,9 @@ function TimelineCell({journalID, capsuleInfo, canCreateCapsule, isCurrentDay, d
                          ${journalID && style['journal-cell']}
                          ${shakeLock && style['shake-anim']}
                          ${isCurrentDay && style['current-cell']}`}
+             onClick={clickCell}
              onMouseEnter={tooltipMouseEnter}
              onMouseLeave={tooltipMouseLeave}
-             onClick={clickCell}
         >
             {   // For time capsules only
                 capsuleInfo && (
@@ -125,13 +121,20 @@ function TimelineCell({journalID, capsuleInfo, canCreateCapsule, isCurrentDay, d
                     <FaUnlock size={14} color={journalID? 'white' : 'black'}/>
                 )
             }
-            <span ref={tooltip} className={style['tooltip']}>
-                <p>
-                    {capsuleInfo? <><em style={{color: '#FFBF00'}}>unlocks on:</em><br/></> : null}
-                    {getDate(date)}
-                </p>
+            <div className={style['tooltip']} ref={tooltip}>
+                <span 
+                    className={style['tooltip-text']} 
+                    style={{width: `${TOOLTIP_WIDTH}px`, marginLeft: `-${TOOLTIP_WIDTH/2}px`}}
+                    ref={tooltipText}
+                >
+                {capsuleInfo?
+                        <><em style={{color: '#FFBF00'}}>unlocks on:</em><br/>{getDate(date)}</>
+                    :
+                        getDate(date)
+                }
+                </span>
                 <span ref={arrow} className={style['tooltip-arrow']}></span>
-            </span>
+            </div>
         </div>
         </>
     );
