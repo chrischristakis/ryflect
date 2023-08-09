@@ -26,7 +26,7 @@ function TimelineCell({journalID, capsuleInfo, canCreateCapsule, isCurrentDay, d
         // Check if the tooltip is in the bounds of the div horizontally,
         // if it isn't, we'll nudge it.
 
-        if(!tooltip.current || !containerRef.current)
+        if(!tooltip.current || !containerRef.current || !tooltip.current)
             return;
 
         const textRef = tooltipText.current;
@@ -42,6 +42,10 @@ function TimelineCell({journalID, capsuleInfo, canCreateCapsule, isCurrentDay, d
     }
 
     const tooltipMouseLeave = (e) => {
+        if(!tooltip.current || !tooltip.current)
+            return;
+
+        tooltipText.current.style.marginLeft = `-${TOOLTIP_WIDTH/2}px`;  //  Resets margin so the MouseEnter logic works again.
         tooltip.current.style.visibility = 'hidden';
     }
 
