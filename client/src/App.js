@@ -15,6 +15,7 @@ import ChangePassword from './pages/ChangePassword.jsx';
 import FAQ from './pages/FAQ.jsx';
 import Footer from './components/Footer.jsx';
 import style from './App.module.css';
+import PrivacyPolicy from './pages/PrivacyPolicy.jsx';
 
 function App() {
 
@@ -55,6 +56,9 @@ function App() {
             }/>
             <Route path='/faq' element={
                 <FAQ/>
+            }/>
+            <Route path='/privacy-policy' element={
+                <PrivacyPolicy/>
             }/>
             <Route path='*' element={<NotFound/>}/>
           </Routes>

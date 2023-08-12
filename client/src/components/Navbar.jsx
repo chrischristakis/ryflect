@@ -40,7 +40,7 @@ function UserMenu() {
                     !isUrl?
                         <Link className={style['dropdown-link']} to={link} onClick={handleClick}>{text}</Link>
                     :
-                        <a className={style['dropdown-link']} href={link} target='_blank' rel='noreferrer'>{text}</a>
+                        <a className={style['dropdown-link']} href={link}  onClick={handleClick} target='_blank' rel='noreferrer'>{text}</a>
                 }
             </li>
         );

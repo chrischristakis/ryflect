@@ -13,5 +13,6 @@
 
 .create-capsule-popup {
     background-color: white;
-    padding: 15px 30px;
+    padding: 30px 30px;
+    border-radius: 10px;
 }

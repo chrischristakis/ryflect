@@ -12,6 +12,7 @@ import { handleError } from '../utils/HandleResponse';
 import { ReactComponent as Loading } from '../assets/loading.svg';
 import { FaQuestionCircle } from 'react-icons/fa';
 import PopUp from '../components/PopUp';
+import capsuleDemo from '../assets/capsuleDemo.mp4';
 
 let now = new Date();
 let endDate = new Date();
@@ -88,7 +89,16 @@ function CreateCapsuleButton() {
                 hidden={hideCapsulePopup}
                 setHiddenState={setHideCapsulePopUp}
             >
-                <div className={style['create-capsule-popup']}>Info to make time capsules goes here!</div>
+                <div className={style['create-capsule-popup']}>
+                    <p style={{fontSize: '1.5em'}}><strong>What is a time capsule?</strong></p>
+                    <p>A time capsule entry is a journal entry that will not open until a specified date of your choosing.</p>
+                    <p>To create one, select any future date on the timeline:</p>
+                    <p></p>
+                    <video width="420" autoPlay loop muted>
+                        <source src={capsuleDemo} type="video/mp4" />
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
             </PopUp>
             <Button text={<>create time capsule <FaQuestionCircle/></>} lightButton={true} clickEvent={(e) => setHideCapsulePopUp(false)}/>
         </>

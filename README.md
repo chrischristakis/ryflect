@@ -79,17 +79,18 @@
     - Display a pop up or something
 - [x] Faq
 - [x] Footer
+- [x] Create time capsule infographic
+- [x] Privacy policy
+- [x] Website metadata (title, description, etc.)
 - [ ] Start encrypting data
     - Put server secret key into config, and change it once a day on a cron.
     - Encrypt text into db (with dummy user key)
     - Decrpyt data (with dummy user key)
     - Set up user key method, encrypt on client.
 - [ ] Change password functionality
-- [ ] Privacy policy
-- [ ] Create time capsule infographic
-- [ ] Website metadata (title, description, etc.)
 - [ ] Styling
     - Consider web/mobile
+- [ ] Make SVGs, like capsule, journal, website icon.
 
 # Other
 - [x] Buy domain

@@ -51,7 +51,7 @@ const faqData = [
     },
     {
         header: 'Can I delete journal entries?',
-        content: `Not on your own. Remember no one but you can read them, unless someone has access to your account. (Make strong passwords, please.)
+        content: `Not on your own. Remember, no one but you can read them, unless someone has access to your account. (Make strong passwords, please.)
             If you still want to delete your account and data I'd be open to doing so for you if you email me at ryflectsite@gmail.com.`
     },
     {
