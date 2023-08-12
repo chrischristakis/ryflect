@@ -16,3 +16,12 @@
     transform: translate(-50%, -50%);
     text-align: center;
 }
+
+.confirm-popup-wrapper {
+    background-color: white;
+    border-radius: 10px;
+    text-align: center;
+    user-select: none;
+
+    padding: 30px 50px;
+}

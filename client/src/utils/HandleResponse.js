@@ -8,7 +8,7 @@ export function handleError(err) {
     }
 
     if(!err.response.data || !err.response.data.error) {
-        if(err.response.status == 429)  // used for NGinx rate limit catching
+        if(err.response.status === 429)  // used for NGinx rate limit catching
             toast.error("You're doing that too much. Please wait between requests.", {position: 'top-center'});
         else
             toast.error(err.response.status + ", Something went wrong.", {position: 'top-center'});

@@ -7,14 +7,12 @@ const verify = require('../middleware/verify.js');
 const validate = require('../middleware/validate.js');
 const { check, query } = require('express-validator');
 const DOMPurify = require('../utils/DOMPurify.js');
-const { emojis } = require('../utils/Constants.js');
-
-const MAX_BYTES = 5000; // Max bytes for one journal entry
+const { emojis, MAX_BYTES } = require('../utils/Constants.js');
 
 const journalRules = [
     check('text', 'Submitted text must not be empty').notEmpty()
         .isString().withMessage("Text must be a string")
-        .isLength({max: MAX_BYTES}).withMessage(`Journal entry cannot exceed ${MAX_BYTES} characters`),
+        .isLength({max: MAX_BYTES}).withMessage(`Journal entry cannot exceed ${MAX_BYTES} bytes`),
     check('emoji')
         .isString().withMessage("Emoji must be a string")
         .matches(`^[${emojis}]+$`).withMessage("Emoji field must be a valid emoji")

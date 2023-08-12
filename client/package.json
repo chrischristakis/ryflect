@@ -10,6 +10,7 @@
     "dompurify": "^3.0.3",
     "js-cookie": "^3.0.5",
     "path": "^0.12.7",
+    "quill-paste-smart": "^1.4.12",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.8.0",

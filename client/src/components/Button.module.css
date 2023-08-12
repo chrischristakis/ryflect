@@ -41,7 +41,7 @@
 
 /* Only apply hover styles when buttons aren't disabled*/
 .normal:not([disabled]):hover {
-    background-color: rgb(45, 45, 45);
+    background-color: rgb(60, 60, 60);
 }
 
 .slide-hover:not([disabled]):hover {
@@ -52,7 +52,7 @@
 }
 
 .normal:disabled {
-    background-color: rgb(138, 138, 138);
+    background-color: rgb(160, 160, 160);
     color: white;
     cursor: not-allowed;
 }

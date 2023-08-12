@@ -68,23 +68,26 @@
 - [x] Make creating a time capsule page differentiate from a normal journal entry
     - Same page and use props, or different page?
     - Use Params/query or pass data 
-- [ ] Timeline overflow bug
-    - [ ] Fix double shift bug (Maybe use ref or state to shift isntead of using using ref.current.style)
-- [ ] Text shouldn't overflow if one continuous line on view journal
-- [ ] Word counter on frontend to match back end.
-    - Front end word count can be a little smaller than back end to account for html.
-- [ ] Random message in writing box as a prompt
+- [x] Timeline overflow bug
+    - [x] Fix double shift bug (Maybe use ref or state to shift isntead of using using ref.current.style)
+- [x] Text shouldn't overflow if one continuous line on view journal/recents
+- [x] Word counter on frontend to match back end.
+    - Just stop allowing text when document max size is reached.
+    * Decided to just inform user when they're over capacity, and not allow submission.
+- [x] Random message in writing box as a prompt
+- [x] Make sure user knows they cannot recover password upon registration
+    - Display a pop up or something
+- [x] Faq
+- [ ] Footer
 - [ ] Start encrypting data
     - Put server secret key into config, and change it once a day on a cron.
     - Encrypt text into db (with dummy user key)
     - Decrpyt data (with dummy user key)
     - Set up user key method, encrypt on client.
 - [ ] Change password functionality
-- [ ] Make sure user knows they cannot recover password upon registration
-    - Display a pop up or something
-- [ ] Faq
-- [ ] Footer
 - [ ] Privacy policy
+- [ ] Create time capsule infographic
+- [ ] Website metadata (title, description, etc.)
 - [ ] Styling
     - Consider web/mobile
 

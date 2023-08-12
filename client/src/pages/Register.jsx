@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import Button from '../components/Button';
+import PopUp from '../components/PopUp';
 import axios from 'axios';
 import { API_URL } from '../config';
 import { handleError } from '../utils/HandleResponse';
@@ -13,6 +14,7 @@ function Register() {
     const [awaitVerify, setAwaitVerify] = useState();
     const [verificationId, setVerificationId] = useState();
     const [resendDisabled, setResendDisabled] = useState(false);
+    const [hideConfirm, setHideConfirm] = useState(true);
 
     const repasswordInput = useRef(null);
     const passwordInput = useRef(null);
@@ -104,6 +106,17 @@ function Register() {
         );
 
     return (
+        <>
+        <PopUp
+            hidden={hideConfirm}
+            setHiddenState={setHideConfirm}
+        >
+            <div className={style['confirm-popup-wrapper']}>
+                <p><strong>Please remember your password, there's no way to recover it if it's lost!</strong></p>
+                <p><em>We cannot help recover journals from an account with a lost password, as they are encrypted.</em></p>
+                <Button text={"got it!"} clickEvent={handleSubmit} lightButton={true} slideHover={true}/>
+            </div>
+        </PopUp>
         <div className={style['register-wrapper']}>
             <div>
                 <label>
@@ -134,8 +147,9 @@ function Register() {
                 </label>
             </div>
             <br/>
-            <Button text='register' type='submit' clickEvent={handleSubmit}/>
+            <Button text='register' type='submit' clickEvent={() => setHideConfirm(false)}/>
         </div>
+        </>
     );
 }
 

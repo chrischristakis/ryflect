@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Button from '../components/Button';
 import { getDate } from '../utils/utils';
 import { useNavigate } from 'react-router-dom';
@@ -7,24 +7,27 @@ import { API_URL } from '../config';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { handleError } from '../utils/HandleResponse.js';
-import { EMOJIS, MAX_FUTURE_YEARS } from '../utils/Constants.js';
+import { EMOJIS, MAX_FUTURE_YEARS, MAX_BYTES, RANDOM_MESSAGES } from '../utils/Constants.js';
 import PopUp from '../components/PopUp.jsx';
 import style from './CreatePage.module.css';
 import { useLocation } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 // For quill
+import 'quill-paste-smart';  // Whoever made this, thank you. Prevents unwanted rich text pasting.
 const modules = {
     toolbar: [
         ['bold', 'italic', 'underline', 'strike'],  // Add or customize other formatting options as needed
         [{ 'list': 'ordered'}, { 'list': 'bullet' }],  // Add both ordered and bullet list options
         [{ 'indent': '-1'}, { 'indent': '+1' }],  // Add indent and outdent options
-      ],
+    ]
 }
 
-const randomEmoji = () => {
-    const emojiArray = [...EMOJIS];
-    const selected = emojiArray[Math.floor(Math.random() * emojiArray.length)];
-    return selected;
+const randomFromArray = (arr) => {
+    if(arr.length === 0) return;
+    if(arr.length === 1) return arr[0];
+
+    return arr[Math.floor(Math.random() * arr.length)];
 }
 
 let date = new Date();
@@ -40,15 +43,17 @@ function CreatePage() {
     const isCapsule = selectedDay && selectedMonth && selectedYear;
 
     const [entryText, setEntryText] = useState('');
-    const [emoji, setEmoji] = useState();
+    const [emoji, setEmoji] = useState(randomFromArray([...EMOJIS]));
+    const [placeholder] = useState(randomFromArray(RANDOM_MESSAGES))
     const [hideConfirmPopup, setHideConfirmPopup] = useState(true);
     const [dateString, setDateString] = useState(null);
     const [validDate, setValidDate] = useState(false);
+    const [overCapacity, setOverCapacity] = useState(false);
+
     const navigate = useNavigate();
+    const quillRef = useRef();
 
     useEffect(() => {
-        setEmoji(randomEmoji());
-
         if(isCapsule) {
             date.setUTCFullYear(selectedYear);
             date.setUTCMonth(selectedMonth);
@@ -65,6 +70,19 @@ function CreatePage() {
 
         setDateString(getDate(date));
     }, [isCapsule, selectedDay, selectedMonth, selectedYear]);
+
+    useEffect(() => {
+        if(!quillRef.current) return;
+
+        if(!overCapacity) {
+            quillRef.current.editor.root.style.backgroundColor = 'white';
+            return;
+        }
+
+        quillRef.current.editor.root.style.backgroundColor = 'tomato';
+        toast.error('Your journal is too large! Try making it shorter.', {position: 'top-center'});
+
+    }, [overCapacity])
 
     const handleSubmitJournal = async (e) => {
         e.preventDefault();  // Stop default reload after submitting form
@@ -104,6 +122,19 @@ function CreatePage() {
         
     };
 
+    const byteSize = (str) => new Blob([str]).size;
+
+    const handleTextChange = (richtext) => {
+        const bytes = byteSize(richtext);
+
+        if(bytes > MAX_BYTES)
+            setOverCapacity(true);
+        else
+            setOverCapacity(false);
+
+        setEntryText(richtext);
+    }
+
     if(!validDate) {
         return (
             <div>You selected an invalid date :(</div>
@@ -134,11 +165,18 @@ function CreatePage() {
             </div>
         </PopUp>
         <div>
-            <h3>{dateString} <span style={{userSelect: 'none'}} onClick={() => setEmoji(randomEmoji())}>{emoji}</span></h3>
+            <h3>{dateString} <span style={{userSelect: 'none'}} onClick={() => setEmoji(randomFromArray([...EMOJIS]))}>{emoji}</span></h3>
             {isCapsule && <h3 style={{color: '#F28C28'}}><em>time capsule</em></h3>}
-            <ReactQuill modules={modules} placeholder="Type here..." onChange={setEntryText} theme="snow"/>
-            <br/>
-            <Button text="i'm done!" clickEvent={() => setHideConfirmPopup(false)}/>
+
+            <ReactQuill 
+                ref={quillRef} 
+                modules={modules} 
+                placeholder={placeholder}
+                onChange={handleTextChange} 
+                theme="snow"
+            />
+
+            <Button text="i'm done!" clickEvent={() => setHideConfirmPopup(false)} disabled={overCapacity}/>
         </div>
         </>
     );
