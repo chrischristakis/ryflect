@@ -78,7 +78,7 @@
 - [x] Make sure user knows they cannot recover password upon registration
     - Display a pop up or something
 - [x] Faq
-- [ ] Footer
+- [x] Footer
 - [ ] Start encrypting data
     - Put server secret key into config, and change it once a day on a cron.
     - Encrypt text into db (with dummy user key)

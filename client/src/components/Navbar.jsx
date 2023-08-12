@@ -12,7 +12,9 @@ function Navbar() {
 
             <BackButton/>
             <h1 className={style.title}>
-                <Link to='/' className={style['title-link']}>ryflect</Link>
+                <Link to='/' className={style['title-link']}>
+                    ryflect
+                </Link>
             </h1>
             <UserMenu/>
 
@@ -25,7 +27,7 @@ function UserMenu() {
     const { logout, username } = useAuth();
     const [expanded, setExpanded] = useState(false);
 
-    function DropdownItem({text='placeholder', link='#', click= (e) => {}}) {
+    function DropdownItem({text='placeholder', link='#', isUrl=false, click= (e) => {}}) {
         
         const handleClick = (e) => {
             click(e);
@@ -34,7 +36,12 @@ function UserMenu() {
         
         return (
             <li>
-                <Link className={style['dropdown-link']} to={link} onClick={handleClick}>{text}</Link>
+                {
+                    !isUrl?
+                        <Link className={style['dropdown-link']} to={link} onClick={handleClick}>{text}</Link>
+                    :
+                        <a className={style['dropdown-link']} href={link} target='_blank' rel='noreferrer'>{text}</a>
+                }
             </li>
         );
     }
@@ -52,6 +59,8 @@ function UserMenu() {
                             <DropdownItem text='logout' click={async () => {await logout()}}/>
                             <DropdownItem text='FAQ' link='/faq'/>
                             <DropdownItem text='change password' link='/change-password'/>
+                            <DropdownItem text='privacy policy' link='/privacy-policy'/>
+                            <DropdownItem text='repository' link='https://github.com/chrischristakis/ryflect' isUrl={true}/>
                         </ul>
                         <div className={style.screencover} onClick={(_) => setExpanded(false)}></div>
                     </div>

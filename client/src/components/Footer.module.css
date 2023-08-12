@@ -1,0 +1,29 @@
+footer {
+    background-color: black;
+    color: white;
+
+    display: flex;
+    justify-content: space-between;
+
+    padding: 20px 20px;
+}
+
+.copyright {
+    margin: 0;
+}
+
+.made-by {
+    margin: 0;
+    font-weight: bold;
+}
+
+.made-by a {
+    font-weight: normal;
+
+    text-decoration: none;
+    color: inherit;
+}
+
+.made-by a:hover {
+    text-decoration: underline;
+}

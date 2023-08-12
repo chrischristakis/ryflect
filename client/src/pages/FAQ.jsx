@@ -74,8 +74,8 @@ function FAQ() {
             </div>
             <div className={style['faq-container']}>
                 {
-                    faqData.map((obj) =>
-                        <Accordion header={obj.header} content={obj.content}/>
+                    faqData.map((obj, index) =>
+                        <Accordion key={index} header={obj.header} content={obj.content}/>
                     )
                 }
             </div>
