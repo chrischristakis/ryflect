@@ -42,6 +42,10 @@ const verificationRules = [
         .trim().escape()
 ];
 
+function signAccessToken(username, email) {
+    return jwt.sign({username: username, email: email}, JWT_SECRET, { expiresIn: '1800s' });
+}
+
 // Login with credentials and then return a JWT
 router.post('/login', validate(loginRules), async (req, res) => {
     const { username, password } = req.body;
@@ -71,7 +75,7 @@ router.post('/login', validate(loginRules), async (req, res) => {
         return res.status(401).send({error: "User has not been activated yet. Check your inbox for a verification email."});
     }
 
-    const token = jwt.sign({username: user.username}, JWT_SECRET, { expiresIn: '1800s' });
+    const token = signAccessToken(user.username, user.email);
 
     res.cookie("jwt", token, token_cookie);
 
@@ -120,7 +124,7 @@ router.post('/register', validate(registerRules), RateLimit('/auth/register', 5,
         email: email
     });
  
-    const token = jwt.sign({username: username, email: email}, JWT_SECRET, { expiresIn: '1800s' });
+    const token = signAccessToken(username, email);
 
     // Generate random ID for email verirification, make sure its not taken (unikely)
     let verificationID = crypto.randomBytes(16).toString('hex');
@@ -241,7 +245,9 @@ router.get('/ping', (req, res) => {
 });
 
 router.post('/logout', (req, res) => {
-    res.clearCookie('jwt');
+
+    // Clear access token and refresh token
+    res.cookie("jwt", '', {...token_cookie, maxAge: 0});
     return res.send('Logged out');
 });
 

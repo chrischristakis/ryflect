@@ -25,7 +25,16 @@
 - [x] Pagination for recents
 - [x] Manual rate limit for registration, 5 registrations per ip per day
 - [x] NGINX rate limit for all routes, 15r/s
-- [ ] Change routes to account for encryption
+- [ ] Refresh tokens
+    - In verify route if access token is expired, we check if a refresh token exists. If it does, and is valid, simply grant a new access token before proceeding to the route.
+- [ ] Start encrypting data
+    - Put server secret key into config, and change it once a day (week?) on a cron.
+        - If user is still logged in and server secret key changes, then we should force a log out (Expire refresh and access tokens.). 
+    - Encrypt text into db (with dummy user key)
+    - Decrpyt data (with dummy user key)
+    - Set up user key method, encrypt on client.
+    - Change routes to account for encryption
+- [ ] Change password functionality
 
 # Front end
 - [x] Figma layout
@@ -82,15 +91,11 @@
 - [x] Create time capsule infographic
 - [x] Privacy policy
 - [x] Website metadata (title, description, etc.)
-- [ ] Start encrypting data
-    - Put server secret key into config, and change it once a day on a cron.
-    - Encrypt text into db (with dummy user key)
-    - Decrpyt data (with dummy user key)
-    - Set up user key method, encrypt on client.
-- [ ] Change password functionality
+- [ ] Change password page
+- [ ] Final produiction test, high maximum load journal entry test
+- [ ] Make SVGs, like capsule, journal, website icon.
 - [ ] Styling
     - Consider web/mobile
-- [ ] Make SVGs, like capsule, journal, website icon.
 
 # Other
 - [x] Buy domain
