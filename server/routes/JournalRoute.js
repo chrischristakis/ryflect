@@ -7,7 +7,11 @@ const verify = require('../middleware/verify.js');
 const validate = require('../middleware/validate.js');
 const { check, query } = require('express-validator');
 const DOMPurify = require('../utils/DOMPurify.js');
+const cryptoHelper = require('../utils/CryptoHelper.js');
 const { emojis, MAX_BYTES } = require('../utils/Constants.js');
+
+// TEMP
+const key = Buffer.from('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'hex');
 
 const journalRules = [
     check('text', 'Submitted text must not be empty').notEmpty()
@@ -98,7 +102,7 @@ router.get('/id/:id', verify.user, async (req, res) => {
     // TODO: Validate
     const id = req.params.id;
 
-    const found = await Journals.findOne({id: id});
+    let found = await Journals.findOne({id: id});
     if(!found)
         return res.status(404).send({error: `No journals with ID: '${id}' found`});
 
@@ -110,6 +114,11 @@ router.get('/id/:id', verify.user, async (req, res) => {
         const unlock_date = found.date;
         return res.status(403).send({error: `You cannot view this capsule entry yet! Come back on ${getDate(unlock_date)}`});
     }
+
+    // Decrypt the entry
+    const iv = found.iv;
+    const decrypted = cryptoHelper.decrypt(found.richtext, key, found.iv);
+    found.richtext = decrypted;
 
     return res.send(found);
 });
@@ -152,14 +161,18 @@ router.post('/', verify.user, validate(journalRules), async (req, res) => {
 
     // If plaintext is empty, user wrote no meaningful content.
     if(!plaintext)
-        text = '<p>Today I wrote nothing :(</p>'
+        text = '<p>Today I wrote nothing :(</p>';
+
+    // Encrypt the text
+    const encrypted = cryptoHelper.encrypt(text, key);
 
     const journal = new Journals({
         id: journalID,
         username: req.user.username,
         date: date.toISOString(),
-        richtext: text,
-        emoji: req.body.emoji
+        richtext: encrypted.ciphertext,
+        emoji: req.body.emoji,
+        iv: encrypted.iv
     });
 
     try {
@@ -210,15 +223,19 @@ router.post('/timecapsule', verify.user, validate(capsuleRules), async (req, res
     if(!plaintext)
         text = '<p>I have nothing to say to you, future self. Good day.</p>'
 
+    // Encrypt the text
+    const encrypted = cryptoHelper.encrypt(text, key);
+
     const capsule = new Journals({
         id: capsuleID,
         username: req.user.username,
         date: unlock_date.toISOString(),
-        richtext: text,
+        richtext: encrypted.ciphertext,
         emoji: emoji,
+        iv: encrypted.iv,
         is_time_capsule: true,
         created_date: today.toISOString(),
-        locked: true
+        locked: true,
     });
 
     try {

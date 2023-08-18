@@ -1,6 +1,7 @@
 const { ENV } = require('./config.js');
+const { TOKEN_LIFESPAN } = require('./Constants.js');
 
-const COOKIE_LIFESPAN = 1800 * 1000; //in MS
+const COOKIE_LIFESPAN = TOKEN_LIFESPAN * 1000; //in MS
 
 // ALlows us to submit cookies from different hosts on dev, not on prod though.
 module.exports = { 

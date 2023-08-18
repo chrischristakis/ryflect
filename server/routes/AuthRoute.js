@@ -11,6 +11,7 @@ const { JWT_SECRET } = require('../utils/config.js');
 const crypto = require('crypto');
 const mailHelper = require('../utils/Mailhelper.js');
 const { token_cookie } = require('../utils/CookieRules.js');
+const { TOKEN_LIFESPAN } = require('../utils/Constants.js');
 
 const loginRules = [
     check('username', 'Enter a username').notEmpty()
@@ -43,7 +44,7 @@ const verificationRules = [
 ];
 
 function signAccessToken(username, email) {
-    return jwt.sign({username: username, email: email}, JWT_SECRET, { expiresIn: '1800s' });
+    return jwt.sign({username: username, email: email}, JWT_SECRET, { expiresIn: `${TOKEN_LIFESPAN}s` });
 }
 
 // Login with credentials and then return a JWT

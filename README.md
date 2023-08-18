@@ -25,20 +25,25 @@
 - [x] Pagination for recents
 - [x] Manual rate limit for registration, 5 registrations per ip per day
 - [x] NGINX rate limit for all routes, 15r/s
-- [ ] Refresh tokens
-    - In verify route if access token is expired, we check if a refresh token exists. If it does, and is valid, simply grant a new access token before proceeding to the route.
+- [x] Bump up expiry date for access token
 - [ ] Start encrypting data
-    - Put server secret key into config, and change it once a day (week?) on a cron.
+    - Create random key for a user in db
+    - Encrypt key with password key (hash of the password) and store that
+    - Keep password key in cookie
+    - Create server key to encrypt password key
+    - change server secret key once a week on a cron.
         - If user is still logged in and server secret key changes, then we should force a log out (Expire refresh and access tokens.). 
-    - Encrypt text into db (with dummy user key)
-    - Decrpyt data (with dummy user key)
-    - Set up user key method, encrypt on client.
-    - Change routes to account for encryption
+    - Change routes to account for encryption 
+        - Id route
+        - Recents
+        - Time capsule
+        - Create journal
+- [ ] Consider only sending back a trimmed portion of the actual journal in recents, so route doesnt take as long for big entries.
 - [ ] Change password functionality
 
 # Front end
 - [x] Figma layout
-- [x] Basic layout pages (No styling)
+-  ,.[x] Basic layout pages (No styling)
 - [x] Add a 'loaded' property for journalIDs, since checking if empty isn't reliable
         - New users have empty journalIDs, so website woudln't work for them if we check using isEmpty
         - THIS IS CAUSING RERENDERS OF THE ENTIRE PAGE! WE NEED TO CHECK IF SOMETHING IS LOADED FIRST
@@ -92,7 +97,7 @@
 - [x] Privacy policy
 - [x] Website metadata (title, description, etc.)
 - [ ] Change password page
-- [ ] Final produiction test, high maximum load journal entry test
+- [ ] Final production test, high maximum load journal entry test
 - [ ] Make SVGs, like capsule, journal, website icon.
 - [ ] Styling
     - Consider web/mobile

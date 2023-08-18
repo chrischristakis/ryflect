@@ -16,11 +16,15 @@ const journalSchema = new mongoose.Schema({
     },
     richtext: {
         type: String,
-        default: ''
+        required: true
     },
     emoji: {
         type: String,
         default: '📕'
+    },
+    iv: {
+        type: String,
+        required: true
     },
 
     // Below are only for time capsule entries.
