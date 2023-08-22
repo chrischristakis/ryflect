@@ -26,27 +26,14 @@
 - [x] Manual rate limit for registration, 5 registrations per ip per day
 - [x] NGINX rate limit for all routes, 15r/s
 - [x] Bump up expiry date for access token
-- [ ] Start encrypting data
-    - Change encryption to save ciphertext in base64 instead, which will be more space efficient.
-        - Keys can remain hex for readability.
-        - Maybe change methods to be base agnostic, so we can change how we save keys whenever.
-    - Change routes to account for this and test.
-    - Create random key for a user in db (256 bit)
-    - Encrypt random key with password key (hash of the password with salt, SHA256) and store that and salt
-        - This happens on registration
-    - On login, we hash the password with SHA256 and store in a cookie.
-        - Should share same length as other session cookie
-        - If absent, or invalid, we log the user out.
-    - Keep password key in cookie
-    - Create server key (256 bits, random) to encrypt password key instead of saving plaintext hash in cookie.
-    - change server secret key once a week on a cron.
-        - If user is still logged in and server secret key changes, then we should force a log out (Expire refresh and access tokens.). 
-    - Change routes to account for encryption 
-        - Id route
-        - Recents
-        - Time capsule
-        - Create journal
-- [ ] Consider only sending back a trimmed portion of the actual journal in recents, so route doesnt take as long for big entries.
+- [x] Start encrypting data
+- [x] Force logout if not authed.
+- [ ] Decrypt recent entries
+    - Maybe we store a truncated version of the recent entry that is encrypted so we dont need to unencrypt and send back the entire entry?
+    - If so, might as well share an IV with the journal entry so add a helper function in that can use an IV instead of making a new one
+- [ ] Make rotating server key to encrypt the derived key in cookie
+    - Changes once a week on a CRON
+- [ ] Log user out if server key is outdated and has rotated.
 - [ ] Change password functionality
 
 # Front end

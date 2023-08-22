@@ -26,7 +26,7 @@ const loginRules = [
 const registerRules = [
     check('username', 'Enter a username').notEmpty()
         .isString().withMessage("Username must be a string")
-        .isLength({max: 50}).withMessage("Username should be less than 20 characters")
+        .isLength({max: 50}).withMessage("Username should be less than 50 characters")
         .matches('^[A-Za-z0-9]+$').withMessage("Username must be within A-Z, a-z, 0-9")
         .escape(),
     check('password')
@@ -244,8 +244,11 @@ router.get('/ping', async (req, res) => {
 
     const token = req.cookies['session']?.jwt;
     const encryptedDerivedKey = req.cookies['session']?.encryptedDerivedKey;
-    if(!token || !encryptedDerivedKey)
+    if(!token || !encryptedDerivedKey) {
+        // Delete cookie incase it exists
+        res.cookie("session", '', {...token_cookie, maxAge: 0});
         return res.send({auth: false})
+    }
 
     try {
         const body = jwt.verify(token, JWT_SECRET);

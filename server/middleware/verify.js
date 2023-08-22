@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const { JWT_SECRET } = require('../utils/config.js');
+const { token_cookie } = require('../utils/CookieRules.js');
 const User = require('../models/User.js');
 
 module.exports = {
@@ -8,8 +9,10 @@ module.exports = {
         
         const token = req.cookies['session']?.jwt;
         const encryptedDerivedKey = req.cookies['session']?.encryptedDerivedKey;
-        if(!token || !encryptedDerivedKey)
+        if(!token || !encryptedDerivedKey) {
+            res.cookie("session", '', {...token_cookie, maxAge: 0});
             return res.status(401).send({error: "Missing auth cookie"});
+        }
 
         try {
             // Verify jwt and store the payload of our token in the request
@@ -17,14 +20,17 @@ module.exports = {
             
             // Make sure username is still valid (Edge case but its here.)
             const user = await User.findOne({username: body.username});
-            if(!user)
-            return res.status(404).send({error: "Username does not exist"});
+            if(!user) {
+                res.cookie("session", '', {...token_cookie, maxAge: 0});
+                return res.status(404).send({error: "Username does not exist"});
+            }
         
             req.token_info = body;
             req.user = user;
             req.encryptedDerivedKey = encryptedDerivedKey;
         }
         catch(err) {
+            res.cookie("session", '', {...token_cookie, maxAge: 0});
             if(err.message)
                 return res.status(401).send({error: err.message});
             return res.status(500).send({error: err});
@@ -32,5 +38,4 @@ module.exports = {
 
         next();
     }
-
 };
