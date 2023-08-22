@@ -27,10 +27,18 @@
 - [x] NGINX rate limit for all routes, 15r/s
 - [x] Bump up expiry date for access token
 - [ ] Start encrypting data
-    - Create random key for a user in db
-    - Encrypt key with password key (hash of the password) and store that
+    - Change encryption to save ciphertext in base64 instead, which will be more space efficient.
+        - Keys can remain hex for readability.
+        - Maybe change methods to be base agnostic, so we can change how we save keys whenever.
+    - Change routes to account for this and test.
+    - Create random key for a user in db (256 bit)
+    - Encrypt random key with password key (hash of the password with salt, SHA256) and store that and salt
+        - This happens on registration
+    - On login, we hash the password with SHA256 and store in a cookie.
+        - Should share same length as other session cookie
+        - If absent, or invalid, we log the user out.
     - Keep password key in cookie
-    - Create server key to encrypt password key
+    - Create server key (256 bits, random) to encrypt password key instead of saving plaintext hash in cookie.
     - change server secret key once a week on a cron.
         - If user is still logged in and server secret key changes, then we should force a log out (Expire refresh and access tokens.). 
     - Change routes to account for encryption 
@@ -43,7 +51,7 @@
 
 # Front end
 - [x] Figma layout
--  ,.[x] Basic layout pages (No styling)
+- [x] Basic layout pages (No styling)
 - [x] Add a 'loaded' property for journalIDs, since checking if empty isn't reliable
         - New users have empty journalIDs, so website woudln't work for them if we check using isEmpty
         - THIS IS CAUSING RERENDERS OF THE ENTIRE PAGE! WE NEED TO CHECK IF SOMETHING IS LOADED FIRST
@@ -96,6 +104,11 @@
 - [x] Create time capsule infographic
 - [x] Privacy policy
 - [x] Website metadata (title, description, etc.)
+- [ ] Refresh home after user is deleted and we get a bunch of 'username does not exist'
+    - Happens because we dont log user out so were calling our normal routes.
+    - Regardless, routes seemed to be called 4 times each. sould be once (twice in dev) each.
+- [ ] Ping route being called 3 times when refreshing home, check up on this
+- [ ] Lazy load video example for capsule
 - [ ] Change password page
 - [ ] Final production test, high maximum load journal entry test
 - [ ] Make SVGs, like capsule, journal, website icon.

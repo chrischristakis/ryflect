@@ -16,6 +16,10 @@ const verificationSchema = new mongoose.Schema({
     hasResentEmail: {
         type: Boolean,
         default: false
+    },
+    encryptedDerivedKey: {
+        type: String,
+        required: true
     }
 });
 

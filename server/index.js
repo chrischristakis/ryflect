@@ -10,16 +10,6 @@ const cookieParser = require('cookie-parser');
 const cron = require('./cron');
 const JSONValidator = require('./middleware/JSONValidator.js');
 
-const cryptoHelper = require('./utils/CryptoHelper.js');
-
-const str = 'test text';
-
-// This is an example of how to use a string as a key
-const key = Buffer.from('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'hex');
-const encrypted = cryptoHelper.encrypt(str, key);
-console.log(encrypted.ciphertext);
-console.log(cryptoHelper.decrypt(encrypted.ciphertext, key, encrypted.iv))
-
 app.use(cors({
     credentials: true,  // We need this for cookies to be stored on browser.
     origin: [

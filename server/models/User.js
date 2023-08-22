@@ -20,6 +20,18 @@ const userSchema = new mongoose.Schema({
         unique: true,
         required: true
     },
+    encryptedGeneratedKey: {
+        type: String,
+        required: true
+    },
+    encryptedGeneratedKeyIV: {
+        type: String,
+        required: true
+    },
+    derivedKeySalt : {
+        type: String,
+        required: true
+    },
     recentJournals: {
         type: [String],
         default: []

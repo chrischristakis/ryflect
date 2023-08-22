@@ -12,6 +12,7 @@ const crypto = require('crypto');
 const mailHelper = require('../utils/Mailhelper.js');
 const { token_cookie } = require('../utils/CookieRules.js');
 const { TOKEN_LIFESPAN } = require('../utils/Constants.js');
+const cryptoHelper = require('../utils/CryptoHelper.js');
 
 const loginRules = [
     check('username', 'Enter a username').notEmpty()
@@ -76,10 +77,12 @@ router.post('/login', validate(loginRules), async (req, res) => {
         return res.status(401).send({error: "User has not been activated yet. Check your inbox for a verification email."});
     }
 
+    const derivedKeySalt = user.derivedKeySalt;
+    const derivedKey = crypto.createHash('sha256').update(password+derivedKeySalt).digest();
+
     const token = signAccessToken(user.username, user.email);
 
-    res.cookie("jwt", token, token_cookie);
-
+    res.cookie("session", {jwt: token, encryptedDerivedKey: derivedKey.toString('hex')}, token_cookie);
     return res.send(token);
 });
 
@@ -116,11 +119,19 @@ router.post('/register', validate(registerRules), RateLimit('/auth/register', 5,
         return res.status(500).send({error: err});
     }
 
-    const date = new Date();
+    // Generate data needed for encryption (Our derived key salt as well as our generated key)
+    const generatedKey = crypto.randomBytes(32).toString('hex'); // since we're using AES256, key must be 256 bits
+    const derivedKeySalt = crypto.randomBytes(8).toString('base64'); // 64 bit salt should be sufficient
+    const derivedKey = crypto.createHash('sha256').update(password+derivedKeySalt).digest();
+    const encryptedGeneratedKey = cryptoHelper.encrypt(generatedKey, derivedKey);
+
     const user = new User({
         username: username,
         username_lower: username.toLowerCase(),
         password: hash,
+        encryptedGeneratedKey: encryptedGeneratedKey.ciphertext,
+        encryptedGeneratedKeyIV: encryptedGeneratedKey.iv,
+        derivedKeySalt: derivedKeySalt,
         active: false,
         email: email
     });
@@ -134,7 +145,8 @@ router.post('/register', validate(registerRules), RateLimit('/auth/register', 5,
 
     const verification = new Verification({
         urlID: verificationID,
-        token: token
+        token: token,
+        encryptedDerivedKey: derivedKey.toString('hex')
     });
     
     // Commit new user to db and verification
@@ -221,17 +233,18 @@ router.get('/verify/:id', validate(verificationRules), async (req, res) => {
         return res.status(500).send({error: err.message});
     }
 
-    res.cookie("jwt", entry.token, token_cookie);
+    res.cookie("session", {jwt: entry.token, encryptedDerivedKey: entry.encryptedDerivedKey}, token_cookie);
 
     res.send(entry.token);
 });
 
-router.get('/ping', (req, res) => {
+router.get('/ping', async (req, res) => {
     // I don't want an error to show up in the browser console if the user isn't authed on the ping route, so instead
-    // of sending back a 401, if they aren't authed we're just sending back false.
+    // of sending back a 401, if they aren't authed we're just sending back false with a 200 response.
 
-    const token = req.cookies['jwt'];
-    if(!token)
+    const token = req.cookies['session']?.jwt;
+    const encryptedDerivedKey = req.cookies['session']?.encryptedDerivedKey;
+    if(!token || !encryptedDerivedKey)
         return res.send({auth: false})
 
     try {
@@ -239,8 +252,10 @@ router.get('/ping', (req, res) => {
         return res.send({auth: true, username: body.username});
     }
     catch(err) {
+        console.log(err)
         if(err.message)
             return res.send({auth: false});
+        console.log('ERR [GET auth/ping]:', err);
         return res.status(500).send({error: err});
     };
 });
@@ -248,7 +263,7 @@ router.get('/ping', (req, res) => {
 router.post('/logout', (req, res) => {
 
     // Clear access token and refresh token
-    res.cookie("jwt", '', {...token_cookie, maxAge: 0});
+    res.cookie("session", '', {...token_cookie, maxAge: 0});
     return res.send('Logged out');
 });
 

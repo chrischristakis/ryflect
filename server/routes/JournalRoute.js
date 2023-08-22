@@ -115,9 +115,13 @@ router.get('/id/:id', verify.user, async (req, res) => {
         return res.status(403).send({error: `You cannot view this capsule entry yet! Come back on ${getDate(unlock_date)}`});
     }
 
-    // Decrypt the entry
-    const iv = found.iv;
-    const decrypted = cryptoHelper.decrypt(found.richtext, key, found.iv);
+    // Decrypt the generated key so we can decrypt the entry
+    // Encrypt the text
+    const { encryptedGeneratedKey, encryptedGeneratedKeyIV } = req.user;
+    const derivedKeyBuffer = Buffer.from(req.encryptedDerivedKey, 'hex');
+    const generatedKey = cryptoHelper.decrypt(encryptedGeneratedKey, derivedKeyBuffer, encryptedGeneratedKeyIV).toString();
+
+    const decrypted = cryptoHelper.decrypt(found.richtext, Buffer.from(generatedKey, 'hex'), found.iv);
     found.richtext = decrypted;
 
     return res.send(found);
@@ -164,7 +168,11 @@ router.post('/', verify.user, validate(journalRules), async (req, res) => {
         text = '<p>Today I wrote nothing :(</p>';
 
     // Encrypt the text
-    const encrypted = cryptoHelper.encrypt(text, key);
+    const { encryptedGeneratedKey, encryptedGeneratedKeyIV } = req.user;
+    const derivedKeyBuffer = Buffer.from(req.encryptedDerivedKey, 'hex');
+    const generatedKey = cryptoHelper.decrypt(encryptedGeneratedKey, derivedKeyBuffer, encryptedGeneratedKeyIV).toString();
+
+    const encrypted = cryptoHelper.encrypt(text, Buffer.from(generatedKey, 'hex'));
 
     const journal = new Journals({
         id: journalID,
@@ -224,7 +232,11 @@ router.post('/timecapsule', verify.user, validate(capsuleRules), async (req, res
         text = '<p>I have nothing to say to you, future self. Good day.</p>'
 
     // Encrypt the text
-    const encrypted = cryptoHelper.encrypt(text, key);
+    const { encryptedGeneratedKey, encryptedGeneratedKeyIV } = req.user;
+    const derivedKeyBuffer = Buffer.from(req.encryptedDerivedKey, 'hex');
+    const generatedKey = cryptoHelper.decrypt(encryptedGeneratedKey, derivedKeyBuffer, encryptedGeneratedKeyIV).toString();
+
+    const encrypted = cryptoHelper.encrypt(text, Buffer.from(generatedKey, 'hex'));
 
     const capsule = new Journals({
         id: capsuleID,
