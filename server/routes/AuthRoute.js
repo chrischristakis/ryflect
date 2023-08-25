@@ -7,7 +7,7 @@ const validate = require('../middleware/validate.js');
 const { RateLimit, incrementRateAttempts } = require('../middleware/RateLimit.js');
 const User = require('../models/User.js');
 const Verification = require('../models/Verification.js');
-const { JWT_SECRET } = require('../utils/config.js');
+const { JWT_SECRET, SERVER_SECRET_KEY } = require('../utils/config.js');
 const crypto = require('crypto');
 const mailHelper = require('../utils/Mailhelper.js');
 const { token_cookie } = require('../utils/CookieRules.js');
@@ -80,10 +80,15 @@ router.post('/login', validate(loginRules), async (req, res) => {
     try {
         const derivedKeySalt = user.derivedKeySalt;
         const derivedKey = crypto.createHash('sha256').update(password+derivedKeySalt).digest();
+        const encryptedDerivedKey = cryptoHelper.encrypt(derivedKey, SERVER_SECRET_KEY);
 
         const token = signAccessToken(user.username, user.email);
 
-        res.cookie("session", {jwt: token, encryptedDerivedKey: derivedKey.toString('hex')}, token_cookie);
+        res.cookie("session", {
+            jwt: token, 
+            encryptedDerivedKey: {cipher: encryptedDerivedKey.ciphertext, iv: encryptedDerivedKey.iv}, 
+            token_cookie
+        });
         return res.send(token);
     }
     catch(err) {
@@ -118,14 +123,15 @@ router.post('/register', validate(registerRules), RateLimit('/auth/register', 5,
     const generatedKey = crypto.randomBytes(32).toString('hex'); // since we're using AES256, key must be 256 bits
     const derivedKeySalt = crypto.randomBytes(8).toString('base64'); // 64 bit salt should be sufficient
     let hash;
-    let encryptedGeneratedKey, derivedKey;
+    let encryptedGeneratedKey, encryptedDerivedKey;
     try {
         const salt = await bcrypt.genSalt();
         hash = await bcrypt.hash(password, salt);
 
         // Generate data needed for encryption (Our derived key salt as well as our generated key)
-        derivedKey = crypto.createHash('sha256').update(password+derivedKeySalt).digest();
+        const derivedKey = crypto.createHash('sha256').update(password+derivedKeySalt).digest();
         encryptedGeneratedKey = cryptoHelper.encrypt(generatedKey, derivedKey);
+        encryptedDerivedKey = cryptoHelper.encrypt(derivedKey, SERVER_SECRET_KEY);
     }
     catch(err) {
         console.log('ERR [POST auth/register]:', err);
@@ -153,7 +159,8 @@ router.post('/register', validate(registerRules), RateLimit('/auth/register', 5,
     const verification = new Verification({
         urlID: verificationID,
         token: token,
-        encryptedDerivedKey: derivedKey.toString('hex')
+        encryptedDerivedKey: encryptedDerivedKey.ciphertext,
+        encryptedDerivedKeyIV: encryptedDerivedKey.iv
     });
     
     // Commit new user to db and verification
@@ -240,7 +247,11 @@ router.get('/verify/:id', validate(verificationRules), async (req, res) => {
         return res.status(500).send({error: err.message});
     }
 
-    res.cookie("session", {jwt: entry.token, encryptedDerivedKey: entry.encryptedDerivedKey}, token_cookie);
+    res.cookie("session", {
+        jwt: entry.token, 
+        encryptedDerivedKey: {cipher: entry.encryptedDerivedKey, iv: entry.encryptedDerivedKeyIV}, 
+        token_cookie
+    });
 
     res.send(entry.token);
 });

@@ -20,6 +20,10 @@ const verificationSchema = new mongoose.Schema({
     encryptedDerivedKey: {
         type: String,
         required: true
+    },
+    encryptedDerivedKeyIV: {
+        type: String,
+        required: true
     }
 });
 

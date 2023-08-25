@@ -1,7 +1,8 @@
 const jwt = require('jsonwebtoken');
-const { JWT_SECRET } = require('../utils/config.js');
+const { JWT_SECRET, SERVER_SECRET_KEY } = require('../utils/config.js');
 const { token_cookie } = require('../utils/CookieRules.js');
 const User = require('../models/User.js');
+const cryptoHelper = require('../utils/CryptoHelper.js');
 
 module.exports = {
 
@@ -23,11 +24,10 @@ module.exports = {
             if(!user) {
                 res.cookie("session", '', {...token_cookie, maxAge: 0});
                 return res.status(404).send({error: "Username does not exist"});
-            }
-        
+            } 
+
             req.token_info = body;
             req.user = user;
-            req.encryptedDerivedKey = encryptedDerivedKey;
         }
         catch(err) {
             res.cookie("session", '', {...token_cookie, maxAge: 0});
@@ -35,6 +35,16 @@ module.exports = {
                 return res.status(401).send({error: err.message});
             return res.status(500).send({error: err});
         };
+
+        // Try decrypted the encrypted derived key. If it changed since cookie was issued, we unauth the user and force them to re-log.
+        try {
+            const decryptedDerivedKey = cryptoHelper.decrypt(encryptedDerivedKey.cipher, SERVER_SECRET_KEY, encryptedDerivedKey.iv);
+            req.derivedKey = decryptedDerivedKey;
+        } 
+        catch(err) {
+            res.cookie("session", '', {...token_cookie, maxAge: 0});
+            return res.status(401).send({error: 'Session invalid, please reauthenticate.'});
+        }
 
         next();
     }

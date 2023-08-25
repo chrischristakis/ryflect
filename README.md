@@ -31,7 +31,9 @@
 - [x] Decrypt recent entries
 - [ ] Make rotating server key to encrypt the derived key in cookie
     - Changes once a week on a CRON
-- [ ] Log user out if server key is outdated and has rotated.
+- [ ] 304 not modified in front end on home
+    - Firefox thing but just look into it, not sure if it needs changing.
+- [x] Log user out if server key is outdated and has rotated.
 - [ ] Change password functionality
 
 # Front end

@@ -10,9 +10,6 @@ const DOMPurify = require('../utils/DOMPurify.js');
 const cryptoHelper = require('../utils/CryptoHelper.js');
 const { emojis, MAX_BYTES } = require('../utils/Constants.js');
 
-// TEMP
-const key = Buffer.from('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'hex');
-
 const journalRules = [
     check('text', 'Submitted text must not be empty').notEmpty()
         .isString().withMessage("Text must be a string")
@@ -119,7 +116,7 @@ router.get('/id/:id', verify.user, async (req, res) => {
 
     try {
         const { encryptedGeneratedKey, encryptedGeneratedKeyIV } = req.user;
-        const derivedKeyBuffer = Buffer.from(req.encryptedDerivedKey, 'hex');
+        const derivedKeyBuffer = Buffer.from(req.derivedKey, 'hex');
         const generatedKey = cryptoHelper.decrypt(encryptedGeneratedKey, derivedKeyBuffer, encryptedGeneratedKeyIV).toString();
 
         const decrypted = cryptoHelper.decrypt(found.richtext, Buffer.from(generatedKey, 'hex'), found.iv);
@@ -149,7 +146,7 @@ router.get('/recents', verify.user, validate(recentRules), async (req, res) => {
 
         // Decrypt our generated key to decrypt the entries
         const { encryptedGeneratedKey, encryptedGeneratedKeyIV } = req.user;
-        const derivedKeyBuffer = Buffer.from(req.encryptedDerivedKey, 'hex');
+        const derivedKeyBuffer = Buffer.from(req.derivedKey, 'hex');
         const generatedKey = cryptoHelper.decrypt(encryptedGeneratedKey, derivedKeyBuffer, encryptedGeneratedKeyIV).toString();
 
         let decryptedEntries = [];
@@ -188,7 +185,7 @@ router.post('/', verify.user, validate(journalRules), async (req, res) => {
     let encrypted;
     try {
         const { encryptedGeneratedKey, encryptedGeneratedKeyIV } = req.user;
-        const derivedKeyBuffer = Buffer.from(req.encryptedDerivedKey, 'hex');
+        const derivedKeyBuffer = Buffer.from(req.derivedKey, 'hex');
         const generatedKey = cryptoHelper.decrypt(encryptedGeneratedKey, derivedKeyBuffer, encryptedGeneratedKeyIV).toString();
 
         encrypted = cryptoHelper.encrypt(text, Buffer.from(generatedKey, 'hex'));
@@ -258,7 +255,7 @@ router.post('/timecapsule', verify.user, validate(capsuleRules), async (req, res
     let encrypted;
     try {
         const { encryptedGeneratedKey, encryptedGeneratedKeyIV } = req.user;
-        const derivedKeyBuffer = Buffer.from(req.encryptedDerivedKey, 'hex');
+        const derivedKeyBuffer = Buffer.from(req.derivedKey, 'hex');
         const generatedKey = cryptoHelper.decrypt(encryptedGeneratedKey, derivedKeyBuffer, encryptedGeneratedKeyIV).toString();
 
         encrypted = cryptoHelper.encrypt(text, Buffer.from(generatedKey, 'hex'));
