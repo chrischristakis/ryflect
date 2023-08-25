@@ -77,13 +77,19 @@ router.post('/login', validate(loginRules), async (req, res) => {
         return res.status(401).send({error: "User has not been activated yet. Check your inbox for a verification email."});
     }
 
-    const derivedKeySalt = user.derivedKeySalt;
-    const derivedKey = crypto.createHash('sha256').update(password+derivedKeySalt).digest();
+    try {
+        const derivedKeySalt = user.derivedKeySalt;
+        const derivedKey = crypto.createHash('sha256').update(password+derivedKeySalt).digest();
 
-    const token = signAccessToken(user.username, user.email);
+        const token = signAccessToken(user.username, user.email);
 
-    res.cookie("session", {jwt: token, encryptedDerivedKey: derivedKey.toString('hex')}, token_cookie);
-    return res.send(token);
+        res.cookie("session", {jwt: token, encryptedDerivedKey: derivedKey.toString('hex')}, token_cookie);
+        return res.send(token);
+    }
+    catch(err) {
+        console.log('ERR [POST auth/login]:', err);
+        return res.status(500).send({error: err});
+    }
 });
 
 // Register a new user (Allow 5 registrations per 24 hours)
@@ -108,22 +114,23 @@ router.post('/register', validate(registerRules), RateLimit('/auth/register', 5,
     if(errs.length > 0)
         return res.status(409).send({error: errs, fields: fields});
 
-    // Hash password before storing in db.
+    // Hash password before storing in db, and produced our generatedKey
+    const generatedKey = crypto.randomBytes(32).toString('hex'); // since we're using AES256, key must be 256 bits
+    const derivedKeySalt = crypto.randomBytes(8).toString('base64'); // 64 bit salt should be sufficient
     let hash;
+    let encryptedGeneratedKey, derivedKey;
     try {
         const salt = await bcrypt.genSalt();
         hash = await bcrypt.hash(password, salt);
+
+        // Generate data needed for encryption (Our derived key salt as well as our generated key)
+        derivedKey = crypto.createHash('sha256').update(password+derivedKeySalt).digest();
+        encryptedGeneratedKey = cryptoHelper.encrypt(generatedKey, derivedKey);
     }
     catch(err) {
         console.log('ERR [POST auth/register]:', err);
         return res.status(500).send({error: err});
     }
-
-    // Generate data needed for encryption (Our derived key salt as well as our generated key)
-    const generatedKey = crypto.randomBytes(32).toString('hex'); // since we're using AES256, key must be 256 bits
-    const derivedKeySalt = crypto.randomBytes(8).toString('base64'); // 64 bit salt should be sufficient
-    const derivedKey = crypto.createHash('sha256').update(password+derivedKeySalt).digest();
-    const encryptedGeneratedKey = cryptoHelper.encrypt(generatedKey, derivedKey);
 
     const user = new User({
         username: username,

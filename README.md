@@ -91,7 +91,7 @@
 - [x] Website metadata (title, description, etc.)
 - [ ] Refresh home after user is deleted and we get a bunch of 'username does not exist'
     - Happens because we dont log user out so were calling our normal routes.
-    - Regardless, routes seemed to be called 4 times each. sould be once (twice in dev) each.
+    - Regardless, routes seemed to be called 4 times each. should be once (twice in dev) each.
 - [ ] Ping route being called 3 times when refreshing home, check up on this
 - [ ] Lazy load video example for capsule
 - [ ] Change password page

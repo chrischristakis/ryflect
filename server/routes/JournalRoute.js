@@ -116,12 +116,18 @@ router.get('/id/:id', verify.user, async (req, res) => {
     }
 
     // Decrypt the generated key so we can decrypt the entry
-    const { encryptedGeneratedKey, encryptedGeneratedKeyIV } = req.user;
-    const derivedKeyBuffer = Buffer.from(req.encryptedDerivedKey, 'hex');
-    const generatedKey = cryptoHelper.decrypt(encryptedGeneratedKey, derivedKeyBuffer, encryptedGeneratedKeyIV).toString();
 
-    const decrypted = cryptoHelper.decrypt(found.richtext, Buffer.from(generatedKey, 'hex'), found.iv);
-    found.richtext = decrypted;
+    try {
+        const { encryptedGeneratedKey, encryptedGeneratedKeyIV } = req.user;
+        const derivedKeyBuffer = Buffer.from(req.encryptedDerivedKey, 'hex');
+        const generatedKey = cryptoHelper.decrypt(encryptedGeneratedKey, derivedKeyBuffer, encryptedGeneratedKeyIV).toString();
+
+        const decrypted = cryptoHelper.decrypt(found.richtext, Buffer.from(generatedKey, 'hex'), found.iv);
+        found.richtext = decrypted;
+    } catch(err) {
+        console.log('ERR [GET journals/id/:id]:', err);
+        return res.status(500).send({error: err});
+    }
 
     return res.send(found);
 });
@@ -179,11 +185,17 @@ router.post('/', verify.user, validate(journalRules), async (req, res) => {
         text = '<p>Today I wrote nothing :(</p>';
 
     // Encrypt the text
-    const { encryptedGeneratedKey, encryptedGeneratedKeyIV } = req.user;
-    const derivedKeyBuffer = Buffer.from(req.encryptedDerivedKey, 'hex');
-    const generatedKey = cryptoHelper.decrypt(encryptedGeneratedKey, derivedKeyBuffer, encryptedGeneratedKeyIV).toString();
+    let encrypted;
+    try {
+        const { encryptedGeneratedKey, encryptedGeneratedKeyIV } = req.user;
+        const derivedKeyBuffer = Buffer.from(req.encryptedDerivedKey, 'hex');
+        const generatedKey = cryptoHelper.decrypt(encryptedGeneratedKey, derivedKeyBuffer, encryptedGeneratedKeyIV).toString();
 
-    const encrypted = cryptoHelper.encrypt(text, Buffer.from(generatedKey, 'hex'));
+        encrypted = cryptoHelper.encrypt(text, Buffer.from(generatedKey, 'hex'));
+    } catch(err) {
+        console.log('ERR [POST journals/]:', err);
+        return res.status(500).send({error: err});
+    }
 
     const journal = new Journals({
         id: journalID,
@@ -243,11 +255,17 @@ router.post('/timecapsule', verify.user, validate(capsuleRules), async (req, res
         text = '<p>I have nothing to say to you, future self. Good day.</p>'
 
     // Encrypt the text
-    const { encryptedGeneratedKey, encryptedGeneratedKeyIV } = req.user;
-    const derivedKeyBuffer = Buffer.from(req.encryptedDerivedKey, 'hex');
-    const generatedKey = cryptoHelper.decrypt(encryptedGeneratedKey, derivedKeyBuffer, encryptedGeneratedKeyIV).toString();
+    let encrypted;
+    try {
+        const { encryptedGeneratedKey, encryptedGeneratedKeyIV } = req.user;
+        const derivedKeyBuffer = Buffer.from(req.encryptedDerivedKey, 'hex');
+        const generatedKey = cryptoHelper.decrypt(encryptedGeneratedKey, derivedKeyBuffer, encryptedGeneratedKeyIV).toString();
 
-    const encrypted = cryptoHelper.encrypt(text, Buffer.from(generatedKey, 'hex'));
+        encrypted = cryptoHelper.encrypt(text, Buffer.from(generatedKey, 'hex'));
+    } catch(err) {
+        console.log('ERR [POST journals/timecapsule]:', err);
+        return res.status(500).send({error: err});
+    }
 
     const capsule = new Journals({
         id: capsuleID,
