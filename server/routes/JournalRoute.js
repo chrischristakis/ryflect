@@ -116,7 +116,6 @@ router.get('/id/:id', verify.user, async (req, res) => {
     }
 
     // Decrypt the generated key so we can decrypt the entry
-    // Encrypt the text
     const { encryptedGeneratedKey, encryptedGeneratedKeyIV } = req.user;
     const derivedKeyBuffer = Buffer.from(req.encryptedDerivedKey, 'hex');
     const generatedKey = cryptoHelper.decrypt(encryptedGeneratedKey, derivedKeyBuffer, encryptedGeneratedKeyIV).toString();
@@ -127,8 +126,7 @@ router.get('/id/:id', verify.user, async (req, res) => {
     return res.send(found);
 });
 
-// Compile a paginated list of a user's most recent journal entries 
-// ! (Page index starts at 0)
+// Compile a list of a user's recent journal entries 
 router.get('/recents', verify.user, validate(recentRules), async (req, res) => {
     const {limit, skip} = req.query;
 
@@ -142,7 +140,20 @@ router.get('/recents', verify.user, validate(recentRules), async (req, res) => {
                 date: {$lte: d.toUTCString()}
             },
         ).sort({date: -1}).skip(skip).limit(limit);
-        return res.send(paginatedRecents);
+
+        // Decrypt our generated key to decrypt the entries
+        const { encryptedGeneratedKey, encryptedGeneratedKeyIV } = req.user;
+        const derivedKeyBuffer = Buffer.from(req.encryptedDerivedKey, 'hex');
+        const generatedKey = cryptoHelper.decrypt(encryptedGeneratedKey, derivedKeyBuffer, encryptedGeneratedKeyIV).toString();
+
+        let decryptedEntries = [];
+        for(let recent of paginatedRecents) {
+            const decrypted = cryptoHelper.decrypt(recent.richtext, Buffer.from(generatedKey, 'hex'), recent.iv).toString('utf-8');
+            recent.richtext = decrypted;
+            decryptedEntries.push(recent);
+        }
+
+        return res.send(decryptedEntries);
     }
     catch(err) {
         console.log('ERR [GET journals/recents]: ', err);
