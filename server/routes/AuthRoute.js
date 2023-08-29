@@ -7,7 +7,7 @@ const validate = require('../middleware/validate.js');
 const { RateLimit, incrementRateAttempts } = require('../middleware/RateLimit.js');
 const User = require('../models/User.js');
 const Verification = require('../models/Verification.js');
-const { JWT_SECRET, SERVER_SECRET_KEY } = require('../utils/config.js');
+const { JWT_SECRET, getServerSecretKey } = require('../utils/config.js');
 const crypto = require('crypto');
 const mailHelper = require('../utils/Mailhelper.js');
 const { token_cookie } = require('../utils/CookieRules.js');
@@ -80,7 +80,7 @@ router.post('/login', validate(loginRules), async (req, res) => {
     try {
         const derivedKeySalt = user.derivedKeySalt;
         const derivedKey = crypto.createHash('sha256').update(password+derivedKeySalt).digest();
-        const encryptedDerivedKey = cryptoHelper.encrypt(derivedKey, SERVER_SECRET_KEY);
+        const encryptedDerivedKey = cryptoHelper.encrypt(derivedKey, getServerSecretKey());
 
         const token = signAccessToken(user.username, user.email);
 
@@ -131,7 +131,7 @@ router.post('/register', validate(registerRules), RateLimit('/auth/register', 5,
         // Generate data needed for encryption (Our derived key salt as well as our generated key)
         const derivedKey = crypto.createHash('sha256').update(password+derivedKeySalt).digest();
         encryptedGeneratedKey = cryptoHelper.encrypt(generatedKey, derivedKey);
-        encryptedDerivedKey = cryptoHelper.encrypt(derivedKey, SERVER_SECRET_KEY);
+        encryptedDerivedKey = cryptoHelper.encrypt(derivedKey, getServerSecretKey());
     }
     catch(err) {
         console.log('ERR [POST auth/register]:', err);

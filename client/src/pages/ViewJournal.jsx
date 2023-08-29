@@ -27,10 +27,9 @@ function ViewJournal() {
                 setFormattedDate(getDate(new Date(tempEntry.date)));
             }
             catch(err) {
-                if(err.response && err.response.status === 403)
+                if(err.response && (err.response.status === 403 || err.response.status === 401))
                     setUnauthorized(true);
-                else
-                    handleError(err);
+                 handleError(err);
             }
             finally {
                 setLoading(false);
