@@ -12,7 +12,7 @@ const { JWT_SECRET, getServerSecretKey } = require('../utils/config.js');
 const crypto = require('crypto');
 const mailHelper = require('../utils/Mailhelper.js');
 const { token_cookie } = require('../utils/CookieRules.js');
-const { TOKEN_LIFESPAN } = require('../utils/Constants.js');
+const { TOKEN_LIFESPAN, DERIVED_KEY_ITERS } = require('../utils/Constants.js');
 const cryptoHelper = require('../utils/CryptoHelper.js');
 
 const loginRules = [
@@ -91,7 +91,7 @@ router.post('/login', validate(loginRules), async (req, res) => {
 
     try {
         const derivedKeySalt = user.derivedKeySalt;
-        const derivedKey = crypto.createHash('sha256').update(password+derivedKeySalt).digest();
+        const derivedKey = await cryptoHelper.pbkdf2(password, derivedKeySalt, DERIVED_KEY_ITERS);
         const encryptedDerivedKey = cryptoHelper.encrypt(derivedKey, getServerSecretKey());
 
         const token = signAccessToken(user.username, user.email);
@@ -141,7 +141,7 @@ router.post('/register', validate(registerRules), RateLimit('/auth/register', 5,
         hash = await bcrypt.hash(password, salt);
 
         // Generate data needed for encryption (Our derived key salt as well as our generated key)
-        const derivedKey = crypto.createHash('sha256').update(password+derivedKeySalt).digest();
+        const derivedKey = await cryptoHelper.pbkdf2(password, derivedKeySalt, DERIVED_KEY_ITERS);
         encryptedGeneratedKey = cryptoHelper.encrypt(generatedKey, derivedKey);
         encryptedDerivedKey = cryptoHelper.encrypt(derivedKey, getServerSecretKey());
     }
@@ -296,6 +296,9 @@ router.get('/ping', async (req, res) => {
 router.put('/change-password', validate(changePasswordRules), verify.user, async (req, res) => {
     const { oldPass, newPass } = req.body;
 
+    if(oldPass === newPass)
+        return res.status(400).send({error: 'New password must be different than your old one.'});
+
     // Make sure old password is correct
     try {
         if(!await bcrypt.compare(oldPass, req.user.password))
@@ -314,7 +317,7 @@ router.put('/change-password', validate(changePasswordRules), verify.user, async
         const generatedKey = cryptoHelper.decrypt(encryptedGeneratedKey, oldDerivedKeyBuffer, encryptedGeneratedKeyIV).toString();
 
         derivedKeySalt = crypto.randomBytes(8).toString('base64');
-        derivedKey = crypto.createHash('sha256').update(newPass+derivedKeySalt).digest();
+        derivedKey = await cryptoHelper.pbkdf2(newPass, derivedKeySalt, DERIVED_KEY_ITERS);
         newEncryptedGeneratedKey = cryptoHelper.encrypt(generatedKey, derivedKey);
 
         // Generate new hash for password to store in user table for login purposes.

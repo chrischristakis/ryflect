@@ -21,7 +21,20 @@ function decrypt(data, key, iv) {
     return decrypted;
 }
 
+function pbkdf2(data, salt, iters) {
+    return new Promise((resolve, reject) => {
+        crypto.pbkdf2(data, salt, iters, 32, 'sha256', (err, derivedKey) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(derivedKey);
+            }
+        });
+    });
+}
+
 module.exports = {
     encrypt,
-    decrypt
+    decrypt,
+    pbkdf2
 };

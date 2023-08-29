@@ -14,7 +14,7 @@ function Timeline({date}) {
     const [journalMap, setJournalMap] = useState(null);
     const [carouselVals, setCarouselVals] = useState([]);
     const [initialYearIndex, setInitialYearIndex] = useState(0);
-    
+
     const prevSelectedYear = useRef(0);
     const containerRef = useRef(null);
 
@@ -90,7 +90,7 @@ function Timeline({date}) {
 
     const handleChangeYear = (index) => {
         if(prevSelectedYear.current === carouselVals[index]) return;
-        
+
         prevSelectedYear.current = carouselVals[index];
         populateTimeline(carouselVals[index], journalMap, date);
     }

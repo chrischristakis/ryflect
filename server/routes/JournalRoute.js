@@ -117,7 +117,7 @@ router.get('/id/:id', verify.user, async (req, res) => {
         const { encryptedGeneratedKey, encryptedGeneratedKeyIV } = req.user;
         const derivedKeyBuffer = Buffer.from(req.derivedKey);
         const generatedKey = cryptoHelper.decrypt(encryptedGeneratedKey, derivedKeyBuffer, encryptedGeneratedKeyIV).toString();
-        
+
         const decrypted = cryptoHelper.decrypt(found.richtext, Buffer.from(generatedKey, 'hex'), found.iv);
         found.richtext = decrypted;
     } catch(err) {
@@ -237,6 +237,8 @@ router.post('/timecapsule', verify.user, validate(capsuleRules), async (req, res
 
     let upper_date_bound = new Date();
     upper_date_bound.setUTCFullYear(upper_date_bound.getUTCFullYear() + UPPER_YEAR_BOUND);
+    upper_date_bound.setUTCDate(31);
+    upper_date_bound.setUTCMonth(11);
 
     if(unlock_date > upper_date_bound)
         return res.status(400).send({error: `Unlock date must be within ${UPPER_YEAR_BOUND} years of the future`});
