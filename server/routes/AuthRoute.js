@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const { check, param } = require('express-validator');
 const validate = require('../middleware/validate.js');
+const verify = require('../middleware/verify.js');
 const { RateLimit, incrementRateAttempts } = require('../middleware/RateLimit.js');
 const User = require('../models/User.js');
 const Verification = require('../models/Verification.js');
@@ -42,6 +43,17 @@ const registerRules = [
 const verificationRules = [
     param('id').isString().withMessage("ID must be a string")
         .trim().escape()
+];
+
+const changePasswordRules = [
+    check('oldPass', 'Enter your old password').notEmpty()
+        .isString().withMessage("Old password must be a string")
+        .escape(),
+    check('newPass')
+        .isString().withMessage("New password must be a string")
+        .isLength({min: 6}).withMessage("New password must be at least 6 charaters long")
+        .isLength({max: 100}).withMessage("New password should be less than 100 characters")
+        .escape()
 ];
 
 function signAccessToken(username, email) {
@@ -279,6 +291,61 @@ router.get('/ping', async (req, res) => {
         console.log('ERR [GET auth/ping]:', err);
         return res.status(500).send({error: err});
     };
+});
+
+router.put('/change-password', validate(changePasswordRules), verify.user, async (req, res) => {
+    const { oldPass, newPass } = req.body;
+
+    // Make sure old password is correct
+    try {
+        if(!await bcrypt.compare(oldPass, req.user.password))
+            return res.status(401).send({error: "Invalid password", fields:['password']});
+    }
+    catch(err) {
+        console.log('ERR [PUT auth/change-password]:', err);
+        return res.status(500).send({error: err});
+    }
+
+    // Fetch encrypted generated key, decrypt it using old password, and renecrypt using new password.
+    const { encryptedGeneratedKey, encryptedGeneratedKeyIV } = req.user;
+    const oldDerivedKeyBuffer = Buffer.from(req.derivedKey, 'hex');
+    let newEncryptedGeneratedKey, derivedKey, derivedKeySalt, passwordHash;
+    try {
+        const generatedKey = cryptoHelper.decrypt(encryptedGeneratedKey, oldDerivedKeyBuffer, encryptedGeneratedKeyIV).toString();
+
+        derivedKeySalt = crypto.randomBytes(8).toString('base64');
+        derivedKey = crypto.createHash('sha256').update(newPass+derivedKeySalt).digest();
+        newEncryptedGeneratedKey = cryptoHelper.encrypt(generatedKey, derivedKey);
+
+        // Generate new hash for password to store in user table for login purposes.
+        const salt = await bcrypt.genSalt();
+        passwordHash = await bcrypt.hash(newPass, salt);
+    } 
+    catch(err) {
+        console.log('ERR [PUT auth/change-password]:', err);
+        return res.status(500).send({error: err});
+    }
+
+    // Now, we store our new values in the db and force a logout
+    try {
+        await User.updateOne({username_lower: req.user.username_lower}, 
+            { 
+                $set: {
+                    password: passwordHash, 
+                    encryptedGeneratedKey: newEncryptedGeneratedKey.ciphertext, 
+                    encryptedGeneratedKeyIV: newEncryptedGeneratedKey.iv,
+                    derivedKeySalt: derivedKeySalt
+                } 
+            }
+        );
+        
+        res.cookie("session", '', {...token_cookie, maxAge: 0});
+        return res.send('Password successfully changed!');
+    }
+    catch(err) {
+        console.log('ERR [PUT auth/change-password]:', err);
+        return res.status(500).send({error: err});
+    }
 });
 
 router.post('/logout', (req, res) => {

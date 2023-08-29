@@ -113,12 +113,11 @@ router.get('/id/:id', verify.user, async (req, res) => {
     }
 
     // Decrypt the generated key so we can decrypt the entry
-
     try {
         const { encryptedGeneratedKey, encryptedGeneratedKeyIV } = req.user;
-        const derivedKeyBuffer = Buffer.from(req.derivedKey, 'hex');
+        const derivedKeyBuffer = Buffer.from(req.derivedKey);
         const generatedKey = cryptoHelper.decrypt(encryptedGeneratedKey, derivedKeyBuffer, encryptedGeneratedKeyIV).toString();
-
+        
         const decrypted = cryptoHelper.decrypt(found.richtext, Buffer.from(generatedKey, 'hex'), found.iv);
         found.richtext = decrypted;
     } catch(err) {
@@ -146,7 +145,7 @@ router.get('/recents', verify.user, validate(recentRules), async (req, res) => {
 
         // Decrypt our generated key to decrypt the entries
         const { encryptedGeneratedKey, encryptedGeneratedKeyIV } = req.user;
-        const derivedKeyBuffer = Buffer.from(req.derivedKey, 'hex');
+        const derivedKeyBuffer = Buffer.from(req.derivedKey);
         const generatedKey = cryptoHelper.decrypt(encryptedGeneratedKey, derivedKeyBuffer, encryptedGeneratedKeyIV).toString();
 
         let decryptedEntries = [];
@@ -185,7 +184,7 @@ router.post('/', verify.user, validate(journalRules), async (req, res) => {
     let encrypted;
     try {
         const { encryptedGeneratedKey, encryptedGeneratedKeyIV } = req.user;
-        const derivedKeyBuffer = Buffer.from(req.derivedKey, 'hex');
+        const derivedKeyBuffer = Buffer.from(req.derivedKey);
         const generatedKey = cryptoHelper.decrypt(encryptedGeneratedKey, derivedKeyBuffer, encryptedGeneratedKeyIV).toString();
 
         encrypted = cryptoHelper.encrypt(text, Buffer.from(generatedKey, 'hex'));
@@ -255,7 +254,7 @@ router.post('/timecapsule', verify.user, validate(capsuleRules), async (req, res
     let encrypted;
     try {
         const { encryptedGeneratedKey, encryptedGeneratedKeyIV } = req.user;
-        const derivedKeyBuffer = Buffer.from(req.derivedKey, 'hex');
+        const derivedKeyBuffer = Buffer.from(req.derivedKey);
         const generatedKey = cryptoHelper.decrypt(encryptedGeneratedKey, derivedKeyBuffer, encryptedGeneratedKeyIV).toString();
 
         encrypted = cryptoHelper.encrypt(text, Buffer.from(generatedKey, 'hex'));

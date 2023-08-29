@@ -29,12 +29,11 @@
 - [x] Start encrypting data
 - [x] Force logout if not authed.
 - [x] Decrypt recent entries
-- [ ] Make rotating server key to encrypt the derived key in cookie
+- [x] Make rotating server key to encrypt the derived key in cookie
     - Changes once a week on a CRON
-- [ ] 304 not modified in front end on home
-    - Firefox thing but just look into it, not sure if it needs changing.
 - [x] Log user out if server key is outdated and has rotated.
-- [ ] Change password functionality
+- [x] Change password functionality
+- [ ] PBKDF2 for derived key
 
 # Front end
 - [x] Figma layout
