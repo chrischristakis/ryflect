@@ -61,7 +61,7 @@ function Timeline({date}) {
     };
 
     useEffect(() => {
-        (async function() {
+        date && (async function() {
             try {
                 const res = await axios.get(API_URL + '/api/journals');
 

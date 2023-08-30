@@ -22,7 +22,6 @@ function Recents() {
         (async function() {
             try {
                 let response = await axios.get(API_URL+"/api/journals/recents?skip=0&limit="+PAGE_LIMIT);
-                console.log(response.data)
                 setRecents(response.data);
             }
             catch(err) {

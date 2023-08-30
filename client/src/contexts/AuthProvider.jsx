@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, useCallback } from 'react';
 import axios from 'axios';
 import { API_URL } from '../config';
 import { useNavigate } from 'react-router-dom';
@@ -12,7 +12,7 @@ export function AuthProvider({ children }) {
     const [username, setUsername] = useState(null);
     
     // Check if we have a jwt cookie present, if so assume we're logged in already
-    async function isAuthenticated() { 
+    const isAuthenticated = useCallback(async () => {
         try {
             const res = await axios.get(API_URL+"/api/auth/ping");
             if(!res.data.auth) {
@@ -27,7 +27,7 @@ export function AuthProvider({ children }) {
             setUsername(null);
             return false;
         }
-    }
+    }, []);
 
     async function login(username, password) {
         const body = {

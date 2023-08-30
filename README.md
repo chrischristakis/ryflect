@@ -33,7 +33,7 @@
     - Changes once a week on a CRON
 - [x] Log user out if server key is outdated and has rotated.
 - [x] Change password functionality
-- [ ] PBKDF2 for derived key
+- [x] PBKDF2 for derived key
 
 # Front end
 - [x] Figma layout
@@ -90,16 +90,17 @@
 - [x] Create time capsule infographic
 - [x] Privacy policy
 - [x] Website metadata (title, description, etc.)
-- [ ] Refresh home after user is deleted and we get a bunch of 'username does not exist'
+- [x] Refresh home after user is deleted and we get a bunch of 'username does not exist'
     - Happens because we dont log user out so were calling our normal routes.
     - Regardless, routes seemed to be called 4 times each. should be once (twice in dev) each.
-- [ ] Ping route being called 3 times when refreshing home, check up on this
+- [x] Ping route being called 3 times when refreshing home, check up on this
 - [ ] Lazy load video example for capsule
 - [ ] Change password page
 - [ ] Final production test, high maximum load journal entry test
 - [ ] Make SVGs, like capsule, journal, website icon.
 - [ ] Styling
     - Consider web/mobile
+- [ ] Remove test user autofill on login
 
 # Other
 - [x] Buy domain

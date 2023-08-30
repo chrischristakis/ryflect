@@ -122,7 +122,7 @@ router.get('/id/:id', verify.user, async (req, res) => {
         found.richtext = decrypted;
     } catch(err) {
         console.log('ERR [GET journals/id/:id]:', err);
-        return res.status(500).send({error: err});
+        return res.status(401).send({error: 'Bad decrypt.'});
     }
 
     return res.send(found);
@@ -132,17 +132,24 @@ router.get('/id/:id', verify.user, async (req, res) => {
 router.get('/recents', verify.user, validate(recentRules), async (req, res) => {
     const {limit, skip} = req.query;
 
+    let paginatedRecents;
     try {
         const d = new Date();
         d.setMinutes(d.getMinutes() + 5);
-        const paginatedRecents = await Journals.find(
+        paginatedRecents = await Journals.find(
             {   
                 username: req.user.username, 
                 locked: {$ne: true}, 
                 date: {$lte: d.toUTCString()}
             },
         ).sort({date: -1}).skip(skip).limit(limit);
+    }
+    catch(err) {
+        console.log('ERR [GET journals/recents]: ', err);
+        return res.status(500).send({error: err});
+    }
 
+    try {
         // Decrypt our generated key to decrypt the entries
         const { encryptedGeneratedKey, encryptedGeneratedKeyIV } = req.user;
         const derivedKeyBuffer = Buffer.from(req.derivedKey);
@@ -159,7 +166,7 @@ router.get('/recents', verify.user, validate(recentRules), async (req, res) => {
     }
     catch(err) {
         console.log('ERR [GET journals/recents]: ', err);
-        return res.status(500).send({error: err});
+        return res.status(401).send({error: 'Bad decrypt.'});
     }
 });
 
@@ -190,7 +197,7 @@ router.post('/', verify.user, validate(journalRules), async (req, res) => {
         encrypted = cryptoHelper.encrypt(text, Buffer.from(generatedKey, 'hex'));
     } catch(err) {
         console.log('ERR [POST journals/]:', err);
-        return res.status(500).send({error: err});
+        return res.status(401).send({error: 'Bad decrypt.'});
     }
 
     const journal = new Journals({
@@ -227,10 +234,12 @@ router.post('/timecapsule', verify.user, validate(capsuleRules), async (req, res
 
     const today = new Date();
 
+    // Unlock the capsule at 12am of the selected date (UTC)
     let unlock_date = new Date();
     unlock_date.setUTCFullYear(unlock_year);
     unlock_date.setUTCMonth(unlock_month);
     unlock_date.setUTCDate(unlock_day);
+    unlock_date.setUTCHours(0, 0, 0, 0);
 
     if(unlock_date <= today)
         return res.status(400).send({error: 'Unlock date for a capsule must be in the future'});
@@ -262,7 +271,7 @@ router.post('/timecapsule', verify.user, validate(capsuleRules), async (req, res
         encrypted = cryptoHelper.encrypt(text, Buffer.from(generatedKey, 'hex'));
     } catch(err) {
         console.log('ERR [POST journals/timecapsule]:', err);
-        return res.status(500).send({error: err});
+        return res.status(401).send({error: 'Bad decrypt.'});
     }
 
     const capsule = new Journals({
