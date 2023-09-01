@@ -95,7 +95,7 @@
     - Regardless, routes seemed to be called 4 times each. should be once (twice in dev) each.
 - [x] Ping route being called 3 times when refreshing home, check up on this
 - [x] Change password page
-- [ ] Final production test, high maximum load journal entry test
+- [x] Final production test, high maximum load journal entry test
 - [ ] Refactor front end since we build locally now
     - Include in gitignore but be able to push up when necessary?
     - Make a npm run build for dev and for prod, so we dont need to manually change .env variables
@@ -110,4 +110,6 @@
 - [x] Look into host (Heroku, digital ocean)
 - [x] Start looking into https (certbot)
 - [ ] Scripts for running on prod
+    - Build locally (Dev and prod variants)
+    - On prod: pull repo, copy build, run server in prod
 - [ ] Proper readme!
