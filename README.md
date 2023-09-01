@@ -96,6 +96,10 @@
 - [x] Ping route being called 3 times when refreshing home, check up on this
 - [x] Change password page
 - [ ] Final production test, high maximum load journal entry test
+- [ ] Refactor front end since we build locally now
+    - Include in gitignore but be able to push up when necessary?
+    - Make a npm run build for dev and for prod, so we dont need to manually change .env variables
+    - Do we need an env file at all? If so, should be in repo and not in git ignore.
 - [ ] Make SVGs, like capsule, journal, website icon.
 - [ ] Styling
     - Consider web/mobile

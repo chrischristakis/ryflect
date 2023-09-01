@@ -96,11 +96,13 @@ router.post('/login', validate(loginRules), async (req, res) => {
 
         const token = signAccessToken(user.username, user.email);
 
-        res.cookie("session", {
-            jwt: token, 
-            encryptedDerivedKey: {cipher: encryptedDerivedKey.ciphertext, iv: encryptedDerivedKey.iv}, 
+        res.cookie("session", 
+            {
+                jwt: token, 
+                encryptedDerivedKey: {cipher: encryptedDerivedKey.ciphertext, iv: encryptedDerivedKey.iv}, 
+            },
             token_cookie
-        });
+        );
         return res.send(token);
     }
     catch(err) {
@@ -259,11 +261,13 @@ router.get('/verify/:id', validate(verificationRules), async (req, res) => {
         return res.status(500).send({error: err.message});
     }
 
-    res.cookie("session", {
-        jwt: entry.token, 
-        encryptedDerivedKey: {cipher: entry.encryptedDerivedKey, iv: entry.encryptedDerivedKeyIV}, 
+    res.cookie("session", 
+        {
+            jwt: token, 
+            encryptedDerivedKey: {cipher: encryptedDerivedKey.ciphertext, iv: encryptedDerivedKey.iv}, 
+        },
         token_cookie
-    });
+    );
 
     res.send(entry.token);
 });
