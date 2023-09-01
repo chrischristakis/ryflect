@@ -46,19 +46,19 @@ function Register() {
             return;
 
         if(!form.data.password.value || !form.data.repassword.value) {
-            repasswordInput.current.style.border = '1px solid black';
+            form.defaultField(form.data.repassword)
             return;
         }
 
         if(form.data.password.value !== form.data.repassword.value) {
             setPasswordsMatch(false);
-            repasswordInput.current.style.border = '1px solid red';
+            form.offendingField(form.data.repassword)
         }
         else {
             setPasswordsMatch(true);
-            repasswordInput.current.style.border = '1px solid black';
+            form.defaultField(form.data.repassword)
         }
-    }, [form.data.password.value, form.data.repassword.value]);
+    }, [form.data.password.value, form.data.repassword.value, form]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();

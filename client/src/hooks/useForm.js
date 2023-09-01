@@ -26,10 +26,22 @@ export default function useForm(initial = {}) {
         }
     };
 
+    const defaultField = (fieldObj) => {
+        if(!fieldObj?.ref?.current) return;
+        fieldObj.ref.current.style.border = '1px solid black';
+    }
+
+    const offendingField = (fieldObj) => {
+        if(!fieldObj?.ref?.current) return;
+        fieldObj.ref.current.style.border = '1px solid red';
+    }
+
     return { 
         data, 
         handleDataChange, 
         handleOffendingFields, 
-        resetFieldsStyle
+        resetFieldsStyle,
+        defaultField,
+        offendingField
     };
 }

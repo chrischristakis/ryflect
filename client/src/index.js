@@ -10,9 +10,9 @@ axios.defaults.withCredentials = true; // Need this for cookies to be sent
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  //<React.StrictMode>
+  <React.StrictMode>
     <BrowserRouter>
       <App />
     </BrowserRouter>
-  //</React.StrictMode>
+  </React.StrictMode>
 );

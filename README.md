@@ -94,8 +94,7 @@
     - Happens because we dont log user out so were calling our normal routes.
     - Regardless, routes seemed to be called 4 times each. should be once (twice in dev) each.
 - [x] Ping route being called 3 times when refreshing home, check up on this
-- [ ] Lazy load video example for capsule
-- [ ] Change password page
+- [x] Change password page
 - [ ] Final production test, high maximum load journal entry test
 - [ ] Make SVGs, like capsule, journal, website icon.
 - [ ] Styling

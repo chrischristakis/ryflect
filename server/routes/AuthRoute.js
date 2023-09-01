@@ -280,29 +280,42 @@ router.get('/ping', async (req, res) => {
         return res.send({auth: false})
     }
 
+    let username;
     try {
         const body = jwt.verify(token, JWT_SECRET);
-        return res.send({auth: true, username: body.username});
+        username = body.username;
     }
     catch(err) {
         console.log(err)
         if(err.message)
             return res.send({auth: false});
         console.log('ERR [GET auth/ping]:', err);
+        res.cookie("session", '', {...token_cookie, maxAge: 0});
         return res.status(500).send({error: err});
     };
+
+    // Try decrypted the encrypted derived key. If it changed since cookie was issued, we unauth the user and force them to re-log.
+    try {
+        const decryptedDerivedKey = cryptoHelper.decrypt(encryptedDerivedKey.cipher, getServerSecretKey(), encryptedDerivedKey.iv);
+        req.derivedKey = decryptedDerivedKey;
+        return res.send({auth: true, username: username});
+    } 
+    catch(err) {
+        res.cookie("session", '', {...token_cookie, maxAge: 0});
+        return res.status(401).send({error: 'Session invalid, please reauthenticate.'});
+    }
 });
 
 router.put('/change-password', validate(changePasswordRules), verify.user, async (req, res) => {
     const { oldPass, newPass } = req.body;
 
     if(oldPass === newPass)
-        return res.status(400).send({error: 'New password must be different than your old one.'});
+        return res.status(400).send({error: 'New password must be different than your old one.', fields: ['newPass']});
 
     // Make sure old password is correct
     try {
         if(!await bcrypt.compare(oldPass, req.user.password))
-            return res.status(401).send({error: "Invalid password", fields:['password']});
+            return res.status(401).send({error: "Old password is incorrect.", fields:['oldPass']});
     }
     catch(err) {
         console.log('ERR [PUT auth/change-password]:', err);
@@ -343,7 +356,7 @@ router.put('/change-password', validate(changePasswordRules), verify.user, async
         );
         
         res.cookie("session", '', {...token_cookie, maxAge: 0});
-        return res.send('Password successfully changed!');
+        return res.send('Password successfully changed! Please refresh the page to log in again.');
     }
     catch(err) {
         console.log('ERR [PUT auth/change-password]:', err);
