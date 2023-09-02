@@ -24,5 +24,7 @@ export const RANDOM_MESSAGES = [
     'Journaling can help you strengthen your memory.',
     'Many people journal their dreams, maybe you can find something of signifigance in them',
     "Journaling doesn't need to be constrained to the past. Try making a time capsule entry and leave something for yourself, from yourself.",
+    "What's something that disappointed you recently?",
+    "What's something you did today?",
     'Type here...'
 ];

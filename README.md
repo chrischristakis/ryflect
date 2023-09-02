@@ -96,20 +96,21 @@
 - [x] Ping route being called 3 times when refreshing home, check up on this
 - [x] Change password page
 - [x] Final production test, high maximum load journal entry test
-- [ ] Refactor front end since we build locally now
+- [x] Refactor front end since we build locally now
     - Include in gitignore but be able to push up when necessary?
     - Make a npm run build for dev and for prod, so we dont need to manually change .env variables
     - Do we need an env file at all? If so, should be in repo and not in git ignore.
-- [ ] Make SVGs, like capsule, journal, website icon.
+- [x] Make SVGs, like capsule, journal, website icon.
 - [ ] Styling
-    - Consider web/mobile
+    - [ ] Mobile styling
+    - [ ] Figma web layout
+    - [ ] Web styling
 - [ ] Remove test user autofill on login
 
 # Other
 - [x] Buy domain
 - [x] Look into host (Heroku, digital ocean)
 - [x] Start looking into https (certbot)
-- [ ] Scripts for running on prod
-    - Build locally (Dev and prod variants)
+- [x] Scripts for running on prod
     - On prod: pull repo, copy build, run server in prod
 - [ ] Proper readme!

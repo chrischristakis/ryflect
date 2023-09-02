@@ -61,9 +61,10 @@ function CreatePage() {
 
             const today = new Date();
             let upper_bound = new Date();
-            upper_bound.setUTCFullYear(upper_bound.getUTCFullYear() + MAX_FUTURE_YEARS);
-            upper_bound.setUTCDate(31);
-            upper_bound.setUTCMonth(11);
+            upper_bound.setUTCFullYear(upper_bound.getUTCFullYear() + MAX_FUTURE_YEARS + 1);
+            upper_bound.setUTCDate(1);
+            upper_bound.setUTCMonth(0);
+            upper_bound.setUTCHours(0, 0, 0, 0);
             if(date > today && date < upper_bound)
                 setValidDate(true);
         }

@@ -41,23 +41,26 @@
 .select-popup-journal {
     cursor: pointer;
     font-size: large;
-    flex-grow: 1;
+    flex: 1;
     background-color: black;
     color: white;
 
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+
 }
 
 .select-popup-capsule {
     cursor: pointer;
     font-size: large;
-    flex-grow: 1;
+    flex: 1;
     background-color: white;
     color: black;
 
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
 }

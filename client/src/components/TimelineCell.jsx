@@ -6,6 +6,8 @@ import { FaUnlock } from 'react-icons/fa';
 import PopUp from './PopUp.jsx';
 import Button from './Button';
 import { getDate } from '../utils/utils';
+import { ReactComponent as CapsuleIcon } from '../assets/time-capsule.svg';
+import { ReactComponent as JournalIcon } from '../assets/journal-icon.svg';
 
 const TOOLTIP_WIDTH = 190; //px
 
@@ -96,12 +98,14 @@ function TimelineCell({journalID, capsuleInfo, canCreateCapsule, isCurrentDay, d
                 <div className={style['select-popup-journal']} 
                      onClick={() => journalID && navigate('/view/'+journalID)}
                 >
-                    View Journal
+                    <JournalIcon fill={'white'} width={150} height={300}/>
+                    <p>View journal</p>
                 </div>
                 <div className={style['select-popup-capsule']} 
                      onClick={() => capsuleInfo && navigate('/view/'+capsuleInfo.id)}
                 >
-                    View Capsule
+                    <CapsuleIcon fill={'black'} width={150} height={300}/>
+                    <p>View time capsule</p>
                 </div>
             </div>
         </PopUp>
