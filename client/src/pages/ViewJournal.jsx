@@ -8,6 +8,7 @@ import { getDate } from '../utils/utils.js';
 import DisplayError from '../components/DisplayError';
 import { ReactComponent as Loading } from '../assets/loading.svg';
 import style from './ViewJournal.module.css';
+import { lightTheme } from '../utils/Constants';
 
 function ViewJournal() {
 
@@ -50,7 +51,7 @@ function ViewJournal() {
         <div>
             <h3>{formattedDate} {entry.emoji}</h3>
             {
-                entry.is_time_capsule && <h4 style={{color: '#F28C28'}}><em>time capsule</em></h4>
+                entry.is_time_capsule && <h4><em style={{color: lightTheme.tertiary}}>time capsule</em></h4>
             }
             <div 
                 className={style['text-container']}

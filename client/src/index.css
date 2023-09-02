@@ -1,13 +1,20 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* Global palette vars (overwritten in App.css) */
+:root {
+  --primary-color: #ff0000;
+  --primary-color-darker: #ff0000;
+  --secondary-color: #ff0000;
+  --tertiary-color: #ff0000;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+/* Change defualt font colour */
+* {
+  color: var(--primary-color);
+}
+
+body {
+  background-color: var(--secondary-color);
+  margin: 0;
+  font-family: Montserrat, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }

@@ -1,5 +1,5 @@
 .cell {
-    box-shadow:inset 0px 0px 0px 0.1em #000; /*Lets us do inset shadows, border pertrudes out of cell bounds.*/
+    box-shadow:inset 0px 0px 0px 0.1em var(--primary-color); /*Lets us do inset shadows, border pertrudes out of cell bounds.*/
     width: 100%;
     height: 100%;
     position: relative;
@@ -10,16 +10,16 @@
 }
 
 .journal-cell {
-    background-color: black;
+    background-color: var(--primary-color);
     cursor: pointer;
 }
 
 .current-cell {
-    box-shadow:inset 0px 0px 0px 3px #000000;
+    box-shadow:inset 0px 0px 0px 3px var(--primary-color);
 }
 
 .create-capsule-popup {
-    background-color: white;
+    background-color: var(--secondary-color);
     border-radius: 10px;
     text-align: center;
     user-select: none;
@@ -32,7 +32,6 @@
 }
 
 .select-popup {
-    background-color: red;
     display: flex;
     width: 500px;
     height: 400px;
@@ -42,8 +41,8 @@
     cursor: pointer;
     font-size: large;
     flex: 1;
-    background-color: black;
-    color: white;
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
 
     display: flex;
     flex-direction: column;
@@ -52,17 +51,25 @@
 
 }
 
+.select-popup-journal p {
+    color: var(--secondary-color);
+}
+
 .select-popup-capsule {
     cursor: pointer;
     font-size: large;
     flex: 1;
-    background-color: white;
-    color: black;
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
 
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+}
+
+.select-popup-capsule p {
+    color: var(--primary-color);
 }
 
 .tooltip {
@@ -72,7 +79,7 @@
 }
 
 .tooltip-text {
-    background-color: black;
+    background-color: var(--primary-color);
 
     position: absolute;
     bottom: 150%;
@@ -81,7 +88,7 @@
     border-radius: 5px;
 
     /* For actual text */
-    color: white;
+    color: var(--secondary-color);
     text-align: center;
     font-size: 0.95em;
     padding: 5px 0;
@@ -98,10 +105,23 @@
 
     border-left: 15px solid transparent;
     border-right: 15px solid transparent;
-    border-top: 15px solid black;
+    border-top: 15px solid var(--primary-color);
 
     margin-top: -15px;
     margin-left: -15px;
+}
+
+/* We gotta style icons like this if we have a global color like we do in index.css */
+.icon-primary {
+    * {
+        color: var(--primary-color);
+    }
+}
+
+.icon-secondary {
+    * {
+        color: var(--secondary-color);
+    }
 }
 
 .shake-anim {

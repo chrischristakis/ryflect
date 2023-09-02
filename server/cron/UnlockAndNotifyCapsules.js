@@ -53,7 +53,7 @@ module.exports = async () => {
         }));
 
         if(updateResult.modifiedCount > 0 || successfulEmails > 0)
-            console.log("[CRON]: "+ updateResult.modifiedCount + " capsules have been unlocked, and " + successfulEmails + " emails have been sent.");
+            console.log("[CRON UnlockAndNotify.js]: "+ updateResult.modifiedCount + " capsules have been unlocked, and " + successfulEmails + " emails have been sent.");
     } catch(err) {
         console.log('[ERR in UnlockAndNotify.js]: ', err);
     }

@@ -1,7 +1,8 @@
 import style from './PopUp.module.css';
-import { RxCross1 } from 'react-icons/rx'
+import { RxCross1 } from 'react-icons/rx';
+import { lightTheme } from '../utils/Constants.js';
 
-function PopUp({children, hidden=true, setHiddenState=()=>{}, exitColor='black'}) {
+function PopUp({children, hidden=true, setHiddenState=()=>{}, exitColor=lightTheme.primary}) {
     if(hidden)
         return;
 

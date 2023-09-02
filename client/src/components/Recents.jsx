@@ -8,6 +8,7 @@ import { ReactComponent as Loading } from '../assets/loading.svg';
 import { getDate } from '../utils/utils.js';
 import style from './Recents.module.css';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { lightTheme } from '../utils/Constants';
 
 const MAX_PLAINTEXT_CHARS = 100;
 const PAGE_LIMIT = 5;
@@ -75,7 +76,7 @@ function Recents() {
                                 >
                                     <h3 className={style['date-title']}>{getDate(new Date(e.date))} {e.emoji}</h3>
                                     { e.is_time_capsule ?
-                                        <em style={{color: '#F28C28'}}>time capsule</em>
+                                        <em style={{color: lightTheme.tertiary}}>time capsule</em>
                                         : 
                                         null
                                     }

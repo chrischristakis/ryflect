@@ -102,9 +102,32 @@
     - Do we need an env file at all? If so, should be in repo and not in git ignore.
 - [x] Make SVGs, like capsule, journal, website icon.
 - [ ] Styling
+    - [x] Streamline palette in JS
+    - [x] Get variables for colours set up in CSS
+    - [ ] Fonts
     - [ ] Mobile styling
-    - [ ] Figma web layout
+        - [ ] Home
+        - [ ] Create
+        - [ ] View
+        - [ ] Login
+        - [ ] Register
+        - [ ] Change pass
+        - [ ] Landing
+        - [ ] Faq
+        - [ ] Privacy policy
+        - [ ] Not found
+    - [ ] finish Figma web layout
     - [ ] Web styling
+        - [ ] Home
+        - [ ] Create
+        - [ ] View
+        - [ ] Login
+        - [ ] Register
+        - [ ] Change pass
+        - [ ] Landing
+        - [ ] Faq
+        - [ ] Privacy policy
+        - [ ] Not found
 - [ ] Remove test user autofill on login
 
 # Other

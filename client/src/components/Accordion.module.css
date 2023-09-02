@@ -1,7 +1,7 @@
 .accordion-wrapper { 
     position: relative;
     padding: 8px 10px;
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid var(--primary-color);
 }
 
 .accordion-header {
@@ -23,6 +23,7 @@
 }
 
 .accordion-icon {
+    color: var(--primary-color);
     width: 50px;
     min-width: 50px;
 }

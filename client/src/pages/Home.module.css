@@ -12,7 +12,7 @@
 }
 
 .create-capsule-popup {
-    background-color: white;
+    background-color: var(--secondary-color);
     padding: 30px 30px;
     border-radius: 10px;
 }

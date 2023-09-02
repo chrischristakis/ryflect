@@ -16,11 +16,20 @@ import FAQ from './pages/FAQ.jsx';
 import Footer from './components/Footer.jsx';
 import style from './App.module.css';
 import PrivacyPolicy from './pages/PrivacyPolicy.jsx';
+import { lightTheme } from './utils/Constants.js';
+
+function changeTheme(theme) {
+  document.documentElement.style.setProperty('--primary-color', theme.primary);
+  document.documentElement.style.setProperty('--primary-color-darker', theme.primaryDarker);
+  document.documentElement.style.setProperty('--secondary-color', theme.secondary);
+  document.documentElement.style.setProperty('--tertiary-color', theme.tertiary);
+}
+
+changeTheme(lightTheme);
 
 function App() {
-
   return (
-    <div id={style.root}>
+    <div id={ style.root }>
       <AuthProvider>
         <Navbar/>
         <div className={style.content}>

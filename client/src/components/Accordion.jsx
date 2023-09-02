@@ -11,9 +11,9 @@ function Accordion({header, content}) {
                 <p>{header}</p>
                 {
                     !expanded?
-                        <MdExpandMore className={style['accordion-icon']} size={30} color={'black'}/>
+                        <MdExpandMore className={style['accordion-icon']} size={30}/>
                         :
-                        <MdExpandLess className={style['accordion-icon']} size={30} color={'black'}/>
+                        <MdExpandLess className={style['accordion-icon']} size={30}/>
                 }
             </div>
             <div className={`${style['accordion-content']} ${expanded? style['expanded'] : style['collapsed']}`}>

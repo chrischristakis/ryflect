@@ -1,10 +1,16 @@
 .navbar {
-    background-color: black;
+    background-color: var(--primary-color);
 }
 
 .back-link {
-    color: white;
+    color: var(--secondary-color);
     text-decoration: none;
+}
+
+.back-icon {
+    * {
+        color: var(--secondary-color);
+    }
 }
 
 .title {
@@ -12,13 +18,18 @@
 }
 
 .title-link {
-    color: white;
+    color: var(--secondary-color);
     text-decoration: none;
 }
 
 .username-dropdown {
-    color: white;
+    color: var(--secondary-color);
     user-select: none;
+}
+
+.username-dropdown-arrow {
+    color: var(--secondary-color);
+    font-size: 0.7em;
 }
 
 .overlay {
@@ -37,7 +48,7 @@
 }
 
 .dropdown {
-    background-color: black;
+    background-color: var(--primary-color);
     padding: 0;
     margin: 0;
 }
@@ -46,6 +57,6 @@
     display: block;
     text-align: center;
     width: 100%;
-    color: white;
+    color: var(--secondary-color);
     text-decoration: none;
 }

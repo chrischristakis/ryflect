@@ -5,7 +5,7 @@ const faqData = [
     {
         header: 'What is Ryflect?',
         content: `Ryflect is a 'once a day' journaling application that aims to provide a clean, secure, and intuitive platform for creating journal 
-            entries in both the present and future. It is completely free, with no premium plans. The application is created and managed by me, 
+            entries in both the present and future, with a way to visualize your habits. It is completely free, with no premium plans. The application is created and managed by me, 
             Chris Christakis, and the source code is publicly available on GitHub.`
     },
     {

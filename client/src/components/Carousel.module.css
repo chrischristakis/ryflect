@@ -21,7 +21,7 @@
 }
 
 .selected-item {
-    color: black;
+    color: var(--primary-color);
     font-weight: bold;
     font-size: larger;
 }

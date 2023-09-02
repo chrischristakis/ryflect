@@ -7,7 +7,7 @@ import { API_URL } from '../config';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { handleError } from '../utils/HandleResponse.js';
-import { EMOJIS, MAX_FUTURE_YEARS, MAX_BYTES, RANDOM_MESSAGES } from '../utils/Constants.js';
+import { EMOJIS, MAX_FUTURE_YEARS, MAX_BYTES, RANDOM_MESSAGES, lightTheme } from '../utils/Constants.js';
 import PopUp from '../components/PopUp.jsx';
 import style from './CreatePage.module.css';
 import { useLocation } from 'react-router-dom';
@@ -78,7 +78,7 @@ function CreatePage() {
         if(!quillRef.current) return;
 
         if(!overCapacity) {
-            quillRef.current.editor.root.style.backgroundColor = 'white';
+            quillRef.current.editor.root.style.backgroundColor = lightTheme.secondary;
             return;
         }
 
@@ -169,7 +169,7 @@ function CreatePage() {
         </PopUp>
         <div>
             <h3>{dateString} <span style={{userSelect: 'none'}} onClick={() => setEmoji(randomFromArray([...EMOJIS]))}>{emoji}</span></h3>
-            {isCapsule && <h3 style={{color: '#F28C28'}}><em>time capsule</em></h3>}
+            {isCapsule && <h3 style={{color: lightTheme.tertiary}}><em>time capsule</em></h3>}
 
             <ReactQuill 
                 ref={quillRef} 

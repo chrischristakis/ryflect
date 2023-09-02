@@ -1,5 +1,5 @@
 .confirm-popup-wrapper {
-    background-color: white;
+    background-color: var(--secondary-color);
     border-radius: 10px;
     text-align: center;
     user-select: none;

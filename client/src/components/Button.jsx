@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { ReactComponent as Loading } from '../assets/loading.svg';
 import style from './Button.module.css';
+import { lightTheme } from '../utils/Constants.js';
 
 function Button({text="placeholder", clickEvent=async ()=>{}, type='button', disabled=false, lightButton=false, slideHover=false}) {
 
@@ -24,7 +25,7 @@ function Button({text="placeholder", clickEvent=async ()=>{}, type='button', dis
     return (
         <button className={`${style.button} ${lightButton? style.light : style.normal} ${slideHover && style['slide-hover']}`} onClick={handleClick} type={type} disabled={loading || disabled}>
             {loading? 
-                <Loading fill={lightButton? 'black' : 'white'}/> 
+                <Loading fill={lightButton? lightTheme.primary : lightTheme.secondary}/> 
                 : 
                 text
             }

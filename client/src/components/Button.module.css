@@ -4,8 +4,8 @@
     min-width: 180px;
     height: 45px;
     font-size: large;
-    background-color: black;
-    color: white;
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
     border-radius: 15px;  
     cursor: pointer;
     z-index: 1;
@@ -13,16 +13,16 @@
 }
 
 .normal {
-    background-color: black;
-    color: white; 
+    background-color: var(--primary-color);
+    color: var(--secondary-color); 
     border: none;
     transition: background-color 0.25s ease;
 }
 
 .light {
     background-color: transparent;
-    color: black;
-    border: 1px solid black;
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
     overflow: hidden;
     transition: color 0.19s ease-in;
 }
@@ -34,26 +34,26 @@
     left: 0;
     width: 0%;
     height: 100%;
-    background-color: black;
+    background-color: var(--primary-color);
     transition: width 0.19s ease-in;
     z-index: -1;
 }
 
 /* Only apply hover styles when buttons aren't disabled*/
 .normal:not([disabled]):hover {
-    background-color: rgb(60, 60, 60);
+    background-color: var(--primary-color-darker);
 }
 
 .slide-hover:not([disabled]):hover {
-    color: white;
+    color: var(--secondary-color);
 }
 .slide-hover:not([disabled]):hover:before {
     width: 100%;
 }
 
 .normal:disabled {
-    background-color: rgb(160, 160, 160);
-    color: white;
+    opacity: 0.3;
+    color: var(--secondary-color);
     cursor: not-allowed;
 }
 

@@ -8,6 +8,7 @@ import Button from './Button';
 import { getDate } from '../utils/utils';
 import { ReactComponent as CapsuleIcon } from '../assets/time-capsule.svg';
 import { ReactComponent as JournalIcon } from '../assets/journal-icon.svg';
+import { lightTheme } from '../utils/Constants.js';
 
 const TOOLTIP_WIDTH = 190; //px
 
@@ -98,13 +99,13 @@ function TimelineCell({journalID, capsuleInfo, canCreateCapsule, isCurrentDay, d
                 <div className={style['select-popup-journal']} 
                      onClick={() => journalID && navigate('/view/'+journalID)}
                 >
-                    <JournalIcon fill={'white'} width={150} height={300}/>
+                    <JournalIcon fill={lightTheme.secondary} width={150} height={300}/>
                     <p>View journal</p>
                 </div>
                 <div className={style['select-popup-capsule']} 
                      onClick={() => capsuleInfo && navigate('/view/'+capsuleInfo.id)}
                 >
-                    <CapsuleIcon fill={'black'} width={150} height={300}/>
+                    <CapsuleIcon fill={lightTheme.primary} width={150} height={300}/>
                     <p>View time capsule</p>
                 </div>
             </div>
@@ -122,11 +123,13 @@ function TimelineCell({journalID, capsuleInfo, canCreateCapsule, isCurrentDay, d
                 capsuleInfo && (
                     capsuleInfo.locked?
                     <FaLock 
-                        size={14} color={journalID? 'white' : 'black'}
+                        size={14} className={journalID? style['icon-secondary'] : style['icon-primary']}
                         onClick={applyShakeAnim} 
                     />
                     :
-                    <FaUnlock size={14} color={journalID? 'white' : 'black'}/>
+                    <FaUnlock 
+                        size={14} className={journalID? style['icon-secondary'] : style['icon-primary']}
+                    />
                 )
             }
             <div className={style['tooltip']} ref={tooltip}>
@@ -136,7 +139,7 @@ function TimelineCell({journalID, capsuleInfo, canCreateCapsule, isCurrentDay, d
                     ref={tooltipText}
                 >
                 {capsuleInfo?
-                        <><em style={{color: '#FFBF00'}}>unlocks on:</em><br/>{getDate(date)}</>
+                        <><em style={{color: lightTheme.tertiary}}>unlocks on:</em><br/>{getDate(date)}</>
                     :
                         getDate(date)
                 }

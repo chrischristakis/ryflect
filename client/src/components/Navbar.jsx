@@ -50,7 +50,7 @@ function UserMenu() {
         return(
             <>
                 <div className={style['username-dropdown']} onClick={(_) => setExpanded(!expanded)}>
-                    {username} <span style={{fontSize: '0.7em'}}>{expanded? '▲' : '▼'}</span>
+                    {username} <span className={style['username-dropdown-arrow']}>{expanded? '▲' : '▼'}</span>
                 </div>
                 {
                     expanded &&
@@ -76,7 +76,7 @@ function BackButton() {
     if(location.pathname !== '/' && location.pathname !== '/home')
         return (
             <Link to='/' className={style['back-link']}>
-                <FaArrowLeft style={{color: 'white', fontSize: '30px'}}/>
+                <FaArrowLeft size={30} className={style['back-icon']}/>
             </Link>
         );
 }

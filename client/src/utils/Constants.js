@@ -2,6 +2,14 @@ export const EMOJIS = '💼🎓🌎🌕🐳🐙🎻🎸🎬🎮🎯🎒🚠⚓�
 export const MAX_FUTURE_YEARS = 50;
 export const MAX_BYTES = 500000;
 
+// Palettes
+export const lightTheme = {
+    primary: '#101010',
+    primaryDarker: '#060606',
+    secondary: '#ffffff',
+    tertiary: '#3f826d',
+}
+
 export const RANDOM_MESSAGES = [
     'Time capsule entries are a way for you to leave entries for yourself to view in the future. Try it out by clicking any future date on the timeline on the home page!',
     'Gratitude journaling can go a long way when it comes to appreciating what you have, and who you are.',
