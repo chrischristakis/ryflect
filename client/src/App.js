@@ -23,6 +23,7 @@ function changeTheme(theme) {
   document.documentElement.style.setProperty('--primary-color-darker', theme.primaryDarker);
   document.documentElement.style.setProperty('--secondary-color', theme.secondary);
   document.documentElement.style.setProperty('--tertiary-color', theme.tertiary);
+  document.documentElement.style.setProperty('--tertiary-color-darker', theme.tertiaryDarker);
 }
 
 changeTheme(lightTheme);
@@ -31,7 +32,9 @@ function App() {
   return (
     <div id={ style.root }>
       <AuthProvider>
-        <Navbar/>
+        <div className={style['navbar']}>
+          <Navbar/>
+        </div>
         <div className={style.content}>
           <Routes>
             <Route path='/' element={
@@ -76,7 +79,7 @@ function App() {
           <Footer/>
         </div>
       </AuthProvider>
-      <ToastContainer hideProgressBar={true} autoClose={3640}/>
+      <ToastContainer hideProgressBar={true} autoClose={2950}/>
     </div>
   );
 }

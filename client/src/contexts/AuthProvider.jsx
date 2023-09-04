@@ -1,8 +1,9 @@
-import { createContext, useContext, useState, useCallback } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { API_URL } from '../config';
 import { useNavigate } from 'react-router-dom';
 import { handleError } from '../utils/HandleResponse';
+import { useLocation } from "react-router-dom";
 
 const AuthContext = createContext();
 
@@ -10,24 +11,8 @@ export function AuthProvider({ children }) {
 
     const navigate = useNavigate();
     const [username, setUsername] = useState(null);
-    
-    // Check if we have a jwt cookie present, if so assume we're logged in already
-    const isAuthenticated = useCallback(async () => {
-        try {
-            const res = await axios.get(API_URL+"/api/auth/ping");
-            if(!res.data.auth) {
-                setUsername(null)
-                return false;
-            }
-            setUsername(res.data.username)
-            return true;
-        }
-        catch(err) {
-            handleError(err);
-            setUsername(null);
-            return false;
-        }
-    }, []);
+    const [loading, setLoading] = useState(true);
+    const location = useLocation();
 
     async function login(username, password) {
         const body = {
@@ -37,6 +22,7 @@ export function AuthProvider({ children }) {
 
         try {
             await axios.post(API_URL+"/api/auth/login", body);
+            setUsername(username);
         }
         catch(err) {
             throw err;
@@ -54,12 +40,35 @@ export function AuthProvider({ children }) {
         }
     }
 
+    // This runs every time we refresh, or we enter a new page. 
+    // Refreshes our auth info for use.
+    useEffect(() => {
+        setLoading(true);
+        (async function() {
+            try {
+                const res = await axios.get(API_URL+"/api/auth/ping");
+                if(!res.data.auth)
+                    setUsername(null)
+                else
+                    setUsername(res.data.username)
+            }
+            catch(err) {
+                handleError(err);
+                setUsername(null);
+                return false;
+            }
+            finally {
+                setLoading(false);
+            }
+        })();
+    }, [location]);
+
     return (
         <AuthContext.Provider value={{
-                isAuthenticated,
                 username,
                 login,
-                logout
+                logout,
+                loading
             }}
         >
             {children}

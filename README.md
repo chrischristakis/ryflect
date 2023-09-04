@@ -104,13 +104,22 @@
 - [ ] Styling
     - [x] Streamline palette in JS
     - [x] Get variables for colours set up in CSS
-    - [ ] Fonts
+    - [x] Fonts
+    - [x] Navbar
+        - [x] Remove back button, shift logo to left in mobile.
+        - [x] Test what happens when username is very long.
+        - [x] User drop down disappears when we refresh on a unauthed page. Navbar should ping for auth (session cookie is http only)
+            - [x] Maybe wrap every route with a ping, but only auth routes care about the outcome. That way user info always available.
+        - [x] Style dropdown
+        - [x] Insert logo svg
+    - [x] Footer
     - [ ] Mobile styling
         - [ ] Home
         - [ ] Create
         - [ ] View
         - [ ] Login
         - [ ] Register
+            - [ ] Session invalid after registering
         - [ ] Change pass
         - [ ] Landing
         - [ ] Faq
@@ -137,3 +146,11 @@
 - [x] Scripts for running on prod
     - On prod: pull repo, copy build, run server in prod
 - [ ] Proper readme!
+
+# Readme contents
+- Logo
+- What is it?
+- Tools
+- How is info secured?
+- How to run?
+- Planned features?

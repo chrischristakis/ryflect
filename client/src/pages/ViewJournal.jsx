@@ -51,7 +51,7 @@ function ViewJournal() {
         <div>
             <h3>{formattedDate} {entry.emoji}</h3>
             {
-                entry.is_time_capsule && <h4><em style={{color: lightTheme.tertiary}}>time capsule</em></h4>
+                entry.is_time_capsule && <h4><em style={{color: lightTheme.tertiaryDarker}}>time capsule</em></h4>
             }
             <div 
                 className={style['text-container']}

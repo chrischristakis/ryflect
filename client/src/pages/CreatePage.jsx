@@ -169,7 +169,7 @@ function CreatePage() {
         </PopUp>
         <div>
             <h3>{dateString} <span style={{userSelect: 'none'}} onClick={() => setEmoji(randomFromArray([...EMOJIS]))}>{emoji}</span></h3>
-            {isCapsule && <h3 style={{color: lightTheme.tertiary}}><em>time capsule</em></h3>}
+            {isCapsule && <h3 style={{color: lightTheme.tertiaryDarker}}><em>time capsule</em></h3>}
 
             <ReactQuill 
                 ref={quillRef} 

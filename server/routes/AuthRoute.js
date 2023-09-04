@@ -263,8 +263,8 @@ router.get('/verify/:id', validate(verificationRules), async (req, res) => {
 
     res.cookie("session", 
         {
-            jwt: token, 
-            encryptedDerivedKey: {cipher: encryptedDerivedKey.ciphertext, iv: encryptedDerivedKey.iv}, 
+            jwt: entry.token, 
+            encryptedDerivedKey: {cipher: entry.encryptedDerivedKey.ciphertext, iv: entry.encryptedDerivedKey.iv}, 
         },
         token_cookie
     );

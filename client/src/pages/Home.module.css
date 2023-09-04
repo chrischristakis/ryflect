@@ -16,3 +16,11 @@
     padding: 30px 30px;
     border-radius: 10px;
 }
+
+/* EXAMPLE FOR DESKTOP
+@media (min-width: 900px) {
+  body {
+
+  }
+}
+*/

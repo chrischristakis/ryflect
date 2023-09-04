@@ -1,32 +1,43 @@
 import style from './Navbar.module.css'
 import { Link } from 'react-router-dom';
-import { useLocation } from "react-router-dom";
-import { FaArrowLeft } from 'react-icons/fa'
 import { useAuth } from '../contexts/AuthProvider';
 import { useState } from 'react';
+import { ReactComponent as Logo } from '../assets/logo.svg';
+import { lightTheme } from '../utils/Constants';
 
 function Navbar() {
 
+    const [expanded, setExpanded] = useState(false);
+    const { username } = useAuth();
+
     return (
         <nav className={style.navbar}>
-
-            <BackButton/>
-            <h1 className={style.title}>
-                <Link to='/' className={style['title-link']}>
-                    ryflect
-                </Link>
-            </h1>
-            <UserMenu/>
-
+            <div className={style.left}>h</div>
+            <div className={style.center}>
+                <h1 className={style.title}>
+                    <Link to='/' className={style['title-link']}>
+                        <Logo fill={lightTheme.secondary} className={style['logo']}/>
+                    </Link>
+                </h1>
+            </div>
+            <div className={style.right}>
+                {
+                    username &&
+                    <div className={style['username-dropdown']} onClick={(_) => setExpanded(!expanded)}>
+                        <span className={style['username-dropdown-username']}>{username}</span>
+                        <span className={style['username-dropdown-arrow']}>{expanded? '▲' : '▼'}</span>
+                    </div>
+                }
+            </div>
+            <UserMenu expanded={expanded} setExpanded={setExpanded}/>
         </nav>
     );
 }
 
-function UserMenu() {
+function UserMenu({expanded=false, setExpanded=()=>{}}) {
 
     const { logout, username } = useAuth();
-    const [expanded, setExpanded] = useState(false);
-
+    
     function DropdownItem({text='placeholder', link='#', isUrl=false, click= (e) => {}}) {
         
         const handleClick = (e) => {
@@ -35,7 +46,7 @@ function UserMenu() {
         }
         
         return (
-            <li>
+            <li className={style['dropdown-item']}>
                 {
                     !isUrl?
                         <Link className={style['dropdown-link']} to={link} onClick={handleClick}>{text}</Link>
@@ -49,35 +60,20 @@ function UserMenu() {
     if(username)
         return(
             <>
-                <div className={style['username-dropdown']} onClick={(_) => setExpanded(!expanded)}>
-                    {username} <span className={style['username-dropdown-arrow']}>{expanded? '▲' : '▼'}</span>
+            {
+                expanded &&
+                <div className={style.overlay}>
+                    <ul className={style.dropdown}>
+                        <DropdownItem text='logout' click={async () => {await logout()}}/>
+                        <DropdownItem text='FAQ' link='/faq'/>
+                        <DropdownItem text='change password' link='/change-password'/>
+                        <DropdownItem text='privacy policy' link='/privacy-policy'/>
+                        <DropdownItem text='repository' link='https://github.com/chrischristakis/ryflect' isUrl={true}/>
+                    </ul>
+                    <div className={style.screencover} onClick={(_) => setExpanded(false)}></div>
                 </div>
-                {
-                    expanded &&
-                    <div className={style.overlay}>
-                        <ul className={style.dropdown}>
-                            <DropdownItem text='logout' click={async () => {await logout()}}/>
-                            <DropdownItem text='FAQ' link='/faq'/>
-                            <DropdownItem text='change password' link='/change-password'/>
-                            <DropdownItem text='privacy policy' link='/privacy-policy'/>
-                            <DropdownItem text='repository' link='https://github.com/chrischristakis/ryflect' isUrl={true}/>
-                        </ul>
-                        <div className={style.screencover} onClick={(_) => setExpanded(false)}></div>
-                    </div>
-                }
+            }
             </>
-        );
-}
-
-function BackButton() {
-    const location = useLocation();
-
-    // Back button renders on any page except home
-    if(location.pathname !== '/' && location.pathname !== '/home')
-        return (
-            <Link to='/' className={style['back-link']}>
-                <FaArrowLeft size={30} className={style['back-icon']}/>
-            </Link>
         );
 }
 

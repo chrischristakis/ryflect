@@ -13,6 +13,7 @@ import { ReactComponent as Loading } from '../assets/loading.svg';
 import { FaQuestionCircle } from 'react-icons/fa';
 import PopUp from '../components/PopUp';
 import capsuleDemo from '../assets/capsuleDemo.mp4';
+import { lightTheme } from '../utils/Constants';
 
 let now = new Date();
 let endDate = new Date();
@@ -90,7 +91,7 @@ function CreateCapsuleButton() {
                 setHiddenState={setHideCapsulePopUp}
             >
                 <div className={style['create-capsule-popup']}>
-                    <p style={{fontSize: '1.5em'}}><strong>What is a time capsule?</strong></p>
+                    <p style={{fontSize: '1.5em'}}><strong>What is a <span style={{color: lightTheme.tertiaryDarker}}>time capsule</span>?</strong></p>
                     <p>A time capsule entry is a journal entry that will not open until a specified date of your choosing.</p>
                     <p>To create one, select any future date on the timeline:</p>
                     <p></p>

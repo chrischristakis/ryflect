@@ -5,22 +5,29 @@ footer {
     display: flex;
     justify-content: space-between;
 
-    padding: 20px 20px;
+    padding: 12px 10px;
 }
 
 .copyright {
     margin: 0;
     color: var(--secondary-color);
+    font-size: smaller;
+    filter: brightness(70%);
 }
 
 .made-by {
     margin: 0;
-    font-weight: bold;
     color: var(--secondary-color);
+    font-size: smaller;
+}
+
+.made-by-text {
+    color: var(--secondary-color);
+    filter: brightness(70%);
 }
 
 .made-by a {
-    font-weight: normal;
+    font-weight: bold;
 
     text-decoration: none;
     color: inherit;
@@ -28,4 +35,19 @@ footer {
 
 .made-by a:hover {
     text-decoration: underline;
+}
+
+/* DESKTOP CHANGES */
+@media (min-width: 900px) {
+    footer {
+        padding: 12px 20px;
+    }
+
+    .copyright {
+        font-size: medium;
+    }
+
+    .made-by {
+        font-size: medium;
+    }
 }

@@ -245,9 +245,10 @@ router.post('/timecapsule', verify.user, validate(capsuleRules), async (req, res
         return res.status(400).send({error: 'Unlock date for a capsule must be in the future'});
 
     let upper_date_bound = new Date();
-    upper_date_bound.setUTCFullYear(upper_date_bound.getUTCFullYear() + UPPER_YEAR_BOUND);
-    upper_date_bound.setUTCDate(31);
-    upper_date_bound.setUTCMonth(11);
+    upper_date_bound.setUTCFullYear(upper_date_bound.getUTCFullYear() + UPPER_YEAR_BOUND + 1);
+    upper_date_bound.setUTCDate(1);
+    upper_date_bound.setUTCMonth(0);
+    upper_date_bound.setUTCHours(0, 0, 0, 0);
 
     if(unlock_date > upper_date_bound)
         return res.status(400).send({error: `Unlock date must be within ${UPPER_YEAR_BOUND} years of the future`});

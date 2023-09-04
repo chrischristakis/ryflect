@@ -12,7 +12,7 @@ module.exports = {
         const encryptedDerivedKey = req.cookies['session']?.encryptedDerivedKey;
         if(!token || !encryptedDerivedKey) {
             res.cookie("session", '', {...token_cookie, maxAge: 0});
-            return res.status(401).send({error: "Missing auth cookie"});
+            return res.status(401).send({error: "Missing auth cookie, please log in again."});
         }
 
         try {
@@ -43,7 +43,7 @@ module.exports = {
         } 
         catch(err) {
             res.cookie("session", '', {...token_cookie, maxAge: 0});
-            return res.status(401).send({error: 'Session invalid, please reauthenticate.'});
+            return res.status(401).send({error: 'Session invalid, please log in again.'});
         }
 
         next();

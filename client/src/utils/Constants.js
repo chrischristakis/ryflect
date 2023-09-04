@@ -7,7 +7,8 @@ export const lightTheme = {
     primary: '#101010',
     primaryDarker: '#060606',
     secondary: '#ffffff',
-    tertiary: '#3f826d',
+    tertiary: '#7cdece',
+    tertiaryDarker: '#257a72'
 }
 
 export const RANDOM_MESSAGES = [

@@ -76,7 +76,7 @@ function Recents() {
                                 >
                                     <h3 className={style['date-title']}>{getDate(new Date(e.date))} {e.emoji}</h3>
                                     { e.is_time_capsule ?
-                                        <em style={{color: lightTheme.tertiary}}>time capsule</em>
+                                        <em style={{color: lightTheme.tertiaryDarker}}>time capsule</em>
                                         : 
                                         null
                                     }
