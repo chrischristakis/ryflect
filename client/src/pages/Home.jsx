@@ -69,7 +69,7 @@ function NewEntryButton({setDate}) {
                         clickEvent={() => navigate('/create')} 
                         disabled={hasJournaledToday}
                     />
-                    <p><em>you made a journal today :)</em></p>
+                    <p className={style['entry-made']}><em>you made a journal today :)</em></p>
                     </>
                     :
                     <Button 
@@ -94,14 +94,16 @@ function CreateCapsuleButton() {
                     <p style={{fontSize: '1.5em'}}><strong>What is a <span style={{color: lightTheme.tertiaryDarker}}>time capsule</span>?</strong></p>
                     <p>A time capsule entry is a journal entry that will not open until a specified date of your choosing.</p>
                     <p>To create one, select any future date on the timeline:</p>
-                    <p></p>
-                    <video width="420" autoPlay loop muted>
-                        <source src={capsuleDemo} type="video/mp4" />
-                        Your browser does not support the video tag.
+                    <video className={style['video']} playsInline autoPlay loop muted src={capsuleDemo} type="video/mp4">
+                        Your browser does not support the videos.
                     </video>
                 </div>
             </PopUp>
-            <Button text={<>create time capsule <FaQuestionCircle/></>} lightButton={true} clickEvent={(e) => setHideCapsulePopUp(false)}/>
+            <Button 
+                text={<div className={style['create-capsule-button']}>create time capsule <FaQuestionCircle/></div>} 
+                lightButton={true} 
+                clickEvent={(e) => setHideCapsulePopUp(false)}
+            />
         </>
     );
 }
@@ -111,6 +113,7 @@ function Home() {
 
     return (
         <div className={style['home-wrapper']}>
+            <div id={style['pane1']}>
             <JournalProvider>
                 <div className={style['timeline-wrapper']}>
                     <Timeline date={date}/>
@@ -118,9 +121,12 @@ function Home() {
                 <NewEntryButton setDate={setDate}/>
                 <CreateCapsuleButton/>
             </JournalProvider>
-            <hr/>
+            </div>
+            <div id={style['pane2']}>
+            <h3 className={style['recents-title']}>recent entries</h3>
             <div className={style['recents-wrapper']}>
                 <Recents/>
+            </div>
             </div>
         </div>
     );

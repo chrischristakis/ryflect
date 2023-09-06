@@ -10,13 +10,13 @@
 }
 
 .year-selector {
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
 
 .timeline {
     display: grid;
-    grid-template-columns: repeat(auto-fill, 24px);
-    grid-auto-rows: 24px;
+    grid-template-columns: repeat(auto-fill, 18px);
+    grid-auto-rows: 18px;
     justify-content: center; /*Horizontal align*/
     align-items: center; /*Vertical align*/
     gap: 4px;

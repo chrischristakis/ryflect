@@ -15,7 +15,7 @@ function PopUp({children, hidden=true, setHiddenState=()=>{}, exitColor=lightThe
             <div className={style['popup-wrapper']}
                  onClick={(e) => {e.stopPropagation() /*dont listen to upper div click event*/}}
             >
-                <button onClick={handleClickOut} className={style['exit-button']}><RxCross1 size={20} color={exitColor}/></button>
+                <button onClick={handleClickOut} className={style['exit-button']}><RxCross1 size={28} color={exitColor}/></button>
                 {children}
             </div>
         </div>

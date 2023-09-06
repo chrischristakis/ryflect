@@ -3,9 +3,9 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
+    height: 100vh;
     z-index: 99;
-    background-color: rgba(0,0,0,0.3);
+    background-color: rgba(0,0,0,0.5);
 
     display: flex;
     align-items: center;
@@ -14,6 +14,10 @@
 
 .popup-wrapper {
     position: relative;
+    width: 88%;
+    min-width: 200px;
+    max-width: 700px;
+    overflow: hidden;
 }
 
 .exit-button {
@@ -27,7 +31,7 @@
     width: 28px;
     height: 28px;
 
-    margin: 4px;
+    margin: 15px 20px;
 
     cursor: pointer;
 }

@@ -11,7 +11,7 @@ const token_cookie = (ENV !== 'development')?
     :
     { 
         sameSite: 'none',
-        secure: true,
+        secure: false,
         maxAge: COOKIE_LIFESPAN
     }
 

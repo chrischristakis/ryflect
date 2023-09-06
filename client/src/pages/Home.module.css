@@ -1,20 +1,52 @@
 .home-wrapper {
     text-align: center;
-    margin: 0 15px;
+    margin: 0 10px;
 }
 
 .create-entry-wrapper {
-    margin: 30px 0;
+    margin: 15px 0;
 }
 
-.timeline-wrapper {
-    margin-top: 30px;
+.recents-wrapper {
+    border-top: 2px solid var(--primary-color);
+    width: 80%;
+    margin: 0 auto;
+}
+
+.video {
+    width: 100%;
+    max-width: 400px;
+    min-width: 200px;
+}
+
+#pane1 {
+    margin-top: 20px;
+}
+
+#pane2 {
+    margin-top: 60px;
+}
+
+.recents-title {
+    font-weight: normal;
 }
 
 .create-capsule-popup {
     background-color: var(--secondary-color);
-    padding: 30px 30px;
+    padding: 25px 40px;
     border-radius: 10px;
+}
+
+.create-capsule-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+}
+
+.entry-made {
+    margin: 10px 0;
+    opacity: 0.5;
 }
 
 /* EXAMPLE FOR DESKTOP

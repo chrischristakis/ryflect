@@ -1,10 +1,17 @@
 .date-title {
-    margin-bottom: 0;
+    margin-bottom: 8px;
 }
 
-.infinite-scroll-wrapper {
+.recents-wrapper {
+    min-height: 150px;
     display: flex;
     justify-content: center;
+    align-items: center;
+}
+
+.no-entries {
+    margin: 0;
+    opacity: 0.7;
 }
 
 .infinite-scroll-container {
@@ -12,8 +19,17 @@
 }
 
 .recent-wrapper {
-    width: 100%;
     margin: 30px 0;
+    padding: 10px;
+}
+
+.recent-text-wrapper {
+    height: 70px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
 }
 
 .recent-text-content {

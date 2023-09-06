@@ -115,7 +115,9 @@
     - [x] Footer
     - [ ] Mobile styling
         - [ ] Home
+            - [x] Style what to do when no recents
         - [ ] Create
+            - [ ] Center loading
         - [ ] View
         - [ ] Login
         - [ ] Register

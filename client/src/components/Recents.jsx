@@ -54,43 +54,53 @@ function Recents() {
         return <Loading/>;
 
     if(recents.length === 0)
-        return <p>you have no recent journals... create an entry and change that :)</p>;
+        return (
+            <div className={style['recents-wrapper']}>
+                <p className={style['no-entries']}>you have no recent journals... create an entry and change that :)</p>
+            </div>
+        );
 
     return (
-        <>
-            <div id={'infinite-scroll'} className={style['infinite-scroll-wrapper']}>
-                <div className={style['infinite-scroll-container']}>
-                    <InfiniteScroll
-                        dataLength={recents.length}
-                        next={loadMoreRecents}
-                        hasMore={hasMore}
-                        loader={<Loading/>}
-                        //scrollableTarget='infinite-scroll'  <-- Add back in when you add scroll bar!
-                    >
-                        {
-                            recents.map((e, i) =>
-                                <div key={e.id + i}
-                                    className={style['recent-wrapper']}
-                                    onClick={_ => navigate('/view/' + e.id)}
-                                    style={{cursor: 'pointer'}}
-                                >
-                                    <h3 className={style['date-title']}>{getDate(new Date(e.date))} {e.emoji}</h3>
-                                    { e.is_time_capsule ?
-                                        <em style={{color: lightTheme.tertiaryDarker}}>time capsule</em>
-                                        : 
-                                        null
+        <div id={'infinite-scroll'} className={style['recents-wrapper']}>
+            <div className={style['infinite-scroll-container']}>
+                <InfiniteScroll
+                    dataLength={recents.length}
+                    next={loadMoreRecents}
+                    hasMore={hasMore}
+                    loader={<Loading/>}
+                    //scrollableTarget='infinite-scroll'  <-- Add back in when you add scroll bar!
+                >
+                    {
+                        recents.map((e, i) =>
+                            <div key={e.id + i}
+                                className={style['recent-wrapper']}
+                                onClick={_ => navigate('/view/' + e.id)}
+                                style={{cursor: 'pointer'}}
+                            >
+                                <div className={style['date-title']}>
+                                    {
+                                        e.is_time_capsule?
+                                            <>
+                                            <h3 style={{margin: 0, color: lightTheme.tertiaryDarker}}>{getDate(new Date(e.date))} {e.emoji}</h3>
+                                            <em style={{color: lightTheme.tertiaryDarker}}>time capsule</em>
+                                            </>
+                                        :
+                                            <h3 style={{margin: 0}}>{getDate(new Date(e.date))} {e.emoji}</h3>
+
                                     }
+                                </div>
+                                <div className={style['recent-text-wrapper']}>
                                     <div 
                                         className={style['recent-text-content']}
                                         dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(richtextToPlaintext(e.richtext)) }}
                                     />
                                 </div>
-                            )
-                        }  
-                    </InfiniteScroll>
-                </div>
+                            </div>
+                        )
+                    }  
+                </InfiniteScroll>
             </div>
-        </> 
+        </div> 
     );
 }
 

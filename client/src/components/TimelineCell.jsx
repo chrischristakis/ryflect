@@ -6,7 +6,7 @@ import { FaUnlock } from 'react-icons/fa';
 import PopUp from './PopUp.jsx';
 import Button from './Button';
 import { getDate } from '../utils/utils';
-import { ReactComponent as CapsuleIcon } from '../assets/time-capsule.svg';
+import { ReactComponent as CapsuleIcon } from '../assets/capsule-icon.svg';
 import { ReactComponent as JournalIcon } from '../assets/journal-icon.svg';
 import { lightTheme } from '../utils/Constants.js';
 
@@ -99,13 +99,13 @@ function TimelineCell({journalID, capsuleInfo, canCreateCapsule, isCurrentDay, d
                 <div className={style['select-popup-journal']} 
                      onClick={() => journalID && navigate('/view/'+journalID)}
                 >
-                    <JournalIcon fill={lightTheme.secondary} width={150} height={300}/>
+                    <JournalIcon fill={lightTheme.secondary} className={style['journal-icon']}/>
                     <p>View journal</p>
                 </div>
                 <div className={style['select-popup-capsule']} 
                      onClick={() => capsuleInfo && navigate('/view/'+capsuleInfo.id)}
                 >
-                    <CapsuleIcon fill={lightTheme.primary} width={150} height={300}/>
+                    <CapsuleIcon fill={lightTheme.primary} className={style['capsule-icon']}/>
                     <p>View time capsule</p>
                 </div>
             </div>
@@ -123,12 +123,12 @@ function TimelineCell({journalID, capsuleInfo, canCreateCapsule, isCurrentDay, d
                 capsuleInfo && (
                     capsuleInfo.locked?
                     <FaLock 
-                        size={14} className={journalID? style['icon-secondary'] : style['icon-primary']}
+                        className={journalID? style['icon-secondary'] : style['icon-primary']}
                         onClick={applyShakeAnim} 
                     />
                     :
                     <FaUnlock 
-                        size={14} className={journalID? style['icon-secondary'] : style['icon-primary']}
+                        className={journalID? style['icon-secondary'] : style['icon-primary']}
                     />
                 )
             }

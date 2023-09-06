@@ -8,7 +8,8 @@
 
 .carousel-item {
     overflow: hidden;
-    color: grey;
+    color: var(--primary-color);
+    opacity: 0.7;
     user-select: none;
     cursor: pointer;
 
@@ -22,6 +23,7 @@
 
 .selected-item {
     color: var(--primary-color);
-    font-weight: bold;
-    font-size: larger;
+    opacity: 1 !important;
+    font-weight: bolder;
+    font-size: 1.2em;
 }

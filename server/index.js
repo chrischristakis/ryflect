@@ -14,6 +14,7 @@ app.use(cors({
     credentials: true,  // We need this for cookies to be stored on browser.
     origin: [
         'http://localhost:3000',
+        'http://10.0.0.63:3000',
         'https://ryflect.ca',
         'https://www.ryflect.ca'
     ] // Localhost and website public ip
