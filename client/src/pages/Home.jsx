@@ -36,6 +36,9 @@ function NewEntryButton({setDate}) {
             catch(err) {
                 handleError(err);
             }
+            finally {
+                document.title = `ryflect | home`;
+            }
         })();
     }, [setHasJournaledToday]);
 

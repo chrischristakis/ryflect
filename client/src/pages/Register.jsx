@@ -40,6 +40,10 @@ function Register() {
         },
     });
 
+    useEffect(() => {
+        document.title = `ryflect | register`;
+    }, []);
+
     // Check if passwords match whenever they change
     useEffect(() => {
         if(!repasswordInput.current || !passwordInput.current)  // Refs aren't properly set.

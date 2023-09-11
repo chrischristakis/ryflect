@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import Accordion from '../components/Accordion';
 import style from './FAQ.module.css';
 
@@ -66,6 +67,11 @@ const faqData = [
 ]
 
 function FAQ() {
+
+    useEffect(() => {
+        document.title = `ryflect | faq`;
+    }, []);
+
     return (
         <div className={style['faq-wrapper']}>
             <div className={style.title}>

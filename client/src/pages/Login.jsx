@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import Button from '../components/Button';
 import { useAuth } from '../contexts/AuthProvider';
 import { useNavigate } from 'react-router-dom';
@@ -24,6 +24,10 @@ function Login() {
             ref: passwordInput
         },
     });
+    
+    useEffect(() => {
+        document.title = `ryflect | login`;
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();

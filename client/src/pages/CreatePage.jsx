@@ -67,9 +67,13 @@ function CreatePage() {
             upper_bound.setUTCHours(0, 0, 0, 0);
             if(date > today && date < upper_bound)
                 setValidDate(true);
+
+            document.title = `ryflect | create time capsule`;
         }
-        else
+        else {
             setValidDate(true);
+            document.title = `ryflect | create`;
+        }
 
         setDateString(getDate(date));
     }, [isCapsule, selectedDay, selectedMonth, selectedYear]);

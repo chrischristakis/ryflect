@@ -26,6 +26,7 @@ function ViewJournal() {
 
                 setEntry(tempEntry);
                 setFormattedDate(getDate(new Date(tempEntry.date)));
+                document.title = `ryflect | ${getDate(new Date(tempEntry.date))}`
             }
             catch(err) {
                 if(err.response && (err.response.status === 403 || err.response.status === 401))

@@ -11,6 +11,7 @@ function PrivacyPolicy() {
         fetch(mdFile)
             .then((res) => res.text())
             .then((txt) => setMdText(txt));
+        document.title = 'ryflect | privacy policy';
     }, []);
 
     return (
