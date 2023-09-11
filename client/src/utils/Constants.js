@@ -7,6 +7,7 @@ export const lightTheme = {
     primary: '#101010',
     primaryDarker: '#060606',
     secondary: '#ffffff',
+    secondaryDarker: '#eaecec',
     tertiary: '#7cdece',
     tertiaryDarker: '#257a72'
 }
@@ -28,12 +29,17 @@ export const RANDOM_MESSAGES = [
     'You will always be your own greatest adversary.',
     'The mind is messy. Journaling can help you navigate that chaos.',
     'live, laugh, love. ;p',
-    'A journal can be a single or a thousand words. Whatever you feel you need to write about should be written.',
+    'A journal can be a single words or a thousand words. Whatever you feel you need to write about should be written.',
     'Ryflect is fully encrypted! No one can see what you write, even with database access.',
     'Journaling can help you strengthen your memory.',
     'Many people journal their dreams, maybe you can find something of signifigance in them',
     "Journaling doesn't need to be constrained to the past. Try making a time capsule entry and leave something for yourself, from yourself.",
     "What's something that disappointed you recently?",
     "What's something you did today?",
+    "What're 3 things are grateful for?",
+    "Is there anything you are looking forward to?",
+    '"Be prepared to work always without applause" - Ernest Hemingway',
+    'Did you know you can change the entry emoji by clicking it?',
+    'If it rains, then let it.',
     'Type here...'
 ];

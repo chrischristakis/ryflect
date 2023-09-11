@@ -22,6 +22,7 @@ function changeTheme(theme) {
   document.documentElement.style.setProperty('--primary-color', theme.primary);
   document.documentElement.style.setProperty('--primary-color-darker', theme.primaryDarker);
   document.documentElement.style.setProperty('--secondary-color', theme.secondary);
+  document.documentElement.style.setProperty('--secondary-color-darker', theme.secondaryDarker);
   document.documentElement.style.setProperty('--tertiary-color', theme.tertiary);
   document.documentElement.style.setProperty('--tertiary-color-darker', theme.tertiaryDarker);
 }

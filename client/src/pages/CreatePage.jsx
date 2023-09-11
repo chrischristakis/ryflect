@@ -167,19 +167,34 @@ function CreatePage() {
                 }
             </div>
         </PopUp>
-        <div>
-            <h3>{dateString} <span style={{userSelect: 'none'}} onClick={() => setEmoji(randomFromArray([...EMOJIS]))}>{emoji}</span></h3>
-            {isCapsule && <h3><em style={{color: lightTheme.tertiaryDarker}}>time capsule</em></h3>}
+        <div className={style['create-wrapper']}>
+            <div className={style['title-wrapper']}>
+                <h2 style={{color: isCapsule? lightTheme.tertiaryDarker : lightTheme.primary }}>
+                    {dateString} <span style={{userSelect: 'none'}} onClick={() => setEmoji(randomFromArray([...EMOJIS]))}>{emoji}</span>
+                </h2>
+                {isCapsule && <p><em style={{color: lightTheme.tertiaryDarker}}>time capsule</em></p>}
+            </div>
 
-            <ReactQuill 
-                ref={quillRef} 
-                modules={modules} 
-                placeholder={placeholder}
-                onChange={handleTextChange} 
-                theme="snow"
-            />
+            <div className={style['editor-wrapper']}>
+                <ReactQuill 
+                    ref={quillRef} 
+                    modules={modules} 
+                    placeholder={placeholder}
+                    onChange={handleTextChange} 
+                    theme="snow"
+                />
+            </div>
 
-            <Button text="i'm done!" clickEvent={() => setHideConfirmPopup(false)} disabled={overCapacity}/>
+            <div className={style['button-wrapper']}>
+                <Button 
+                    className={style['confirm']} 
+                    text="i'm done!" 
+                    clickEvent={() => setHideConfirmPopup(false)} 
+                    disabled={overCapacity} 
+                    lightButton={true} 
+                    slideHover={true}
+                />
+            </div>
         </div>
         </>
     );

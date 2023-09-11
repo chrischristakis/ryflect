@@ -6,7 +6,11 @@ export function AuthRoute({ children, redirect }) {
     const { username, loading } = useAuth();
 
     if(loading)
-        return <Loading/>;
+        return (
+            <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: 'calc(100vh - 90px)'}}>
+                <Loading/>
+            </div>
+        );
 
     return (
         <>

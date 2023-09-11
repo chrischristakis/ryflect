@@ -5,8 +5,38 @@
     user-select: none;
 
     padding: 30px 50px;
-}
+} 
 
 .confirm-popup-wrapper Button {
     margin-top: 15px;
+}
+
+.create-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.editor-wrapper {
+    width: 90%;
+}
+
+.title-wrapper {
+    margin: 30px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.title-wrapper> p {
+    margin-top: 5px;
+    font-size: 1.1em;
+}
+
+.title-wrapper > * {
+    margin: 0;
+}
+
+.button-wrapper {
+    margin: 30px 0;
 }

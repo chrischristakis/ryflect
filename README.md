@@ -114,19 +114,21 @@
         - [x] Insert logo svg
     - [x] Footer
     - [ ] Mobile styling
-        - [ ] Home
+        - [x] Home
             - [x] Style what to do when no recents
-        - [ ] Create
-            - [ ] Center loading
-        - [ ] View
+        - [x] Create
+            - [x] Center loading
+        - [x] View
+            - [x] All error pages
+        - [ ] Change pass
         - [ ] Login
         - [ ] Register
             - [ ] Session invalid after registering
-        - [ ] Change pass
+        - [x] Faq
+        - [x] Privacy policy
+            - [x] Just remove the box shadow on mobile and margin.
+        - [x] Not found
         - [ ] Landing
-        - [ ] Faq
-        - [ ] Privacy policy
-        - [ ] Not found
     - [ ] finish Figma web layout
     - [ ] Web styling
         - [ ] Home
@@ -135,10 +137,10 @@
         - [ ] Login
         - [ ] Register
         - [ ] Change pass
-        - [ ] Landing
         - [ ] Faq
-        - [ ] Privacy policy
+        - [x] Privacy policy
         - [ ] Not found
+        - [ ] Landing
 - [ ] Remove test user autofill on login
 
 # Other

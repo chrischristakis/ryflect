@@ -48,14 +48,13 @@ function ViewJournal() {
         return <DisplayError code='404' text='This journal does not exist'/>;
 
     return (
-        <div>
-            <h3>{formattedDate} {entry.emoji}</h3>
-            {
-                entry.is_time_capsule && <h4><em style={{color: lightTheme.tertiaryDarker}}>time capsule</em></h4>
-            }
+        <div className={style['view-wrapper']}>
+            <div className={style['title-wrapper']}>
+                <h2 style={{color: entry.is_time_capsule? lightTheme.tertiaryDarker : lightTheme.primary }}>{formattedDate} {entry.emoji}</h2>
+                { entry.is_time_capsule && <p><em style={{color: lightTheme.tertiaryDarker}}>time capsule</em></p> }
+            </div>
             <div 
                 className={style['text-container']}
-                style={{whiteSpace: 'normal'}} 
                 dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(entry.richtext) }}
             />
         </div>

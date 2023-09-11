@@ -1,7 +1,6 @@
 .accordion-wrapper { 
     position: relative;
     padding: 8px 10px;
-    border-bottom: 1px solid var(--primary-color);
 }
 
 .accordion-header {
@@ -12,7 +11,8 @@
 }
 
 .accordion-header p {
-    font-weight: bold;
+    font-weight: 600;
+    padding: 10px 0;
     margin: 0;
 }
 
@@ -29,5 +29,5 @@
 }
 
 .expanded {
-    max-height: 150px;
+    max-height: 250px;
 }
