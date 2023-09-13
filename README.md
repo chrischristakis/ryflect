@@ -113,23 +113,25 @@
         - [x] Style dropdown
         - [x] Insert logo svg
     - [x] Footer
-    - [ ] Mobile styling
+    - [x] Mobile styling
         - [x] Home
             - [x] Style what to do when no recents
         - [x] Create
             - [x] Center loading
         - [x] View
             - [x] All error pages
-        - [ ] Change pass
+        - [x] Change pass
             - [x] Turn input (and labels representing input) into a component, make sure it works with useForm
-        - [ ] Login
-        - [ ] Register
+        - [x] Login
+        - [x] Register
             - [x] fix bug saying Session invalid after registering
+            - [x] Style email sent page, emphasize the spam email bit (maybe with red?)
+        - [x] Verify registeration
         - [x] Faq
         - [x] Privacy policy
             - [x] Just remove the box shadow on mobile and margin.
         - [x] Not found
-        - [ ] Landing
+        - [x] Landing
     - [ ] finish Figma web layout
     - [ ] Web styling
         - [ ] Home

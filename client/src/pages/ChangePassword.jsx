@@ -6,6 +6,7 @@ import { API_URL } from '../config';
 import axios from 'axios';
 import { handleError } from '../utils/HandleResponse';
 import Input from '../components/Input';
+import style from './ChangePassword.module.css';
 
 function ChangePassword() {
 
@@ -66,29 +67,30 @@ function ChangePassword() {
     }
 
     return (
-        <div>
-            <h3>Change password</h3>
-            <Input 
-                label='current password:'
-                name='oldPass'
-                ref={oldPassRef}
-                type='text'
-                onChange={form.handleDataChange}
-            />
-            <Input 
-                label='new password:'
-                name='newPass'
-                ref={newPassRef}
-                type='text'
-                onChange={form.handleDataChange}
-            />
-            <Input 
-                label='confirm new password:'
-                name='confirmPass'
-                ref={confirmPassRef}
-                type='text'
-                onChange={form.handleDataChange}
-            />
+        <div className={style['change-pass-wrapper']}>
+            <div className={style['input-wrapper']}>
+                <Input 
+                    label='current password:'
+                    name='oldPass'
+                    ref={oldPassRef}
+                    type='password'
+                    onChange={form.handleDataChange}
+                />
+                <Input 
+                    label='new password:'
+                    name='newPass'
+                    ref={newPassRef}
+                    type='password'
+                    onChange={form.handleDataChange}
+                />
+                <Input 
+                    label='confirm new password:'
+                    name='confirmPass'
+                    ref={confirmPassRef}
+                    type='password'
+                    onChange={form.handleDataChange}
+                />
+            </div>
             <Button text='change password' clickEvent={handleSubmit}/>
         </div>
     );

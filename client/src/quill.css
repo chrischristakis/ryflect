@@ -19,3 +19,7 @@
     top: 90px; /* nav bar */
     z-index: 1;
 }
+
+.ql-formats {
+    margin: 5px 0;
+}

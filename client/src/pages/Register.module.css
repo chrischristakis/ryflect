@@ -1,15 +1,42 @@
 .register-wrapper {
+    width: 300px;
     position: absolute;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-.register-wrapper input {
+.register-wrapper h2 {
+    text-align: center;
     width: 100%;
+    border-bottom: 1px solid black;
+    margin: 0;
+    padding-bottom: 15px;
+}
+
+.input-wrapper {
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.resend-button {
+    all: unset;
+    padding: 2px 0;
+    cursor: pointer;
+    border-bottom: 1px solid var(--primary-color);
+}
+
+.resend-button:disabled {
+    opacity: 0.4;
+    user-select: none;
 }
 
 .await-verification-wrapper {
+    min-width: 300px;
     position: absolute;
     left: 50%;
     top: 50%;

@@ -5,7 +5,7 @@ const User = require('../models/User.js');
 const { getDate, getDateID, getCurrentDayInYear } = require('../utils/utils.js');
 const verify = require('../middleware/verify.js');
 const validate = require('../middleware/validate.js');
-const { check, query } = require('express-validator');
+const { check, query, param } = require('express-validator');
 const DOMPurify = require('../utils/DOMPurify.js');
 const cryptoHelper = require('../utils/CryptoHelper.js');
 const { emojis, MAX_BYTES } = require('../utils/Constants.js');
@@ -26,6 +26,11 @@ const capsuleRules = [
     check('unlock_year').isInt({min: 0}).withMessage('Unlock year must be a positive number'),
     check('unlock_month').isInt({min: 0}).withMessage('Unlock month must be a positive number'),
     check('unlock_day').isInt({min: 0}).withMessage('Unlock day must be a positive number')
+];
+
+const viewRules = [
+    param('id').isString().withMessage('Journal ID must be a string')
+        .trim().escape()
 ];
 
 const recentRules = [
@@ -95,8 +100,7 @@ router.get('/', verify.user, async (req, res) => {
 });
 
 // Get a journal entry with a specified journal ID
-router.get('/id/:id', verify.user, async (req, res) => {
-    // TODO: Validate
+router.get('/id/:id', validate(viewRules), verify.user, async (req, res) => {
     const id = req.params.id;
 
     let found = await Journals.findOne({id: id});

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { lightTheme } from '../utils/Constants.js';
 
 const DEFAULT_BORDER = '1px solid ' + lightTheme.primary;
-const OFFENDING_BORDER = '1px solid red';
+const OFFENDING_BORDER = '1px solid tomato';
 
 export default function useForm(initial = {}) {
     const [data, setData] = useState(initial);

@@ -46,21 +46,23 @@ function Login() {
 
     return (
         <div className={style['login-wrapper']}>
-            <Input
-                label='username:'
-                name='username' 
-                ref={usernameInput} 
-                type='text' 
-                onChange={form.handleDataChange}
-            />
-            <Input
-                label='password:'
-                name='password'
-                ref={passwordInput} 
-                type='password'
-                onChange={form.handleDataChange}
-            />
-            <br/>
+            <h2>login</h2>
+            <div className={style['input-wrapper']}>
+                <Input
+                    label='username:'
+                    name='username' 
+                    ref={usernameInput} 
+                    type='text' 
+                    onChange={form.handleDataChange}
+                />
+                <Input
+                    label='password:'
+                    name='password'
+                    ref={passwordInput} 
+                    type='password'
+                    onChange={form.handleDataChange}
+                />
+            </div>
             <Button text='login' type='submit' clickEvent={handleSubmit}/>
         </div>
     );

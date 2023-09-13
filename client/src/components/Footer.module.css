@@ -6,6 +6,7 @@ footer {
     justify-content: space-between;
 
     padding: 12px 10px;
+    z-index: 99;
 }
 
 .copyright {

@@ -29,7 +29,17 @@ function VerifyEmail() {
     }, [id, navigate, callMade]);
 
     return (
-        <div>
+        <div style={{
+                width: '90%',
+                fontSize: '1.2em',
+                margin: '0 auto',
+                textAlign: 'center', 
+                position: 'absolute', 
+                top: '50%', 
+                left: '50%', 
+                transform: 'translate(-50%, -50%)'
+            }}
+        >
             {
             (!invalidLink)? 
                 <p>please wait a moment as we activate your account...</p>   

@@ -1,11 +1,6 @@
 import { useEffect, useState } from 'react';
 import style from './Carousel.module.css';
 
-// TODO:
-/*
-    - Animate snapping
-*/
-
 function Carousel({values=[], cellWidth=50, cellHeight=50, cellGap=30, initialIndex=0, indexChangeCallback=()=>{}}) {
 
     const [currIndex, setCurrIndex] = useState(initialIndex);

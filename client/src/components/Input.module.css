@@ -1,0 +1,18 @@
+.input-box {
+    all: unset;
+    border: 1px solid black;
+    width: calc(100% - 30px); /* account for padding */
+    transition: box-shadow 0.1s ease;
+    border-radius: 10px;
+    padding: 5px 15px;
+    margin-top: 6px;
+}
+
+.input-wrapper {
+    margin: 18px 0;
+}
+
+.input-box:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--primary-color);
+}

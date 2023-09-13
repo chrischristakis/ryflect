@@ -12,6 +12,10 @@
     user-select: none;
 }
 
+.fill-container {
+    width: 100% !important;
+}
+
 .normal {
     background-color: var(--primary-color);
     color: var(--secondary-color); 

@@ -176,27 +176,27 @@ router.post('/register', validate(registerRules), RateLimit('/auth/register', 5,
         encryptedDerivedKey: encryptedDerivedKey.ciphertext,
         encryptedDerivedKeyIV: encryptedDerivedKey.iv
     });
-    
+
+    // Finally, send an email to the user to verify.
+    try {
+        await mailHelper.sendVerification(email, verificationID);
+    }
+    catch(err) {
+        console.log('ERR [POST auth/register]:', err);
+        return res.status(500).send({error: err});
+    }
+
     // Commit new user to db and verification
     try {
         await verification.save();
         await user.save();
+        await incrementRateAttempts(req.headers['x-forwarded-for'] || req.socket.remoteAddress, '/auth/register');
+        return res.send(verificationID);
     } 
     catch(err) {
         console.log('ERR [POST auth/register]:', err);
         return res.status(500).send({error: err});
     } 
-
-    // Finally, send an email to the user to verify.
-    try {
-        await mailHelper.sendVerification(email, verificationID);
-        await incrementRateAttempts(req.headers['x-forwarded-for'] || req.socket.remoteAddress, '/auth/register');
-        return res.send(verificationID);
-    }
-    catch(err) {
-        console.log('ERR [POST auth/register]:', err);
-        return res.status(500).send({error: 'Something went wrong.'});
-    }
 });
 
 // Resend the email, limited to once, since we're using a servide to send emails.
