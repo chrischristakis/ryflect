@@ -34,9 +34,9 @@ const viewRules = [
 ];
 
 const recentRules = [
-    query('limit').isInt({min: 0}).withMessage('Limit number should be a psoitive integer')
+    query('limit').isInt({min: 0}).withMessage('Limit number should be a positive integer')
         .escape().trim(),
-    query('skip').isInt({min: 0}).withMessage('Skip number should be a psoitive integer')
+    query('skip').isInt({min: 0}).withMessage('Skip number should be a positive integer')
         .escape().trim()
 ];
 

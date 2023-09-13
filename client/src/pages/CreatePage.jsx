@@ -20,6 +20,7 @@ const modules = {
         ['bold', 'italic', 'underline', 'strike'],  // Add or customize other formatting options as needed
         [{ 'list': 'ordered'}, { 'list': 'bullet' }],  // Add both ordered and bullet list options
         [{ 'indent': '-1'}, { 'indent': '+1' }],  // Add indent and outdent options
+        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
     ]
 }
 
@@ -99,6 +100,8 @@ function CreatePage() {
             text: entryText,
             emoji: emoji
         }; 
+
+        console.log(entryText)
 
         try {
             if(!isCapsule)
