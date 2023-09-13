@@ -264,7 +264,7 @@ router.get('/verify/:id', validate(verificationRules), async (req, res) => {
     res.cookie("session", 
         {
             jwt: entry.token, 
-            encryptedDerivedKey: {cipher: entry.encryptedDerivedKey.ciphertext, iv: entry.encryptedDerivedKey.iv}, 
+            encryptedDerivedKey: {cipher: entry.encryptedDerivedKey, iv: entry.encryptedDerivedKeyIV}, 
         },
         token_cookie
     );
@@ -371,7 +371,7 @@ router.put('/change-password', validate(changePasswordRules), verify.user, async
 router.post('/logout', (req, res) => {
 
     // Clear access token and refresh token
-    res.cookie("session", '', {...token_cookie, maxAge: 0});
+    res.cookie("session", {}, {...token_cookie, maxAge: 0});
     return res.send('Logged out');
 });
 

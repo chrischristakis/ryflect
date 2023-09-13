@@ -121,9 +121,10 @@
         - [x] View
             - [x] All error pages
         - [ ] Change pass
+            - [x] Turn input (and labels representing input) into a component, make sure it works with useForm
         - [ ] Login
         - [ ] Register
-            - [ ] Session invalid after registering
+            - [x] fix bug saying Session invalid after registering
         - [x] Faq
         - [x] Privacy policy
             - [x] Just remove the box shadow on mobile and margin.

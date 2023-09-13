@@ -7,6 +7,7 @@ import { handleError } from '../utils/HandleResponse';
 import { toast } from 'react-toastify';
 import useForm from '../hooks/useForm';
 import style from './Register.module.css';
+import Input from '../components/Input';
 
 function Register() {
 
@@ -122,34 +123,34 @@ function Register() {
             </div>
         </PopUp>
         <div className={style['register-wrapper']}>
-            <div>
-                <label>
-                    username:
-                    <br/>
-                    <input name='username' ref={usernameInput} type='text' onChange={form.handleDataChange}></input>
-                </label>
-            </div>
-            <div>
-                <label>
-                    email:
-                    <br/>
-                    <input name='email' ref={emailInput} type='text' onChange={form.handleDataChange}></input>
-                </label>
-            </div>
-            <div>
-                <label>
-                    password:
-                    <br/>
-                    <input name='password' ref={passwordInput} type='password' onChange={form.handleDataChange}></input>
-                </label>
-            </div>
-            <div>
-                <label>
-                    re-enter password:
-                    <br/>
-                    <input name='repassword' ref={repasswordInput} type='password' onChange={form.handleDataChange}></input>
-                </label>
-            </div>
+            <Input
+                label='username:'
+                name='username' 
+                ref={usernameInput} 
+                type='text' 
+                onChange={form.handleDataChange}
+            />
+            <Input
+                label='email:'
+                name='email' 
+                ref={emailInput} 
+                type='text' 
+                onChange={form.handleDataChange}
+            />
+            <Input
+                label='password:'
+                name='password' 
+                ref={passwordInput} 
+                type='password' 
+                onChange={form.handleDataChange}
+            />
+            <Input
+                label='confirm password:'
+                name='repassword' 
+                ref={repasswordInput} 
+                type='password'
+                onChange={form.handleDataChange}
+            />
             <br/>
             <Button text='register' type='submit' clickEvent={() => setHideConfirm(false)}/>
         </div>

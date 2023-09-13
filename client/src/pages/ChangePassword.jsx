@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import { API_URL } from '../config';
 import axios from 'axios';
 import { handleError } from '../utils/HandleResponse';
+import Input from '../components/Input';
 
 function ChangePassword() {
 
@@ -67,28 +68,28 @@ function ChangePassword() {
     return (
         <div>
             <h3>Change password</h3>
-            <div>
-                <label>
-                    Current password:
-                    <br/>
-                    <input name='oldPass' ref={oldPassRef} type='text' onChange={form.handleDataChange}></input>
-                </label>
-            </div>
-            <div>
-                <label>
-                    New password:
-                    <br/>
-                    <input name='newPass' ref={newPassRef} type='text' onChange={form.handleDataChange}></input>
-                </label>
-            </div>
-            <div>
-                <label>
-                    Confirm new password:
-                    <br/>
-                    <input name='confirmPass' ref={confirmPassRef} type='text' onChange={form.handleDataChange}></input>
-                </label>
-            </div>
-            <Button text='reset password' clickEvent={handleSubmit}/>
+            <Input 
+                label='current password:'
+                name='oldPass'
+                ref={oldPassRef}
+                type='text'
+                onChange={form.handleDataChange}
+            />
+            <Input 
+                label='new password:'
+                name='newPass'
+                ref={newPassRef}
+                type='text'
+                onChange={form.handleDataChange}
+            />
+            <Input 
+                label='confirm new password:'
+                name='confirmPass'
+                ref={confirmPassRef}
+                type='text'
+                onChange={form.handleDataChange}
+            />
+            <Button text='change password' clickEvent={handleSubmit}/>
         </div>
     );
 }
