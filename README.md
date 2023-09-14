@@ -144,6 +144,7 @@
         - [x] Privacy policy
         - [ ] Not found
         - [ ] Landing
+- [ ] Put cat svg/imgs on the website whereever.
 - [ ] Remove test user autofill on login
 
 # Other

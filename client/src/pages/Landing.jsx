@@ -19,7 +19,7 @@ function Landing() {
     return (
         <div className={style['landing-wrapper']}>
             <div className={style['top-portion']}>
-                <p>journal everywhere, securely, for the present or future.</p>
+                <p>journal everywhere, for the present or future.</p>
                 <Button text='login' clickEvent={_=> navigate('/login')} fillContainer={true}/>
                 <Button text='register' clickEvent={_=> navigate('/register')} lightButton={true} fillContainer={true}/>
             </div>
@@ -28,7 +28,7 @@ function Landing() {
                 <img src={HomeImg} alt=':(' width={200}/>
             </div>
             <h2 className={style['title-break']}>what is ryflect?</h2>
-            <p className={style['explanation-paragraph']}>ryflect is a once-a-day journal app with an intuitive interface and secure encryption. Explore your past habits using a timeline of your entries, or create an entry that you cannot view until the future.</p>
+            <p className={style['explanation-paragraph']}>ryflect is a once-a-day journaling platform with an emphasis on ease of use while still providing everything you may expect from a journal app. explore your past habits using a timeline of your entries, or create an entry that you cannot open until the future.</p>
             <h2 className={style['title-break']}>why use ryflect?</h2>
             <div className={style['box']}>
                 <div className={style['box-title']}><p>everything is encrypted</p><span><GrSecure size={30}/></span></div>
