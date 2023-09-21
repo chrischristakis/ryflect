@@ -12,6 +12,7 @@ import PopUp from '../components/PopUp.jsx';
 import style from './CreatePage.module.css';
 import { useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import selectRandomCat from '../utils/CatSelector';
 
 // For quill
 import 'quill-paste-smart';  // Whoever made this, thank you. Prevents unwanted rich text pasting.
@@ -31,6 +32,9 @@ const randomFromArray = (arr) => {
     return arr[Math.floor(Math.random() * arr.length)];
 }
 
+const plaintextFromHTML = (text) => text.replace(/<[^>]*>/g, ' ').replace(/\s+/g, " ").trim();
+
+const selectedCat = selectRandomCat();
 let date = new Date();
 
 function CreatePage() {
@@ -183,6 +187,10 @@ function CreatePage() {
             </div>
 
             <div className={style['editor-wrapper']}>
+                <img 
+                    className={`${style['CAT-BOX']} ${plaintextFromHTML(entryText) && style['HIDE-THE-CAT']}`} 
+                    src={selectedCat} alt=''
+                />
                 <ReactQuill 
                     ref={quillRef} 
                     modules={modules} 

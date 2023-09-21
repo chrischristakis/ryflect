@@ -18,6 +18,7 @@
 }
 
 .editor-wrapper {
+    position: relative;
     width: 90%;
 }
 
@@ -39,4 +40,19 @@
 
 .button-wrapper {
     margin: 30px 0;
+}
+
+.CAT-BOX {
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+    bottom: -46px;
+    width: 170px;
+    z-index: 2;
+    opacity: 0.9;
+    transition: opacity 0.2s ease;
+}
+
+.HIDE-THE-CAT {
+    opacity: 0;
 }
