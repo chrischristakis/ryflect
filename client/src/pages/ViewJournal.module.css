@@ -1,6 +1,9 @@
 .view-wrapper {
-    width: 85%;
+    width: 100%;
     margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .text-container {
@@ -9,6 +12,10 @@
     border-top: 0.1em solid var(--primary-color);
     margin-bottom: 30px;
     padding: 5px 0;
+
+    width: 90%;
+    max-width: 1000px;
+    line-height: 25px;
 }
 
 .loading-wrapper {

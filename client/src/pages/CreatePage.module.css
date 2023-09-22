@@ -20,6 +20,7 @@
 .editor-wrapper {
     position: relative;
     width: 90%;
+    max-width: 1450px;
 }
 
 .title-wrapper {
@@ -40,6 +41,18 @@
 
 .button-wrapper {
     margin: 30px 0;
+}
+
+.invalid-date-wrapper {
+    height: calc(100vh - 90px - 40px);
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.invalid-date-wrapper p {
+    font-size: 1.5em;
 }
 
 .CAT-BOX {

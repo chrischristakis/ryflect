@@ -151,7 +151,9 @@ function CreatePage() {
 
     if(!validDate) {
         return (
-            <div>You selected an invalid date :(</div>
+            <div className={style['invalid-date-wrapper']}>
+                <p>You selected an invalid date :(</p>
+            </div>
         );
     }
 

@@ -132,27 +132,29 @@
             - [x] Just remove the box shadow on mobile and margin.
         - [x] Not found
         - [x] Landing
-    - [ ] finish Figma web layout
+    - [x] finish Figma web layout
     - [ ] Web styling
-        - [ ] Home
+        - [x] Home
             - [x] Horizontal capsule/journal selector
             - [x] Box size increase
             - [x] Infinite scroll should have scroll bar now
             - [x] Reposition recents
-            - [ ] Recents should have fixed size, whether you have entries or not. Change flexbox to do this.
-                - [ ] Timeline should have a 'rigid' width and never shrink.
-                - [ ] Recents has a 'preferred' width, shrinks with screen.
+            - [x] Recents should have fixed size, whether you have entries or not. Change flexbox to do this.
+                - [x] Timeline should have a 'rigid' width and never shrink.
+                - [x] Recents has a 'preferred' width, shrinks with screen.
         - [ ] User drop down in nav bar
-        - [ ] Create
-        - [ ] View
-        - [ ] Login
-        - [ ] Register
-        - [ ] Change pass
-        - [ ] Faq
+        - [x] Create
+            - [x] Invalid date
+        - [x] View
+            - [x] Error pages
+        - [x] Login
+        - [x] Register
+        - [x] Change pass
+        - [x] Faq
         - [x] Privacy policy
-        - [ ] Not found
+        - [x] Not found
         - [ ] Landing
-- [ ] Put cat svg/imgs on the website whereever.
+- [x] Put cat svg/imgs on the website whereever.
 - [ ] Remove test user autofill on login
 
 # Other

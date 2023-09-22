@@ -1,8 +1,10 @@
 .error-wrapper {
+    height: calc(100vh - 90px - 40px);
+    width: 100%;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
-    margin: 30px 20px;
 }
 
 .error-text {
@@ -13,4 +15,22 @@
 .error-code {
     font-size: 3.4em;
     margin: 0;   
+}
+
+.error-img {
+    width: 200px;
+}
+
+@media (min-width: 900px) {
+    .error-code {
+        font-size: 5.4em;
+    }
+
+    .error-text {
+        font-size: 2.5em;
+    }
+
+    .error-img {
+        width: 300px;
+    }
 }
