@@ -12,7 +12,7 @@ function Navbar() {
 
     return (
         <nav className={style.navbar}>
-            <div className={style.left}>h</div>
+            <div className={style.left}>;-)</div>
             <div className={style.center}>
                 <h1 className={style.title}>
                     <Link to='/' className={style['title-link']}>

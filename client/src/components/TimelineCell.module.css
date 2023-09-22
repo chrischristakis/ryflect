@@ -53,6 +53,8 @@
 
 .select-popup-journal p {
     color: var(--secondary-color);
+    font-size: 1.4em;
+    font-weight: bold;
     margin: 0;
     margin-top: 30px;
 }
@@ -73,6 +75,8 @@
 
 .select-popup-capsule p {
     color: var(--primary-color);
+    font-size: 1.4em;
+    font-weight: bold;
     margin: 0;
     margin-top: 30px;
 }
@@ -148,4 +152,21 @@
     50% { transform: translateX(-2px) }
     75% { transform: translateX(2px) }
     100% { transform: translateX(0) }
+}
+
+@media (min-width: 600px) {
+    .icon-secondary, .icon-primary {
+        width: 12px;
+    }
+
+    .select-popup {
+        flex-direction: row;
+        height: 50vh;
+        min-height: 300px;
+    }    
+
+    .journal-icon, .capsule-icon {
+        width: 150px;
+        height: 300px
+    }    
 }

@@ -115,23 +115,23 @@ function Home() {
     const [date, setDate] = useState(now);
 
     return (
-        <div className={style['home-wrapper']}>
-            <div id={style['pane1']}>
-            <JournalProvider>
-                <div className={style['timeline-wrapper']}>
-                    <Timeline date={date}/>
+            <div className={ style['home-wrapper'] }>
+                <div id={ style['pane1'] }>
+                    <JournalProvider>
+                        <Timeline date={date}/>
+                        <div className={ style['button-wrapper'] }>
+                            <NewEntryButton setDate={setDate}/>
+                            <CreateCapsuleButton/>
+                        </div>
+                    </JournalProvider>
                 </div>
-                <NewEntryButton setDate={setDate}/>
-                <CreateCapsuleButton/>
-            </JournalProvider>
+                <div id={ style['pane2'] }>
+                    <h3 className={ style['recents-title'] }>recent entries</h3>
+                    <div className={ style['recents-wrapper'] }>
+                        <Recents/>
+                    </div>
+                </div>
             </div>
-            <div id={style['pane2']}>
-            <h3 className={style['recents-title']}>recent entries</h3>
-            <div className={style['recents-wrapper']}>
-                <Recents/>
-            </div>
-            </div>
-        </div>
     );
 }
 

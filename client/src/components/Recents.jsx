@@ -17,6 +17,7 @@ function Recents() {
 
     const [recents, setRecents] = useState(null);
     const [hasMore, setHasMore] = useState(true);
+    const [addScrollbar, setAddScrollbar] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -30,6 +31,17 @@ function Recents() {
             }
 
         })();
+
+        function handleResize() {
+            if (window.innerWidth > 900)
+              setAddScrollbar(true);
+            else
+              setAddScrollbar(false);
+        }
+        handleResize();
+    
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
     }, []);
 
     const richtextToPlaintext = (richtext) => {
@@ -55,51 +67,49 @@ function Recents() {
 
     if(recents.length === 0)
         return (
-            <div className={style['recents-wrapper']}>
+            <div className={style['no-entries-wrapper']}>
                 <p className={style['no-entries']}>you have no recent journals... create an entry and change that :)</p>
             </div>
         );
 
     return (
         <div id={'infinite-scroll'} className={style['recents-wrapper']}>
-            <div className={style['infinite-scroll-container']}>
-                <InfiniteScroll
-                    dataLength={recents.length}
-                    next={loadMoreRecents}
-                    hasMore={hasMore}
-                    loader={<Loading/>}
-                    //scrollableTarget='infinite-scroll'  <-- Add back in when you add scroll bar!
-                >
-                    {
-                        recents.map((e, i) =>
-                            <div key={e.id + i}
-                                className={style['recent-wrapper']}
-                                onClick={_ => navigate('/view/' + e.id)}
-                                style={{cursor: 'pointer'}}
-                            >
-                                <div className={style['date-title']}>
-                                    {
-                                        e.is_time_capsule?
-                                            <>
-                                            <h3 style={{margin: 0, color: lightTheme.tertiaryDarker}}>{getDate(new Date(e.date))} {e.emoji}</h3>
-                                            <em style={{color: lightTheme.tertiaryDarker}}>time capsule</em>
-                                            </>
-                                        :
-                                            <h3 style={{margin: 0}}>{getDate(new Date(e.date))} {e.emoji}</h3>
+            <InfiniteScroll
+                dataLength={recents.length}
+                next={loadMoreRecents}
+                hasMore={hasMore}
+                loader={<Loading/>}
+                scrollableTarget = {addScrollbar? 'infinite-scroll' : ''}
+            >
+                {
+                    recents.map((e, i) =>
+                        <div key={e.id + i}
+                            className={style['recent-wrapper']}
+                            onClick={_ => navigate('/view/' + e.id)}
+                            style={{cursor: 'pointer'}}
+                        >
+                            <div className={style['date-title']}>
+                                {
+                                    e.is_time_capsule?
+                                        <>
+                                        <h3 style={{margin: 0, color: lightTheme.tertiaryDarker}}>{getDate(new Date(e.date))} {e.emoji}</h3>
+                                        <em style={{color: lightTheme.tertiaryDarker}}>time capsule</em>
+                                        </>
+                                    :
+                                        <h3 style={{margin: 0}}>{getDate(new Date(e.date))} {e.emoji}</h3>
 
-                                    }
-                                </div>
-                                <div className={style['recent-text-wrapper']}>
-                                    <div 
-                                        className={style['recent-text-content']}
-                                        dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(richtextToPlaintext(e.richtext)) }}
-                                    />
-                                </div>
+                                }
                             </div>
-                        )
-                    }  
-                </InfiniteScroll>
-            </div>
+                            <div className={style['recent-text-wrapper']}>
+                                <div 
+                                    className={style['recent-text-content']}
+                                    dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(richtextToPlaintext(e.richtext)) }}
+                                />
+                            </div>
+                        </div>
+                    )
+                }  
+            </InfiniteScroll>
         </div> 
     );
 }

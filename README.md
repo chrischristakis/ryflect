@@ -135,6 +135,14 @@
     - [ ] finish Figma web layout
     - [ ] Web styling
         - [ ] Home
+            - [x] Horizontal capsule/journal selector
+            - [x] Box size increase
+            - [x] Infinite scroll should have scroll bar now
+            - [x] Reposition recents
+            - [ ] Recents should have fixed size, whether you have entries or not. Change flexbox to do this.
+                - [ ] Timeline should have a 'rigid' width and never shrink.
+                - [ ] Recents has a 'preferred' width, shrinks with screen.
+        - [ ] User drop down in nav bar
         - [ ] Create
         - [ ] View
         - [ ] Login

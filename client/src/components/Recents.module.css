@@ -4,22 +4,22 @@
 
 .recents-wrapper {
     min-height: 150px;
+    height: 100%;
+}
+
+.no-entries-wrapper {
+    height: 100%;
     display: flex;
-    justify-content: center;
     align-items: center;
 }
 
 .no-entries {
-    margin: 0;
+    margin: 60px 15px;
     opacity: 0.6;
 }
 
-.infinite-scroll-container {
-    width: 500px;
-}
-
 .recent-wrapper {
-    margin: 30px 0;
+    margin: 30px 70px;
     padding: 10px;
 }
 
@@ -34,4 +34,10 @@
 
 .recent-text-content {
     word-wrap: break-word;
+}
+
+@media (min-width: 900px) {
+    .recents-wrapper {
+        overflow-y: scroll;
+    }
 }

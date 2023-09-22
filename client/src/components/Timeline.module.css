@@ -3,7 +3,7 @@
     flex-direction: column;
     align-content: center;
 
-    width: 500px;
+    width: 100%;
     margin: 0 auto;
 
     overflow-x: hidden;
@@ -24,8 +24,14 @@
     width: 100%;
 }
 
-@media only screen and (max-width: 600px) {
+/* tablets ish */
+@media (min-width: 600px) {
     .timeline-wrapper {
-        width: 100%;
+        width: 380px; 
     }
-  }
+
+    .timeline {
+        grid-template-columns: repeat(auto-fill, 22px);
+        grid-auto-rows: 22px;
+    }
+}

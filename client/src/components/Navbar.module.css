@@ -5,6 +5,7 @@
     align-items: center;
     justify-content: space-between;
     min-width: 200px;
+    overflow: hidden;
 }
 
 .left, .center, .right {

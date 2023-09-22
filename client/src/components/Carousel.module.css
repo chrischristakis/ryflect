@@ -10,6 +10,7 @@
     overflow: hidden;
     color: var(--primary-color);
     opacity: 0.7;
+    font-size: 1.1em;
     user-select: none;
     cursor: pointer;
 
@@ -24,6 +25,6 @@
 .selected-item {
     color: var(--primary-color);
     opacity: 1 !important;
-    font-weight: bolder;
-    font-size: 1.2em;
+    font-weight: bold;
+    font-size: 1.35em;
 }

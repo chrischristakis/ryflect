@@ -1,15 +1,18 @@
 .home-wrapper {
+    display: flex;
+    flex-direction: column;
     text-align: center;
     margin: 0 10px;
 }
 
 .create-entry-wrapper {
-    margin: 15px 0;
+    position: relative;
 }
 
 .recents-wrapper {
     border-top: 2px solid var(--primary-color);
     width: 80%;
+    background-color: rebeccapurple;
     margin: 0 auto;
 }
 
@@ -25,6 +28,7 @@
 
 #pane2 {
     margin-top: 60px;
+    background-color: palegoldenrod;
 }
 
 .recents-title {
@@ -49,10 +53,30 @@
     opacity: 0.5;
 }
 
-/* EXAMPLE FOR DESKTOP
-@media (min-width: 900px) {
-  body {
-
-  }
+.button-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin: 15px 0;
 }
-*/
+
+@media (min-width: 900px) {
+    .button-wrapper {
+        flex-direction: row;
+        justify-content: center;
+    }   
+    
+    .entry-made {
+        position: absolute;
+    }
+
+    .home-wrapper {
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    .recents-wrapper {
+        height: 600px;
+    }
+}
