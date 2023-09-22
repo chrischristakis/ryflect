@@ -115,6 +115,7 @@ function Home() {
     const [date, setDate] = useState(now);
 
     return (
+        <div className={style['home-container']}>
             <div className={ style['home-wrapper'] }>
                 <div id={ style['pane1'] }>
                     <JournalProvider>
@@ -132,6 +133,7 @@ function Home() {
                     </div>
                 </div>
             </div>
+        </div>
     );
 }
 

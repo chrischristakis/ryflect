@@ -11,6 +11,7 @@
     height: 100%;
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 
 .no-entries {
@@ -19,7 +20,7 @@
 }
 
 .recent-wrapper {
-    margin: 30px 70px;
+    margin: 30px 60px;
     padding: 10px;
 }
 
@@ -39,5 +40,9 @@
 @media (min-width: 900px) {
     .recents-wrapper {
         overflow-y: scroll;
+    }
+
+    .date-title h3 {
+        font-size: 1.45em;
     }
 }

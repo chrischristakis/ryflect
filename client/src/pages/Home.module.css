@@ -5,15 +5,18 @@
     margin: 0 10px;
 }
 
+.home-container {
+    margin-bottom: 30px; 
+}
+
 .create-entry-wrapper {
     position: relative;
 }
 
 .recents-wrapper {
     border-top: 2px solid var(--primary-color);
-    width: 80%;
-    background-color: rebeccapurple;
     margin: 0 auto;
+    width: 90%;
 }
 
 .video {
@@ -28,11 +31,12 @@
 
 #pane2 {
     margin-top: 60px;
-    background-color: palegoldenrod;
+    max-width: 1000px;
 }
 
 .recents-title {
     font-weight: normal;
+    font-size: 1.3em;
 }
 
 .create-capsule-popup {
@@ -61,6 +65,19 @@
     margin: 15px 0;
 }
 
+/* 
+    This allows us to only center the content vertically when its useful.
+    Without this, the page structure breaks if we shrink the screen bellow ~1025px
+*/
+@media (min-height: 1025px) and (min-width: 900px) {
+    .home-container {
+        height: calc(100vh - 90px - 50px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
 @media (min-width: 900px) {
     .button-wrapper {
         flex-direction: row;
@@ -72,8 +89,17 @@
     }
 
     .home-wrapper {
+        margin: 0 30px;
         flex-direction: row;
         justify-content: center;
+    }
+
+    #pane1 {
+        flex: 0 0 auto;
+    }
+
+    #pane2 {
+        flex: 1 0;
     }
 
     .recents-wrapper {

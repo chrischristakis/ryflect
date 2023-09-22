@@ -26,7 +26,7 @@ function ViewJournal() {
 
                 setEntry(tempEntry);
                 setFormattedDate(getDate(new Date(tempEntry.date)));
-                document.title = `ryflect | ${getDate(new Date(tempEntry.date))}`
+                document.title = `ryflect | ${getDate(new Date(tempEntry.date))}`;
             }
             catch(err) {
                 if(err.response && (err.response.status === 403 || err.response.status === 401))
@@ -40,7 +40,7 @@ function ViewJournal() {
     }, [id]);
 
     if(loading)
-        return <Loading/>;
+        return <div className={style['loading-wrapper']}><Loading/></div>;
 
     if(unauthorized)
         return <DisplayError code='403' text='You are not authorized to view this content'/>;

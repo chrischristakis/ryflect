@@ -11,6 +11,13 @@
     padding: 5px 0;
 }
 
+.loading-wrapper {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
 .title-wrapper {
     margin: 60px 0 30px;
     display: flex;
@@ -18,7 +25,7 @@
     align-items: center;
 }
 
-.title-wrapper> p {
+.title-wrapper > p {
     margin-top: 5px;
     font-size: 1.1em;
 }
