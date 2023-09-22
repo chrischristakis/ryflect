@@ -142,7 +142,7 @@
             - [x] Recents should have fixed size, whether you have entries or not. Change flexbox to do this.
                 - [x] Timeline should have a 'rigid' width and never shrink.
                 - [x] Recents has a 'preferred' width, shrinks with screen.
-        - [ ] User drop down in nav bar
+        - [x] User drop down in nav bar
         - [x] Create
             - [x] Invalid date
         - [x] View

@@ -52,6 +52,7 @@
 
 .username-dropdown-username {
     color: var(--secondary-color);
+    font-size: 1.2em;
     overflow: hidden;
     text-overflow: ellipsis;
 }
@@ -80,9 +81,9 @@
 }
 
 .dropdown {
-    border-top: 1px solid var(--secondary-color);
     padding: 0;
     margin: 0;
+    list-style: none;
 }
 
 .dropdown-link {
@@ -116,5 +117,21 @@
 
     .center {
         justify-content: center;
+    }
+
+    .username-dropdown {
+        padding-right: 70px;
+    }
+
+    .dropdown {
+        position: absolute;
+        right: 73px;
+        top: -20px;
+    }
+
+    .dropdown-link {
+        padding: 10px 10px;
+        text-align: left;
+        font-size: 1.05em;
     }
 }
