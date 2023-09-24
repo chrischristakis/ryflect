@@ -3,6 +3,7 @@
 }
 
 .recents-wrapper {
+    min-width: 100%;
     min-height: 150px;
     height: 100%;
 }
@@ -21,12 +22,10 @@
 
 .recent-wrapper {
     margin: 30px auto;
-    padding: 10px;
     width: 80%;
 }
 
 .recent-text-wrapper {
-    margin: 0 auto;
     height: 70px;
 
     display: flex;
