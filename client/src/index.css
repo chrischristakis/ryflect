@@ -1,10 +1,10 @@
 /* Global palette vars (overwritten in App.css) */
 :root {
-  --primary-color: #ff0000;
-  --primary-color-darker: #ff0000;
-  --secondary-color: #ff0000;
-  --secondary-color-darker: #ff0000;
-  --tertiary-color: #ff0000;
+  --primary-color: #ffffff;
+  --primary-color-darker: #ffffff;
+  --secondary-color: #ffffff;
+  --secondary-color-darker: #ffffff;
+  --tertiary-color: #ffffff;
 }
 
 /* Change defualt font colour */
