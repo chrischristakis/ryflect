@@ -21,8 +21,8 @@ const faqData = [
     },
     {
         header: 'Are my journal entries secure?',
-        content: `To the best of my ability, yes. Entries are encrypted when saved into the database using your password, so even if there was a data leak 
-            (knock on wood) journal entries and passwords would not be compromised.`
+        content: `To the best of my ability, yes. Entries are encrypted when saved into the database using your password, so neither I as the site maintainer nor potential
+        attackers could read any users data without knowing their password.`
     },
     {
         header: 'I forgot my password, what do I do?',
