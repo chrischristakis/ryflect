@@ -17,11 +17,11 @@ function Login() {
 
     const form = useForm({
         username: {
-            value: 'chris8787',
+            value: '',
             ref: usernameInput
         },
         password: {
-            value: 'password',
+            value: '',
             ref: passwordInput
         },
     });

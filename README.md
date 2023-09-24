@@ -133,7 +133,7 @@
         - [x] Not found
         - [x] Landing
     - [x] finish Figma web layout
-    - [ ] Web styling
+    - [x] Web styling
         - [x] Home
             - [x] Horizontal capsule/journal selector
             - [x] Box size increase
@@ -155,7 +155,7 @@
         - [x] Not found
         - [x] Landing
 - [x] Put cat svg/imgs on the website whereever.
-- [ ] Remove test user autofill on login
+- [x] Remove test user autofill on login
 
 # Other
 - [x] Buy domain
