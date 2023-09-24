@@ -2,10 +2,10 @@
     <img src="./res/ryflect-logo.jpg" alt="ryflect" width="800px"/>
 </p>
 
-## What is is?
+## What is it?
 
 ![ryflect](https://ryflect.ca) is a once-a-day journaling MERN app with a focus on providing an intuitive platform to write journals, with the ability to leave journals for yourself that you can only open in the future.
-It hopes to provide a clean UI, encrypted data, an easy visualization of your writing habits each year, and an uncluttered workflow to write down your thoughts each day.
+It is made to provide a clean UI, encrypted data, an easy visualization of your writing habits each year, and an uncluttered workflow to write down your thoughts each day.
 
 ## How is info secured?
 
@@ -17,7 +17,7 @@ This diagram outline the process in which information is stored/retrieved in the
 
 A common question is 'what is the point of a generated key, why not just rely on the derived key?
 
-This decision was made in order to allow the user to change their password if they wish, since it simply becomes a matter of decrypted the generated key, then re-encrypting it with the new derived key using their new password, a very quick and inexpensive operation.
+This decision was made in order to allow the user to change their password if they wish, since it simply becomes a matter of decrypting the generated key, then re-encrypting it with the new derived key using their new hashed password, a very quick and inexpensive operation.
 Of course though, as a byproduct of encrypting user data means that passwords cannot be reset if the old one is forgotten. 
 
 ## How do I run this?
