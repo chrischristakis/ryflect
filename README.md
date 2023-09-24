@@ -1,174 +1,77 @@
-# Backend
-- [x] Get basic api route working
-- [x] Get .env file working
-- [x] Init git repo
-- [x] Route planning
-- [x] Mongo refresh
-- [x] Local Mongo (Atlas should be easy to switch to)
-- [x] Make dummy app which has basic mongo operations to test DO deploy
-- [x] Publish app on digital ocean as a test
-- [x] Make dummy user data (Non hashed passwords, etc)
-- [x] Make utils for current day index
-- [x] Implement all routes other than auth
-- [x] Auth
-- [x] Auth middleware
-- [x] Redo routes to fit auth
-- [x] Set up config env file
-- [x] Sanitize inputs
-- [x] Email registration code
-- [x] Set up CRON jobs for deleting old unactivated users and old verification entries (Can do both in one job)
-- [x] Time capsule implementation
-- [x] Email users whenever a time capsule is opened.
-    - How do we do this efficiently with bulk... make sure each email is sent asynchronously.
-- [x] Move username validation (if it exists) into verify middleware instead.
-- [x] Consider revamping JournalIDs and CapsuleIDs, since it may bloat the user document.
-- [x] Pagination for recents
-- [x] Manual rate limit for registration, 5 registrations per ip per day
-- [x] NGINX rate limit for all routes, 15r/s
-- [x] Bump up expiry date for access token
-- [x] Start encrypting data
-- [x] Force logout if not authed.
-- [x] Decrypt recent entries
-- [x] Make rotating server key to encrypt the derived key in cookie
-    - Changes once a week on a CRON
-- [x] Log user out if server key is outdated and has rotated.
-- [x] Change password functionality
-- [x] PBKDF2 for derived key
+<p align="center">
+    <img src="./res/ryflect-logo.jpg" alt="ryflect" width="800px"/>
+</p>
 
-# Front end
-- [x] Figma layout
-- [x] Basic layout pages (No styling)
-- [x] Add a 'loaded' property for journalIDs, since checking if empty isn't reliable
-        - New users have empty journalIDs, so website woudln't work for them if we check using isEmpty
-        - THIS IS CAUSING RERENDERS OF THE ENTIRE PAGE! WE NEED TO CHECK IF SOMETHING IS LOADED FIRST
-            - No need for context, just a loaded property that waits for all api calls on a page to complete before rendering content.
-- [x] Snoop around for rerenders to fix
-- [x] Cookies
-    - Test what happens when user goes to other user's journal after being logged in, should bring them to unauthorized page
-- [x] Add user bar in navbar, support logout, change password, FAQ
-- [x] Fix registration and login forms to use custom hooks
-    - Both handle errored fields the same way, try to streamline this so code is less bulky.
-- [x] Make sure if one cookie is missing, we force use to login again and reset cookies by logging them out
-- [x] Get markdown working
-    - Should be on the fly, display what the markdown would look like as the user types
-- [x] save a html journal entry and a plaintext entry with no tags.
-- [x] Handle errors on each page
-    - For example, on verify email, decide what to do if verfication has expired. What do we display?
-- [x] If user plaintext cuts off an escaped character (since plaintext is escaped) we need to handle it appropriately.
-- [x] Do not let user go to create journal page if journal already exists, grey out button.
-- [x] Proper loading (Animation?)
-- [x] Dummy FAQ, Change password pages
-- [x] Button loading gif while waiting for a response
-- [x] Put in Michelle's gif (Ty Michelle)
-- [x] More basic styling...
-- [x] Test deploy + feedback
-- [x] Only let user go back to the year they started journaling
-    - Also add upper bound to how far in the future they can scroll?
-- [x] Add carousel for years
-    - 'Scroll along the line' and enlarge center year
-    - animate it!
-- [x] Reconsider how we render the 'create entry' button, since the entire timeline is being rerendered every second. Try to isolate just the button to rerender.
-- [x] Pagination for recents (infinite scroll)
-- [x] One more production build to test spam emails and other new additions + feedback
-- [x] Display time capsules
-- [x] Handle viewing normal entry vs time capsule
-    - Differentiate between journal and capsule if both exist on one day
-- [x] Make creating a time capsule page differentiate from a normal journal entry
-    - Same page and use props, or different page?
-    - Use Params/query or pass data 
-- [x] Timeline overflow bug
-    - [x] Fix double shift bug (Maybe use ref or state to shift isntead of using using ref.current.style)
-- [x] Text shouldn't overflow if one continuous line on view journal/recents
-- [x] Word counter on frontend to match back end.
-    - Just stop allowing text when document max size is reached.
-    * Decided to just inform user when they're over capacity, and not allow submission.
-- [x] Random message in writing box as a prompt
-- [x] Make sure user knows they cannot recover password upon registration
-    - Display a pop up or something
-- [x] Faq
-- [x] Footer
-- [x] Create time capsule infographic
-- [x] Privacy policy
-- [x] Website metadata (title, description, etc.)
-- [x] Refresh home after user is deleted and we get a bunch of 'username does not exist'
-    - Happens because we dont log user out so were calling our normal routes.
-    - Regardless, routes seemed to be called 4 times each. should be once (twice in dev) each.
-- [x] Ping route being called 3 times when refreshing home, check up on this
-- [x] Change password page
-- [x] Final production test, high maximum load journal entry test
-- [x] Refactor front end since we build locally now
-    - Include in gitignore but be able to push up when necessary?
-    - Make a npm run build for dev and for prod, so we dont need to manually change .env variables
-    - Do we need an env file at all? If so, should be in repo and not in git ignore.
-- [x] Make SVGs, like capsule, journal, website icon.
-- [ ] Styling
-    - [x] Streamline palette in JS
-    - [x] Get variables for colours set up in CSS
-    - [x] Fonts
-    - [x] Navbar
-        - [x] Remove back button, shift logo to left in mobile.
-        - [x] Test what happens when username is very long.
-        - [x] User drop down disappears when we refresh on a unauthed page. Navbar should ping for auth (session cookie is http only)
-            - [x] Maybe wrap every route with a ping, but only auth routes care about the outcome. That way user info always available.
-        - [x] Style dropdown
-        - [x] Insert logo svg
-    - [x] Footer
-    - [x] Mobile styling
-        - [x] Home
-            - [x] Style what to do when no recents
-        - [x] Create
-            - [x] Center loading
-        - [x] View
-            - [x] All error pages
-        - [x] Change pass
-            - [x] Turn input (and labels representing input) into a component, make sure it works with useForm
-        - [x] Login
-        - [x] Register
-            - [x] fix bug saying Session invalid after registering
-            - [x] Style email sent page, emphasize the spam email bit (maybe with red?)
-        - [x] Verify registeration
-        - [x] Faq
-        - [x] Privacy policy
-            - [x] Just remove the box shadow on mobile and margin.
-        - [x] Not found
-        - [x] Landing
-    - [x] finish Figma web layout
-    - [x] Web styling
-        - [x] Home
-            - [x] Horizontal capsule/journal selector
-            - [x] Box size increase
-            - [x] Infinite scroll should have scroll bar now
-            - [x] Reposition recents
-            - [x] Recents should have fixed size, whether you have entries or not. Change flexbox to do this.
-                - [x] Timeline should have a 'rigid' width and never shrink.
-                - [x] Recents has a 'preferred' width, shrinks with screen.
-        - [x] User drop down in nav bar
-        - [x] Create
-            - [x] Invalid date
-        - [x] View
-            - [x] Error pages
-        - [x] Login
-        - [x] Register
-        - [x] Change pass
-        - [x] Faq
-        - [x] Privacy policy
-        - [x] Not found
-        - [x] Landing
-- [x] Put cat svg/imgs on the website whereever.
-- [x] Remove test user autofill on login
+## What is is?
 
-# Other
-- [x] Buy domain
-- [x] Look into host (Heroku, digital ocean)
-- [x] Start looking into https (certbot)
-- [x] Scripts for running on prod
-    - On prod: pull repo, copy build, run server in prod
-- [ ] Proper readme!
+![ryflect](https://ryflect.ca) is a once-a-day journaling MERN app with a focus on providing an intuitive platform to write journals, with the ability to leave journals for yourself that you can only open in the future.
+It hopes to provide a clean UI, encrypted data, an easy visualization of your writing habits each year, and an uncluttered workflow to write down your thoughts each day.
 
-# Readme contents
-- Logo
-- What is it?
-- Tools
-- How is info secured?
-- How to run?
-- Planned features?
+## How is info secured?
+
+This diagram outline the process in which information is stored/retrieved in the database, and which user action triggers it:
+
+<p align="center">
+    <img src="./res/diagram.png" alt="ryflect" width="800px"/>
+</p>
+
+A common question is 'what is the point of a generated key, why not just rely on the derived key?
+
+This decision was made in order to allow the user to change their password if they wish, since it simply becomes a matter of decrypted the generated key, then re-encrypting it with the new derived key using their new password, a very quick and inexpensive operation.
+Of course though, as a byproduct of encrypting user data means that passwords cannot be reset if the old one is forgotten. 
+
+## How do I run this?
+
+* Note: dependencies are installed with NPM
+
+- After pulling in the repository, navigate to the client and server and install dependencies
+```
+    cd server
+    npm install
+    cd ../client
+    npm install
+```
+
+- Go into the server directory and create a .env file (ryflect/server/.env) this is the structure:
+```
+PORT=5000
+MONGO_URL=mongodb://127.0.0.1:27017/ryflect?directConnection=true&serverSelectionTimeoutMS=2000
+JWT_SECRET=<any random bytes>
+GMAIL_USERNAME= ... #gmail username
+GMAIL_APP_PASSWORD= ... #app password found in less-secure app settings on gmail
+WEBAPP_URL='http://localhost:3000' #Or whatever port the client will be running on
+
+TEST_EMAIL= ... #all dev emails will be sent to the address you put here.
+```
+
+- Run the backend
+```
+node index.js
+```
+
+- Navigate to the client and run the frontend
+```
+cd ryflect/client
+npm start
+```
+
+- Note: If you'd like to build it the front end, run either
+```
+npm run build:dev
+or
+npm run build:prod
+```
+    - To run the server as a production app, change the NODE_ENV variable (on linux it would look like):
+    ```
+    export NODE_ENV=production&&node index.js 
+    ```
+
+## Planned features?
+
+Some things I'd like to add are:
+ - Titles for journals
+ - Mood tracking each day
+
+<p align="center">
+    <img src="./res/ryflect-heart.png" alt="ryflect" width="400px"/>
+</p>
