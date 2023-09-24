@@ -5,7 +5,6 @@
     align-items: center;
     justify-content: space-between;
     min-width: 200px;
-    overflow: hidden;
 }
 
 .left, .center, .right {
@@ -27,6 +26,7 @@
 
 .right {
     justify-content: flex-end;
+    width: 100%;
 }
 
 .title {
@@ -38,16 +38,19 @@
     text-decoration: none;
 }
 
-.username-dropdown {
-    user-select: none;
+.username-dropdown-wrapper {
+    width: 100%;
+    display: inline-flex;
+    flex-direction: row-reverse;
+}
 
+.username-dropdown-container {
+    user-select: none;
+    cursor: pointer;
     display: flex;
     gap: 5px;
-    justify-content: flex-end;
     align-items: center;
-
-    width: 100%;
-    box-sizing: border-box;
+    max-width: 100%;
 }
 
 .username-dropdown-username {
@@ -60,30 +63,34 @@
 .username-dropdown-arrow {
     color: var(--secondary-color);
     font-size: 0.9em;
+    margin-top: 5px;
     flex-shrink: 0; /* Prevent the arrow from shrinking */
-}
-
-.overlay {
-    position: absolute;
-    top: 100%;
-    
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: calc(100vh - 90px);
-    z-index: 1;
 }
 
 /* used so when you click off the dropdown on mobile, it wont click anything on the page */
 .screencover {
+    position: absolute;
+    left: 0;
+    top: 90px;
     background-color: transparent;
-    height: 100%;
+    width: 100%;
+    height: calc(100vh - 90px);
+    z-index: 99;
 }
 
 .dropdown {
     padding: 0;
     margin: 0;
     list-style: none;
+
+    position: absolute;
+    top: 90px;
+    left: 0;
+    user-select: none;
+
+    width: 100%;
+    z-index: 100;
+    box-sizing: border-box;
 }
 
 .dropdown-link {
@@ -119,14 +126,19 @@
         justify-content: center;
     }
 
-    .username-dropdown {
-        padding-right: 70px;
+    .username-dropdown-wrapper {
+        margin-right: 50px;
+    }
+
+    .username-dropdown-container {
+        position: relative;
     }
 
     .dropdown {
-        position: absolute;
-        right: 73px;
-        top: -20px;
+        min-width: 150px;
+        top: 30px;
+        left: 50%;
+        transform: translateX(calc(-50% - 10px));
     }
 
     .dropdown-link {

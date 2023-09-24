@@ -27,7 +27,7 @@ const loginRules = [
 const registerRules = [
     check('username', 'Enter a username').notEmpty()
         .isString().withMessage("Username must be a string")
-        .isLength({max: 50}).withMessage("Username should be less than 50 characters")
+        .isLength({max: 30}).withMessage("Username should be less than 50 characters")
         .matches('^[A-Za-z0-9]+$').withMessage("Username must be within A-Z, a-z, 0-9")
         .escape(),
     check('password')
