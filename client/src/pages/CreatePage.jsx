@@ -105,8 +105,6 @@ function CreatePage() {
             emoji: emoji
         }; 
 
-        console.log(entryText)
-
         try {
             if(!isCapsule)
                 await axios.post(API_URL + '/api/journals', data, {
