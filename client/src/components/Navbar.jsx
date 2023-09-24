@@ -12,7 +12,7 @@ function Navbar() {
         <nav className={style.navbar}>
             <div className={style.left}>;-)</div>
             <div className={style.center}>
-                <h1 className={style.title}>\
+                <h1 className={style.title}>
                 {
                     !expanded?
                     <Link to='/' className={style['title-link']}>
