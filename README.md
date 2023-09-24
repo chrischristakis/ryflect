@@ -153,7 +153,7 @@
         - [x] Faq
         - [x] Privacy policy
         - [x] Not found
-        - [ ] Landing
+        - [x] Landing
 - [x] Put cat svg/imgs on the website whereever.
 - [ ] Remove test user autofill on login
 
