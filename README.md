@@ -4,7 +4,7 @@
 
 ## What is it?
 
-![ryflect](https://ryflect.ca) is a once-a-day journaling MERN app with a focus on providing an intuitive platform to write journals, with the ability to leave journals for yourself that you can only open in the future.
+[ryflect](https://ryflect.ca) is a once-a-day journaling MERN app with a focus on providing an intuitive platform to write journals, with the ability to leave journals for yourself that you can only open in the future.
 It is made to provide a clean UI, encrypted data, an easy visualization of your writing habits each year, and an uncluttered workflow to write down your thoughts each day.
 
 ## How is info secured?
